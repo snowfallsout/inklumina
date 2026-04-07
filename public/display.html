@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>COLORFIELD — Live Particle Canvas</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: #05050f;
+  overflow: hidden;
+  font-family: -apple-system, 'Segoe UI', sans-serif;
+}
+
+#video-bg {
+  display: none;   /* camera is rendered directly into canvas each frame */
+}
+
+#canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+}
+
+/* ── UI overlay ─────────────────────────────────── */
+#ui {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+}
+
+/* Header */
+#header {
+  position: absolute;
+  top: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  white-space: nowrap;
+}
+#header h1 {
+  color: rgba(255,255,255,0.92);
+  font-size: 30px;
+  font-weight: 100;
+  letter-spacing: 18px;
+  text-transform: uppercase;
+  text-shadow: 0 0 50px rgba(255,255,255,0.25);
+}
+#header p {
+  color: rgba(255,255,255,0.28);
+  font-size: 10px;
+  letter-spacing: 5px;
+  margin-top: 5px;
+  text-transform: uppercase;
+}
+
+/* Legend panel */
+#legend {
+  position: absolute;
+  right: 22px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(5,5,20,0.72);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 20px;
+  padding: 18px 14px;
+  min-width: 158px;
+}
+#legend h3 {
+  color: rgba(255,255,255,0.3);
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-align: center;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 2.5px 0;
+  opacity: 0.18;
+  transform: translateX(6px);
+  transition: opacity 0.4s, transform 0.4s;
+}
+.row.on { opacity: 1; transform: translateX(0); }
+
+.dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 4px var(--c));
+}
+.lbl {
+  color: rgba(255,255,255,0.88);
+  font-size: 11px;
+  font-weight: 700;
+  min-width: 34px;
+}
+.track {
+  flex: 1;
+  height: 3px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.7s cubic-bezier(0.4,0,0.2,1);
+  width: 0%;
+}
+.cnt {
+  color: rgba(255,255,255,0.45);
+  font-size: 10px;
+  min-width: 16px;
+  text-align: right;
+}
+
+/* Footer */
+#footer {
+  position: absolute;
+  bottom: 26px;
+  left: 0; right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 0 30px;
+}
+#total-block {
+  color: rgba(255,255,255,0.28);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+#total-block strong {
+  color: rgba(255,255,255,0.85);
+  font-size: 26px;
+  font-weight: 100;
+  letter-spacing: 6px;
+  display: block;
+  margin-top: 2px;
+}
+#join-block {
+  text-align: right;
+  color: rgba(255,255,255,0.32);
+  font-size: 10px;
+  letter-spacing: 2px;
+  line-height: 1.9;
+}
+#join-block b {
+  color: rgba(255,255,255,0.75);
+  font-size: 13px;
+  font-weight: 400;
+  display: block;
+  letter-spacing: 3px;
+}
+
+/* Emotion indicator */
+#emotion-badge {
+  position: absolute;
+  top: 28px;
+  left: 28px;
+  color: rgba(255,255,255,0.25);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  transition: color 0.5s;
+}
+#emotion-badge.smile { color: #FFD700; }
+#emotion-badge.sad   { color: #6B8CFF; }
+
+/* Toast */
+.toast-wrap {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.toast-pill {
+  display: inline-block;
+  padding: 10px 28px;
+  border-radius: 50px;
+  background: rgba(5,5,20,0.75);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: white;
+  font-size: 15px;
+  font-weight: 300;
+  letter-spacing: 1px;
+  animation: tIn .35s ease, tOut .35s 2.3s ease forwards;
+  white-space: nowrap;
+}
+@keyframes tIn  { from { opacity:0; transform: scale(.85) translateY(8px); } to { opacity:1; transform: scale(1); } }
+@keyframes tOut { to   { opacity:0; transform: scale(.9) translateY(-6px); } }
+
+/* Waiting hint */
+#waiting {
+  position: absolute;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(255,255,255,0.18);
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-align: center;
+  pointer-events: none;
+  animation: breath 3s ease-in-out infinite;
+}
+@keyframes breath { 0%,100% { opacity:.18; } 50% { opacity:.45; } }
+</style>
+</head>
+<body>
+
+<video id="video-bg" autoplay muted playsinline></video>
+<canvas id="canvas"></canvas>
+
+<div id="ui">
+  <div id="header">
+    <h1>Colorfield</h1>
+    <p>MBTI · Emotion · Particle Art</p>
+  </div>
+
+  <div id="emotion-badge">● FACE TRACKING</div>
+
+  <div id="legend">
+    <h3>Present</h3>
+    <div id="legend-rows"></div>
+  </div>
+
+  <div id="footer">
+    <div id="total-block">
+      Participants
+      <strong id="total-num">0</strong>
+    </div>
+    <div id="join-block">
+      <b>SCAN TO JOIN</b>
+      Phone → localhost:3000/mobile.html
+    </div>
+  </div>
+
+  <div id="waiting">Waiting for participants to join…</div>
+</div>
+
+<!-- Socket.io & MediaPipe -->
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh@0.4/face_mesh.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.3/camera_utils.js" crossorigin="anonymous"></script>
+
+<script>
+'use strict';
+
+// ── Constants ──────────────────────────────────────────────────────────────────
+const TWO_PI = Math.PI * 2;
+
+const MBTI_COLORS = {
+  INTJ:'#9D4EDD', INTP:'#00F5FF', ENTJ:'#FF073A', ENTP:'#FF6B00',
+  INFJ:'#CC00FF', INFP:'#FF1493', ENFJ:'#FFD700', ENFP:'#39FF14',
+  ISTJ:'#1E90FF', ISFJ:'#00FFCD', ESTJ:'#FF4500', ESFJ:'#FF69B4',
+  ISTP:'#B8C0FF', ISFP:'#E040FB', ESTP:'#FFE600', ESFP:'#FF6EC7',
+};
+const MBTI_NAMES = {
+  INTJ:'战略家', INTP:'逻辑学家', ENTJ:'指挥官', ENTP:'辩论家',
+  INFJ:'提倡者', INFP:'调停者', ENFJ:'主人公', ENFP:'竞选者',
+  ISTJ:'检察官', ISFJ:'守护者', ESTJ:'总经理', ESFJ:'执政官',
+  ISTP:'鉴赏家', ISFP:'探险家', ESTP:'企业家', ESFP:'表演者',
+};
+const MBTI_ORDER = [
+  'INTJ','INTP','ENTJ','ENTP',
+  'INFJ','INFP','ENFJ','ENFP',
+  'ISTJ','ISFJ','ESTJ','ESFJ',
+  'ISTP','ISFP','ESTP','ESFP',
+];
+
+// ── Canvas ─────────────────────────────────────────────────────────────────────
+const canvas = document.getElementById('canvas');
+const ctx    = canvas.getContext('2d');
+let W = 0, H = 0;
+
+function resize() {
+  W = canvas.width  = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+// ── Particle class ─────────────────────────────────────────────────────────────
+class Particle {
+  constructor(x, y, color) {
+    this.x  = x;  this.y  = y;
+    this.vx = (Math.random() - .5) * 9;
+    this.vy = (Math.random() - .5) * 9 - 2;
+    this.color   = color;
+    this.size    = Math.random() * 9 + 5;
+    this.alpha   = 0;
+    this.alphaT  = Math.random() * .45 + .55;
+    this.state   = 'born';  // born | free | attracted | swirling | falling
+    this.age     = 0;
+    this.trail   = [];
+    this.orbitA  = Math.random() * TWO_PI;
+    this.orbitR  = 55 + Math.random() * 90;
+    this.orbitSpd= (.018 + Math.random() * .025) * (Math.random() > .5 ? 1 : -1);
+    this.targetF = null;
+  }
+
+  update(faces, emotion) {
+    this.age++;
+    this.alpha = Math.min(this.alphaT, this.alpha + .025);
+
+    // Trail — store every 2 frames
+    if (this.age % 2 === 0) {
+      this.trail.push({ x: this.x, y: this.y, s: this.size });
+      if (this.trail.length > 10) this.trail.shift();
+    }
+
+    // State machine
+    if (this.age < 25) {
+      this.state = 'born';
+    } else {
+      const nf = nearestFace(faces, this.x, this.y);
+      const d  = nf ? dist2(this.x, this.y, nf.x, nf.y) : Infinity;
+
+      if (nf && d < 260) {
+        this.targetF = nf;
+        this.state   = nf.smile ? 'swirling' : 'attracted';
+      } else if (emotion === 'sad' && faces.length > 0) {
+        this.state = 'falling';
+      } else {
+        this.state = 'free';
+      }
+    }
+
+    switch (this.state) {
+      case 'born':
+      case 'free': {
+        this.vx += (Math.random() - .5) * .35;
+        this.vy += (Math.random() - .5) * .35 + .025;
+        const sp = Math.sqrt(this.vx*this.vx + this.vy*this.vy);
+        if (sp > 3) { this.vx *= 3/sp; this.vy *= 3/sp; }
+        this.vx *= .988; this.vy *= .988;
+        break;
+      }
+      case 'attracted': {
+        const f  = this.targetF;
+        const dx = f.x - this.x, dy = f.y - this.y;
+        const d  = Math.sqrt(dx*dx + dy*dy) || 1;
+        const ft = Math.min(1.6, 75 / d) * .075;
+        this.vx += dx/d * ft; this.vy += dy/d * ft;
+        this.vx *= .91; this.vy *= .91;
+        break;
+      }
+      case 'swirling': {
+        const f = this.targetF;
+        this.orbitA += this.orbitSpd * 2.8;
+        const tx = f.x + Math.cos(this.orbitA) * this.orbitR;
+        const ty = f.y + Math.sin(this.orbitA) * this.orbitR;
+        this.vx += (tx - this.x) * .14;
+        this.vy += (ty - this.y) * .14;
+        this.vx *= .76; this.vy *= .76;
+        break;
+      }
+      case 'falling': {
+        this.vy += .42;
+        this.vx *= .99;
+        this.vy  = Math.min(this.vy, 16);
+        if (this.y >= H - 25) {
+          this.y   = H - 25;
+          this.vy *= -.12;
+          this.vx *= .92;
+          this.size = Math.max(2, this.size * .975);
+        }
+        break;
+      }
+    }
+
+    this.x += this.vx;
+    this.y += this.vy;
+    if (this.x < -30) this.x = W + 15;
+    if (this.x > W + 30) this.x = -15;
+    if (this.y < -60) this.y = 15;
+  }
+
+  draw(ctx) {
+    const tr = this.trail;
+    for (let i = 0; i < tr.length; i++) {
+      const t  = i / tr.length;
+      const pt = tr[i];
+      const s  = pt.s * t * .55;
+      if (s < .5) continue;
+      ctx.globalAlpha = t * this.alpha * .32;
+      ctx.shadowBlur  = s * 2.5;
+      ctx.shadowColor = this.color;
+      ctx.beginPath();
+      ctx.arc(pt.x, pt.y, s, 0, TWO_PI);
+      ctx.fillStyle = this.color;
+      ctx.fill();
+    }
+
+    // Core particle with liquid-metal radial gradient
+    ctx.globalAlpha = this.alpha;
+    ctx.shadowBlur  = this.size * 4.5;
+    ctx.shadowColor = this.color;
+
+    const g = ctx.createRadialGradient(
+      this.x - this.size*.28, this.y - this.size*.28, this.size*.08,
+      this.x, this.y, this.size
+    );
+    g.addColorStop(0,   'rgba(255,255,255,0.98)');
+    g.addColorStop(.22, this.color);
+    g.addColorStop(.72, this.color + 'BB');
+    g.addColorStop(1,   this.color + '00');
+
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, TWO_PI);
+    ctx.fillStyle = g;
+    ctx.fill();
+
+    // Lo-fi cross sparkle on fast / swirling particles
+    const sp = Math.sqrt(this.vx*this.vx + this.vy*this.vy);
+    if ((this.state === 'swirling' || sp > 4.5) && Math.random() < .07) {
+      drawSparkle(ctx, this.x, this.y, this.size, this.color);
+    }
+
+    ctx.globalAlpha = 1;
+    ctx.shadowBlur  = 0;
+  }
+}
+
+function drawSparkle(ctx, x, y, size, color) {
+  const s = size * (1.6 + Math.random() * .8);
+  ctx.globalAlpha = Math.random() * .85;
+  ctx.strokeStyle = '#ffffff';
+  ctx.lineWidth   = 1;
+  ctx.shadowBlur  = 6;
+  ctx.shadowColor = color;
+  ctx.beginPath();
+  ctx.moveTo(x-s, y);    ctx.lineTo(x+s, y);
+  ctx.moveTo(x, y-s);    ctx.lineTo(x, y+s);
+  const d = s * .55;
+  ctx.moveTo(x-d, y-d);  ctx.lineTo(x+d, y+d);
+  ctx.moveTo(x+d, y-d);  ctx.lineTo(x-d, y+d);
+  ctx.stroke();
+}
+
+function dist2(ax, ay, bx, by) {
+  const dx = ax-bx, dy = ay-by;
+  return Math.sqrt(dx*dx + dy*dy);
+}
+
+function nearestFace(faces, px, py) {
+  if (!faces.length) return null;
+  let best = null, bd = Infinity;
+  for (const f of faces) {
+    const d = dist2(px, py, f.x, f.y);
+    if (d < bd) { bd = d; best = f; }
+  }
+  return best;
+}
+
+// ── Particle pool ──────────────────────────────────────────────────────────────
+const particles   = [];
+const MAX_PARTICLES = 2400;
+
+function spawnMBTI(mbti, color) {
+  const side = Math.floor(Math.random() * 4);
+  let bx, by;
+  switch (side) {
+    case 0: bx = Math.random()*W;  by = -20;    break;
+    case 1: bx = W+20;             by = Math.random()*H; break;
+    case 2: bx = Math.random()*W;  by = H+20;   break;
+    case 3: bx = -20;              by = Math.random()*H; break;
+  }
+  const n = Math.min(65, MAX_PARTICLES - particles.length);
+  for (let i = 0; i < n; i++) {
+    particles.push(new Particle(bx+(Math.random()-.5)*50, by+(Math.random()-.5)*50, color));
+  }
+  while (particles.length > MAX_PARTICLES) particles.splice(0, 1);
+}
+
+// ── Face detection (MediaPipe FaceMesh) ───────────────────────────────────────
+let faces   = [];
+let emotion = 'neutral';
+const video = document.getElementById('video-bg');
+
+function setupCamera() {
+  navigator.mediaDevices.getUserMedia({ video: { width: 1280, height: 720 }, audio: false })
+    .then(stream => {
+      video.srcObject = stream;
+      video.onloadedmetadata = () => {
+        video.play();
+        video.classList.add('ready');
+        tryMediaPipe();
+      };
+    })
+    .catch(err => {
+      console.warn('Camera unavailable:', err.message);
+      document.getElementById('emotion-badge').textContent = '● NO CAMERA';
+    });
+}
+
+function tryMediaPipe() {
+  if (typeof FaceMesh === 'undefined') {
+    console.warn('MediaPipe FaceMesh not loaded');
+    return;
+  }
+
+  const faceMesh = new FaceMesh({
+    locateFile: f => `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh@0.4/${f}`
+  });
+  faceMesh.setOptions({
+    maxNumFaces:          6,
+    refineLandmarks:      false,
+    minDetectionConfidence: .5,
+    minTrackingConfidence:  .5,
+  });
+
+  faceMesh.onResults(results => {
+    faces = [];
+    let smiles = 0;
+
+    if (results.multiFaceLandmarks) {
+      for (const lm of results.multiFaceLandmarks) {
+        // Mirror x (video CSS is scaleX(-1))
+        const fx = (1 - lm[168].x) * W;
+        const fy = lm[168].y * H;
+
+        // Smile: mouth width vs inter-eye distance
+        const mw = Math.abs(lm[291].x - lm[61].x);
+        const ew = Math.abs(lm[263].x - lm[33].x);
+        const smile = ew > 0 && (mw / ew) > .57;
+        if (smile) smiles++;
+        faces.push({ x: fx, y: fy, smile });
+      }
+    }
+
+    emotion = (smiles > faces.length * .5 && faces.length > 0) ? 'smile' : 'neutral';
+    updateEmotionBadge();
+  });
+
+  if (typeof Camera !== 'undefined') {
+    const cam = new Camera(video, {
+      onFrame: async () => { await faceMesh.send({ image: video }); },
+      width: 1280, height: 720,
+    });
+    cam.start().catch(e => console.warn('Camera utils error:', e));
+  }
+}
+
+function updateEmotionBadge() {
+  const el = document.getElementById('emotion-badge');
+  if (!faces.length) {
+    el.className = '';
+    el.textContent = '● FACE TRACKING';
+  } else if (emotion === 'smile') {
+    el.className = 'smile';
+    el.textContent = '✦ SMILE DETECTED';
+  } else {
+    el.className = '';
+    el.textContent = `● ${faces.length} FACE${faces.length>1?'S':''} DETECTED`;
+  }
+}
+
+setupCamera();
+
+// ── Socket.IO ──────────────────────────────────────────────────────────────────
+const socket     = io();
+const mbtiCounts = {};
+
+socket.on('state', data => {
+  Object.assign(mbtiCounts, data.counts || {});
+  renderLegend();
+});
+
+socket.on('spawn_particles', data => {
+  const { mbti, color, counts, total, nickname } = data;
+  Object.assign(mbtiCounts, counts || {});
+  spawnMBTI(mbti, color);
+  renderLegend();
+  document.getElementById('total-num').textContent = total || Object.values(mbtiCounts).reduce((a,b)=>a+b,0);
+  showToast(`✦ ${mbti} ${nickname} joined`, color);
+  if (particles.length > 0) {
+    document.getElementById('waiting').style.display = 'none';
+  }
+});
+
+// ── Legend ─────────────────────────────────────────────────────────────────────
+(function buildLegend() {
+  const root = document.getElementById('legend-rows');
+  for (const m of MBTI_ORDER) {
+    const c = MBTI_COLORS[m];
+    root.insertAdjacentHTML('beforeend', `
+      <div class="row" id="r-${m}">
+        <div class="dot" style="background:${c};--c:${c}"></div>
+        <span class="lbl">${m}</span>
+        <div class="track"><div class="fill" id="f-${m}" style="background:${c}"></div></div>
+        <span class="cnt" id="c-${m}">0</span>
+      </div>`);
+  }
+})();
+
+function renderLegend() {
+  const total = Object.values(mbtiCounts).reduce((a,b)=>a+b,0);
+  document.getElementById('total-num').textContent = total;
+  for (const m of MBTI_ORDER) {
+    const n   = mbtiCounts[m] || 0;
+    const pct = total > 0 ? n/total*100 : 0;
+    document.getElementById(`r-${m}`)?.classList.toggle('on', n > 0);
+    const f = document.getElementById(`f-${m}`);
+    const c = document.getElementById(`c-${m}`);
+    if (f) f.style.width = pct + '%';
+    if (c) c.textContent = n;
+  }
+}
+
+// ── Toast ──────────────────────────────────────────────────────────────────────
+function showToast(msg, color) {
+  const ui = document.getElementById('ui');
+  ui.querySelectorAll('.toast-wrap').forEach(el => el.remove());
+  const wrap = document.createElement('div');
+  wrap.className = 'toast-wrap';
+  wrap.innerHTML = `<div class="toast-pill" style="border-color:${color}55;text-shadow:0 0 18px ${color}">${msg}</div>`;
+  ui.appendChild(wrap);
+  setTimeout(() => wrap.remove(), 3000);
+}
+
+// ── Ambient ambient particles ──────────────────────────────────────────────────
+// Seed a few soft ambient drifters so the canvas never looks dead
+const AMBIENT_COLS = ['#9D4EDD','#00F5FF','#39FF14','#FFD700','#FF1493'];
+function seedAmbient(n) {
+  for (let i = 0; i < n; i++) {
+    const p   = new Particle(Math.random()*W, Math.random()*H, AMBIENT_COLS[i%AMBIENT_COLS.length]);
+    p.size    = Math.random() * 5 + 2;
+    p.alphaT  = Math.random() * .2 + .08;
+    particles.push(p);
+  }
+}
+seedAmbient(120);
+
+// ── Render loop ────────────────────────────────────────────────────────────────
+function loop() {
+  requestAnimationFrame(loop);
+
+  // Clear canvas each frame so camera feed shows through
+  ctx.clearRect(0, 0, W, H);
+
+  // Draw mirrored camera feed directly into canvas
+  if (video.readyState >= 2) {
+    ctx.save();
+    ctx.translate(W, 0);
+    ctx.scale(-1, 1);
+    ctx.globalAlpha = 0.55;
+    ctx.drawImage(video, 0, 0, W, H);
+    ctx.restore();
+    ctx.globalAlpha = 1;
+  }
+
+  // Single dark overlay per frame (not accumulated — keeps face visible)
+  ctx.globalCompositeOperation = 'source-over';
+  ctx.fillStyle = 'rgba(5,5,15,0.50)';
+  ctx.fillRect(0, 0, W, H);
+
+  // Draw particles with additive/screen blending for glow
+  ctx.globalCompositeOperation = 'screen';
+  for (const p of particles) {
+    p.update(faces, emotion);
+    p.draw(ctx);
+  }
+  ctx.globalCompositeOperation = 'source-over';
+}
+
+loop();
+</script>
+</body>
+</html>
