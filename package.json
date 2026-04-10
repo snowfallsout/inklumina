@@ -2,13 +2,28 @@
   "name": "colorfield",
   "version": "1.0.0",
   "description": "Interactive MBTI Particle Art Installation",
-  "main": "server.js",
+  "main": "dist/server.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "npx nodemon server.js"
+    "build:client": "esbuild src/display/main.ts --bundle --platform=browser --format=iife --target=es2020 --sourcemap --outfile=public/assets/display.js && esbuild src/client/mobile/main.ts --bundle --platform=browser --format=iife --target=es2020 --sourcemap --outfile=public/assets/mobile.js",
+    "build:server": "esbuild src/server/index.ts --bundle --platform=node --format=cjs --target=node24 --sourcemap --outfile=dist/server.js",
+    "build": "npm run build:client && npm run build:server",
+    "prestart": "npm run build",
+    "start": "node dist/server.js",
+    "dev:client": "concurrently -k -n display,mobile -c magenta,green \"esbuild src/display/main.ts --bundle --platform=browser --format=iife --target=es2020 --sourcemap --outfile=public/assets/display.js --watch\" \"esbuild src/client/mobile/main.ts --bundle --platform=browser --format=iife --target=es2020 --sourcemap --outfile=public/assets/mobile.js --watch\"",
+    "dev:server": "tsx watch src/server/index.ts",
+    "dev": "concurrently -k -n server,client -c cyan,magenta \"npm run dev:server\" \"npm run dev:client\"",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "express": "^4.18.2",
     "socket.io": "^4.7.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.0.0",
+    "concurrently": "^9.1.2",
+    "esbuild": "^0.25.0",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.3"
   }
 }
