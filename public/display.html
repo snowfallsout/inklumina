@@ -8,7 +8,7 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
-  background: #05050f;
+  background: #f5f8ff;
   overflow: hidden;
   font-family: -apple-system, 'Segoe UI', sans-serif;
 }
@@ -41,15 +41,15 @@ body {
   white-space: nowrap;
 }
 #header h1 {
-  color: rgba(255,255,255,0.92);
+  color: rgba(30,40,60,0.85);
   font-size: 30px;
   font-weight: 100;
   letter-spacing: 18px;
   text-transform: uppercase;
-  text-shadow: 0 0 50px rgba(255,255,255,0.25);
+  text-shadow: 0 1px 12px rgba(60,80,140,0.12);
 }
 #header p {
-  color: rgba(255,255,255,0.28);
+  color: rgba(30,40,60,0.38);
   font-size: 10px;
   letter-spacing: 5px;
   margin-top: 5px;
@@ -62,15 +62,16 @@ body {
   right: 22px;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(5,5,20,0.72);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255,255,255,0.07);
+  background: linear-gradient(135deg, rgba(255,255,255,0.4), rgba(255,255,255,0.1));
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(255,255,255,0.6);
+  box-shadow: 0 8px 32px rgba(31,38,135,0.07), inset 0 0 12px rgba(255,255,255,0.3);
   border-radius: 20px;
   padding: 18px 14px;
   min-width: 158px;
 }
 #legend h3 {
-  color: rgba(255,255,255,0.3);
+  color: rgba(0,0,0,0.35);
   font-size: 9px;
   letter-spacing: 3px;
   text-align: center;
@@ -96,7 +97,7 @@ body {
   filter: drop-shadow(0 0 4px var(--c));
 }
 .lbl {
-  color: rgba(255,255,255,0.88);
+  color: #444;
   font-size: 11px;
   font-weight: 700;
   min-width: 34px;
@@ -115,7 +116,7 @@ body {
   width: 0%;
 }
 .cnt {
-  color: rgba(255,255,255,0.45);
+  color: rgba(0,0,0,0.45);
   font-size: 10px;
   min-width: 16px;
   text-align: right;
@@ -132,13 +133,13 @@ body {
   padding: 0 30px;
 }
 #total-block {
-  color: rgba(255,255,255,0.28);
+  color: rgba(30,40,60,0.38);
   font-size: 10px;
   letter-spacing: 2px;
   text-transform: uppercase;
 }
 #total-block strong {
-  color: rgba(255,255,255,0.85);
+  color: rgba(30,40,60,0.75);
   font-size: 26px;
   font-weight: 100;
   letter-spacing: 6px;
@@ -147,13 +148,13 @@ body {
 }
 #join-block {
   text-align: right;
-  color: rgba(255,255,255,0.32);
+  color: rgba(30,40,60,0.35);
   font-size: 10px;
   letter-spacing: 2px;
   line-height: 1.9;
 }
 #join-block b {
-  color: rgba(255,255,255,0.75);
+  color: rgba(30,40,60,0.65);
   font-size: 13px;
   font-weight: 400;
   display: block;
@@ -165,14 +166,14 @@ body {
   position: absolute;
   top: 28px;
   left: 28px;
-  color: rgba(255,255,255,0.25);
+  color: rgba(30,40,60,0.28);
   font-size: 10px;
   letter-spacing: 2px;
   text-transform: uppercase;
   transition: color 0.5s;
 }
-#emotion-badge.smile { color: #FFD700; }
-#emotion-badge.sad   { color: #6B8CFF; }
+#emotion-badge.smile { color: #B08800; }
+#emotion-badge.sad   { color: #4169E1; }
 
 /* Toast */
 .toast-wrap {
@@ -186,10 +187,11 @@ body {
   display: inline-block;
   padding: 10px 28px;
   border-radius: 50px;
-  background: rgba(5,5,20,0.75);
+  background: linear-gradient(135deg, rgba(255,255,255,0.55), rgba(255,255,255,0.25));
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(255,255,255,0.1);
-  color: white;
+  border: 1px solid rgba(255,255,255,0.6);
+  box-shadow: 0 4px 16px rgba(31,38,135,0.08);
+  color: #333;
   font-size: 15px;
   font-weight: 300;
   letter-spacing: 1px;
@@ -205,7 +207,7 @@ body {
   bottom: 100px;
   left: 50%;
   transform: translateX(-50%);
-  color: rgba(255,255,255,0.18);
+  color: rgba(30,40,60,0.28);
   font-size: 12px;
   letter-spacing: 3px;
   text-align: center;
@@ -221,7 +223,7 @@ body {
   left: 50%;
   transform: translateX(-50%);
   margin-top: 58px;
-  color: rgba(255,255,255,0.18);
+  color: rgba(30,40,60,0.28);
   font-size: 9px;
   letter-spacing: 3px;
   text-transform: uppercase;
@@ -235,10 +237,11 @@ body {
   bottom: 26px;
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.12);
+  background: linear-gradient(135deg, rgba(255,255,255,0.4), rgba(255,255,255,0.15));
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.5);
   border-radius: 30px;
-  color: rgba(255,255,255,0.4);
+  color: rgba(30,40,60,0.5);
   font-size: 10px;
   letter-spacing: 2px;
   padding: 7px 18px;
@@ -247,7 +250,7 @@ body {
   transition: background .2s, color .2s;
   text-transform: uppercase;
 }
-#session-btn:hover { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.85); }
+#session-btn:hover { background: rgba(255,255,255,0.6); color: rgba(30,40,60,0.85); }
 
 /* Session panel overlay */
 #session-panel {
@@ -255,7 +258,7 @@ body {
   position: fixed;
   inset: 0;
   z-index: 100;
-  background: rgba(3,3,12,0.88);
+  background: rgba(220,228,255,0.55);
   backdrop-filter: blur(24px);
   pointer-events: all;
   align-items: center;
@@ -264,21 +267,22 @@ body {
 #session-panel.open { display: flex; }
 
 #session-box {
-  background: rgba(10,10,30,0.95);
-  border: 1px solid rgba(255,255,255,0.1);
+  background: linear-gradient(135deg, rgba(255,255,255,0.7), rgba(255,255,255,0.4));
+  border: 1px solid rgba(255,255,255,0.7);
+  box-shadow: 0 8px 32px rgba(31,38,135,0.1), inset 0 0 16px rgba(255,255,255,0.4);
   border-radius: 24px;
   padding: 36px 40px;
   width: 480px;
   max-height: 80vh;
   overflow-y: auto;
-  color: white;
+  color: #333;
 }
 #session-box h2 {
   font-size: 13px;
   font-weight: 400;
   letter-spacing: 4px;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.5);
+  color: rgba(30,40,60,0.45);
   margin-bottom: 28px;
 }
 .sp-new {
@@ -288,22 +292,22 @@ body {
 }
 .sp-new input {
   flex: 1;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.5);
+  border: 1px solid rgba(100,120,180,0.25);
   border-radius: 12px;
-  color: white;
+  color: #333;
   font-size: 13px;
   padding: 10px 16px;
   outline: none;
   letter-spacing: 1px;
 }
-.sp-new input::placeholder { color: rgba(255,255,255,0.25); }
-.sp-new input:focus { border-color: rgba(255,255,255,0.35); }
+.sp-new input::placeholder { color: rgba(30,40,60,0.3); }
+.sp-new input:focus { border-color: rgba(65,105,225,0.45); }
 .sp-btn {
-  background: rgba(255,255,255,0.1);
-  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.5);
+  border: 1px solid rgba(100,120,180,0.3);
   border-radius: 12px;
-  color: white;
+  color: #444;
   font-size: 11px;
   letter-spacing: 2px;
   padding: 10px 20px;
@@ -312,14 +316,14 @@ body {
   transition: background .15s;
   white-space: nowrap;
 }
-.sp-btn:hover { background: rgba(255,255,255,0.18); }
-.sp-btn.danger { border-color: rgba(255,80,80,0.4); color: rgba(255,130,130,0.9); }
-.sp-btn.danger:hover { background: rgba(255,50,50,0.2); }
+.sp-btn:hover { background: rgba(255,255,255,0.8); }
+.sp-btn.danger { border-color: rgba(200,60,60,0.35); color: rgba(180,50,50,0.9); }
+.sp-btn.danger:hover { background: rgba(255,220,220,0.6); }
 #sp-history-title {
   font-size: 9px;
   letter-spacing: 3px;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.25);
+  color: rgba(30,40,60,0.3);
   margin-bottom: 12px;
 }
 .sp-row {
@@ -327,25 +331,35 @@ body {
   align-items: center;
   gap: 10px;
   padding: 11px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.06);
+  border-bottom: 1px solid rgba(0,0,0,0.06);
 }
 .sp-row:last-child { border-bottom: none; }
 .sp-row-info { flex: 1; }
-.sp-row-name { font-size: 13px; color: rgba(255,255,255,0.85); }
-.sp-row-meta { font-size: 10px; color: rgba(255,255,255,0.3); letter-spacing: 1px; margin-top: 2px; }
+.sp-row-name { font-size: 13px; color: rgba(30,40,60,0.85); }
+.sp-row-meta { font-size: 10px; color: rgba(30,40,60,0.4); letter-spacing: 1px; margin-top: 2px; }
 #sp-close {
   position: absolute;
   top: 24px; right: 28px;
   font-size: 22px;
-  color: rgba(255,255,255,0.3);
+  color: rgba(30,40,60,0.3);
   cursor: pointer;
   pointer-events: all;
   line-height: 1;
 }
-#sp-close:hover { color: rgba(255,255,255,0.8); }
+#sp-close:hover { color: rgba(30,40,60,0.75); }
+
+/* Film grain noise overlay */
+.noise-overlay {
+  position: fixed; inset: 0;
+  pointer-events: none; z-index: 999;
+  opacity: 0.12; mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+}
 </style>
 </head>
 <body>
+<div class="noise-overlay"></div>
 
 <video id="video-bg" autoplay muted playsinline></video>
 <canvas id="canvas"></canvas>
@@ -357,6 +371,12 @@ body {
   </div>
 
   <div id="emotion-badge">● FACE TRACKING</div>
+  <div id="hand-badge" style="
+    position:absolute; top:54px; left:28px;
+    color:rgba(30,40,60,0.28); font-size:10px;
+    letter-spacing:2px; text-transform:uppercase;
+    transition:color 0.3s;
+  ">✋ HAND TRACKING INIT</div>
 
   <div id="legend">
     <h3>Present</h3>
@@ -398,6 +418,7 @@ body {
 <!-- Socket.io & MediaPipe -->
 <script src="/socket.io/socket.io.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh@0.4/face_mesh.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4/hands.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.3/camera_utils.js" crossorigin="anonymous"></script>
 
 <script>
@@ -407,10 +428,10 @@ body {
 const TWO_PI = Math.PI * 2;
 
 const MBTI_COLORS = {
-  INTJ:'#9D4EDD', INTP:'#00F5FF', ENTJ:'#FF073A', ENTP:'#FF6B00',
-  INFJ:'#CC00FF', INFP:'#FF1493', ENFJ:'#FFD700', ENFP:'#39FF14',
-  ISTJ:'#1E90FF', ISFJ:'#00FFCD', ESTJ:'#FF4500', ESFJ:'#FF69B4',
-  ISTP:'#B8C0FF', ISFP:'#E040FB', ESTP:'#FFE600', ESFP:'#FF6EC7',
+  INTJ: '#4B0082', INTP: '#6495ED', ENTJ: '#FF4500', ENTP: '#FF00FF',
+  INFJ: '#00A86B', INFP: '#DA70D6', ENFJ: '#FC913A', ENFP: '#92FE9D',
+  ISTJ: '#95A5A6', ISFJ: '#BDB76B', ESTJ: '#4682B4', ESFJ: '#FFB6C1',
+  ISTP: '#4A4A4A', ISFP: '#00CED1', ESTP: '#FF2400', ESFP: '#7B68EE',
 };
 const MBTI_NAMES = {
   INTJ:'战略家', INTP:'逻辑学家', ENTJ:'指挥官', ENTP:'辩论家',
@@ -425,24 +446,24 @@ const MBTI_ORDER = [
   'ISTP','ISFP','ESTP','ESFP',
 ];
 
-// Per-MBTI multi-stop palettes for richer blob sprites
+// Per-MBTI multi-stop palettes for richer blob sprites (derived from new art colors)
 const MBTI_PALETTES = {
-  INTJ: { core:'#C490FF', mid:'#9D4EDD', outer:'#5B2D8E', accent:'#3A1D5C' },
-  INTP: { core:'#80FFFF', mid:'#00F5FF', outer:'#007A80', accent:'#003D40' },
-  ENTJ: { core:'#FF6B6B', mid:'#FF073A', outer:'#9E0024', accent:'#4D0012' },
-  ENTP: { core:'#FFAA55', mid:'#FF6B00', outer:'#A04400', accent:'#502200' },
-  INFJ: { core:'#E680FF', mid:'#CC00FF', outer:'#7A009A', accent:'#3D004D' },
-  INFP: { core:'#FF6BAD', mid:'#FF1493', outer:'#A00D5E', accent:'#50072F' },
-  ENFJ: { core:'#FFEC80', mid:'#FFD700', outer:'#A08600', accent:'#504300' },
-  ENFP: { core:'#80FF6B', mid:'#39FF14', outer:'#22A00D', accent:'#115007' },
-  ISTJ: { core:'#6BB8FF', mid:'#1E90FF', outer:'#1260A0', accent:'#093050' },
-  ISFJ: { core:'#66FFE0', mid:'#00FFCD', outer:'#00A080', accent:'#005040' },
-  ESTJ: { core:'#FF8055', mid:'#FF4500', outer:'#A02C00', accent:'#501600' },
-  ESFJ: { core:'#FFA0CC', mid:'#FF69B4', outer:'#A04272', accent:'#502139' },
-  ISTP: { core:'#D4DAFF', mid:'#B8C0FF', outer:'#7078A0', accent:'#383C50' },
-  ISFP: { core:'#EC80FF', mid:'#E040FB', outer:'#8C289A', accent:'#46144D' },
-  ESTP: { core:'#FFF066', mid:'#FFE600', outer:'#A09000', accent:'#504800' },
-  ESFP: { core:'#FFA0DA', mid:'#FF6EC7', outer:'#A0447C', accent:'#50223E' },
+  INTJ: { core: '#1A0A2E', mid: '#4B0082', edge: '#E0B0FF' },
+  INTP: { core: '#002366', mid: '#6495ED', edge: '#F0F8FF' },
+  ENTJ: { core: '#8B0000', mid: '#FF4500', edge: '#FFD700' },
+  ENTP: { core: '#FFD700', mid: '#FF00FF', edge: '#00FFFF' },
+  INFJ: { core: '#2E0854', mid: '#00A86B', edge: '#F5F5DC' },
+  INFP: { core: '#FF69B4', mid: '#DA70D6', edge: '#98FB98' },
+  ENFJ: { core: '#FF4E50', mid: '#FC913A', edge: '#F9D423' },
+  ENFP: { core: '#00D2FF', mid: '#92FE9D', edge: '#FF758C' },
+  ISTJ: { core: '#2C3E50', mid: '#95A5A6', edge: '#ECF0F1' },
+  ISFJ: { core: '#556B2F', mid: '#BDB76B', edge: '#FFFACD' },
+  ESTJ: { core: '#000080', mid: '#4682B4', edge: '#D3D3D3' },
+  ESFJ: { core: '#FF7F50', mid: '#FFB6C1', edge: '#E6E6FA' },
+  ISTP: { core: '#1C1C1C', mid: '#4A4A4A', edge: '#00CCCC' },
+  ISFP: { core: '#FF007F', mid: '#00CED1', edge: '#FFFFE0' },
+  ESTP: { core: '#FFD700', mid: '#FF2400', edge: '#2F4F4F' },
+  ESFP: { core: '#FF00FF', mid: '#7B68EE', edge: '#7FFFD4' },
 };
 
 // ── Canvas ─────────────────────────────────────────────────────────────────────
@@ -488,13 +509,13 @@ function _makeDot(color) {
   g.fillStyle = g1;
   g.fillRect(0, 0, sz, sz);
 
-  // Liquid-metal core
+  // Ink-drop core — saturated color center, no white (works on light bg)
   const g2 = g.createRadialGradient(
     cx - DOT_REF_R * .28, cy - DOT_REF_R * .28, DOT_REF_R * .08,
     cx, cy, DOT_REF_R
   );
-  g2.addColorStop(0,   'rgba(255,255,255,0.98)');
-  g2.addColorStop(.22, color);
+  g2.addColorStop(0,   color);
+  g2.addColorStop(.22, color + 'DD');
   g2.addColorStop(.72, color + 'BB');
   g2.addColorStop(1,   color + '00');
   g.beginPath();
@@ -505,46 +526,32 @@ function _makeDot(color) {
   return { canvas, half: DOT_HALF, refR: DOT_REF_R };
 }
 
-// Blob sprite — soft multi-color gradient + procedural organic texture
+// Blob sprite — 完美复刻偏心渐变流体球
 function _makeBlob(palette) {
   const { canvas, ctx: g, cx, cy, sz } = _makeCanvas(BLOB_HALF);
-  const R = BLOB_HALF * .85;  // main gradient radius
+  const R = BLOB_HALF * 0.85;  
 
-  // Multi-stop radial gradient using palette
-  const grad = g.createRadialGradient(cx, cy, 0, cx, cy, R);
-  grad.addColorStop(0,   palette.core + 'DD');
-  grad.addColorStop(.25, palette.mid  + 'AA');
-  grad.addColorStop(.55, palette.outer + '88');
-  grad.addColorStop(.80, palette.accent + '44');
-  grad.addColorStop(1,   palette.accent + '00');
+  // 核心视觉偏移：让深色核心稍微偏离中心，制造 3D 偏心质感 (参考图效果)
+  const offsetX = cx - R * 0.25; 
+  const offsetY = cy + R * 0.15; 
+
+  // 使用 Canvas 的径向渐变，从偏心点扩散到全局
+  const grad = g.createRadialGradient(offsetX, offsetY, 0, cx, cy, R);
+  
+  // 完全按照你的 CSS 逻辑进行映射
+  grad.addColorStop(0,    palette.core);        // 0% 核心色
+  grad.addColorStop(0.45, palette.mid);         // 45% 中间色
+  grad.addColorStop(0.85, palette.edge + '88'); // 85% 边缘色 (带透明度过渡)
+  grad.addColorStop(1,    palette.edge + '00'); // 100% 边缘色完全透明，融入背景
+  
   g.fillStyle = grad;
   g.beginPath();
   g.arc(cx, cy, R, 0, TWO_PI);
   g.fill();
 
-  // Procedural texture: random translucent ellipses clipped to the blob shape
-  g.globalCompositeOperation = 'source-atop';
-  const nBlobs = 25 + Math.floor(Math.random() * 20);
-  for (let i = 0; i < nBlobs; i++) {
-    const bx = cx + (Math.random() - .5) * R * 1.4;
-    const by = cy + (Math.random() - .5) * R * 1.4;
-    const rx = 8 + Math.random() * R * .4;
-    const ry = 8 + Math.random() * R * .4;
-    const rot = Math.random() * TWO_PI;
-    // Alternate between palette colors for richness
-    const colors = [palette.core, palette.mid, palette.outer, palette.accent];
-    g.fillStyle = colors[i % 4] + (Math.random() > .5 ? '44' : '28');
-    g.save();
-    g.translate(bx, by);
-    g.rotate(rot);
-    g.beginPath();
-    g.ellipse(0, 0, rx, ry, 0, 0, TWO_PI);
-    g.fill();
-    g.restore();
-  }
-  g.globalCompositeOperation = 'source-over';
+  // (移除掉原来复杂的噪点圆圈，保持参考图中纯净的流体渐变美感)
 
-  return { canvas, half: BLOB_HALF, refR: BLOB_HALF * .35 };
+  return { canvas, half: BLOB_HALF, refR: BLOB_HALF * 0.35 };
 }
 
 // Field sprite — ultra-soft low-opacity wash
@@ -552,12 +559,12 @@ function _makeField(palette) {
   const { canvas, ctx: g, cx, cy, sz } = _makeCanvas(FIELD_HALF);
   const R = FIELD_HALF * .95;
 
-  // Very soft gradient — fades out slowly
+  // 使用最新的 palette.edge 替换掉旧的 outer 和 accent
   const grad = g.createRadialGradient(cx, cy, 0, cx, cy, R);
   grad.addColorStop(0,   palette.mid  + '55');
-  grad.addColorStop(.3,  palette.outer + '40');
-  grad.addColorStop(.65, palette.accent + '22');
-  grad.addColorStop(1,   palette.accent + '00');
+  grad.addColorStop(.3,  palette.edge + '40');
+  grad.addColorStop(.65, palette.edge + '22');
+  grad.addColorStop(1,   palette.edge + '00');
   g.fillStyle = grad;
   g.beginPath();
   g.arc(cx, cy, R, 0, TWO_PI);
@@ -582,11 +589,10 @@ function _makeField(palette) {
 
   return { canvas, half: FIELD_HALF, refR: FIELD_HALF * .25 };
 }
-
 function getSpriteSet(mbti) {
   if (spriteSetCache.has(mbti)) return spriteSetCache.get(mbti);
   const color   = MBTI_COLORS[mbti];
-  const palette = MBTI_PALETTES[mbti] || { core: color, mid: color, outer: color, accent: color };
+  const palette = MBTI_PALETTES[mbti] || { core: color, mid: color, edge: color };
   const set = {
     dot:   _makeDot(color),
     blob:  _makeBlob(palette),
@@ -607,7 +613,7 @@ function getDotSprite(color) {
 }
 
 // Pre-warm all 16 MBTI sprite sets + ambient colors
-const AMBIENT_COLS = ['#9D4EDD','#00F5FF','#39FF14','#FFD700','#FF1493'];
+const AMBIENT_COLS = ['#003153','#C8A2C8','#F9A602','#9DC183','#40E0D0'];
 MBTI_ORDER.forEach(m => getSpriteSet(m));
 AMBIENT_COLS.forEach(c => getDotSprite(c));
 
@@ -646,7 +652,8 @@ class Particle {
     this.alphaT  = p.alphaMin + Math.random() * (p.alphaMax - p.alphaMin);
     this.state   = 'born';
     this.age     = 0;
-    this.trail   = [];
+    this.trail      = [];
+    this.myTrailMax = Math.floor(Math.random() * 35) + 5;  // individual trail length variance
     this.orbitA  = Math.random() * TWO_PI;
     this.orbitR  = 55 + Math.random() * 90;
     this.orbitSpd= (.022 + Math.random() * .03) * (Math.random() > .5 ? 1 : -1);
@@ -663,13 +670,59 @@ class Particle {
 
     const p = SIZE_CLASS_PARAMS[this.sizeClass];
 
-    // Trail
-    if (p.trailMax > 0 && this.age % 2 === 0) {
+    // Trail — per-particle length for visual variety
+    if (this.age % 2 === 0) {
       this.trail.push({ x: this.x, y: this.y, s: this.size });
-      if (this.trail.length > p.trailMax) this.trail.shift();
+      if (this.trail.length > this.myTrailMax) this.trail.shift();
     }
 
-    // State machine — no falling: particles always stay on screen
+    // ══════════════════════════════════════════════════════════
+    // 手势捏合：最高优先级 — 跳过状态机
+    // 根据当前绘图阶段选择不同的运动模式
+    // ══════════════════════════════════════════════════════════
+    const dm = DRAW_MODE;
+
+    // 【绘图模式】粒子沿笔触路径排列，形成"活体笔刷"
+    if (dm.phase === 'drawing' && this._drawTarget && this.sizeClass !== 'field') {
+      const tdx = this._drawTarget.x - this.x;
+      const tdy = this._drawTarget.y - this.y;
+      const td  = Math.sqrt(tdx*tdx + tdy*tdy) || 1;
+      // 强力吸向目标点，越近越慢（避免抖动）
+      const str = Math.min(5.0, td * 0.18);
+      this.vx += (tdx / td) * str;
+      this.vy += (tdy / td) * str;
+      this.vx *= 0.72;
+      this.vy *= 0.72;
+      this.x += this.vx;
+      this.y += this.vy;
+      if (this.x < -20) this.x = W + 10;
+      if (this.x > W + 20) this.x = -10;
+      if (this.y < -20) this.y = H + 10;
+      if (this.y > H + 20) this.y = -10;
+      return;
+    }
+
+    // 【聚合模式】捏合但还未进入绘图，粒子向手部汇聚
+    if (activePinchPoint && this.sizeClass !== 'field' &&
+        (dm.phase === 'gathering' || dm.phase === 'idle')) {
+      const pdx = activePinchPoint.x - this.x;
+      const pdy = activePinchPoint.y - this.y;
+      const pd  = Math.sqrt(pdx * pdx + pdy * pdy) || 1;
+      const str = Math.min(6.0, 500 / pd) * 0.22;
+      this.vx += (pdx / pd) * str + (Math.random() - .5) * 0.4;
+      this.vy += (pdy / pd) * str + (Math.random() - .5) * 0.4;
+      this.vx *= 0.80;
+      this.vy *= 0.80;
+      this.x += this.vx;
+      this.y += this.vy;
+      if (this.x < -20) this.x = W + 10;
+      if (this.x > W + 20) this.x = -10;
+      if (this.y < -20) this.y = H + 10;
+      if (this.y > H + 20) this.y = -10;
+      return;
+    }
+
+    // State machine — 仅在无捏合手势时执行
     if (this.age < 20) {
       this.state = 'born';
     } else if (this.sizeClass === 'field') {
@@ -677,7 +730,6 @@ class Particle {
     } else {
       const nf  = nearestFace(faces, this.x, this.y);
       const d2  = nf ? dist2sq(this.x, this.y, nf.x, nf.y) : Infinity;
-
       if (nf && d2 < 260 * 260) {
         this.targetF = nf;
         this.state   = nf.smile ? 'swirling' : 'attracted';
@@ -689,33 +741,24 @@ class Particle {
     switch (this.state) {
       case 'born':
       case 'free': {
-        // Brownian drift
         this.vx += (Math.random() - .5) * p.accel;
         this.vy += (Math.random() - .5) * p.accel;
-
-        // Gentle mutual attraction toward nearby same-color particles
-        // (creates clusters of same MBTI type — living art)
         if (this.mbti && this.sizeClass === 'dot' && this.age % 4 === 0) {
           const siblings = mbtiParticles[this.mbti];
           if (siblings && siblings.length > 1) {
-            // Pick a random sibling to drift toward
             const other = siblings[Math.floor(Math.random() * siblings.length)];
             if (other !== this) {
               const dx = other.x - this.x, dy = other.y - this.y;
               const d  = Math.sqrt(dx*dx + dy*dy) || 1;
               if (d > 30 && d < 350) {
-                const pull = .012;
-                this.vx += (dx / d) * pull;
-                this.vy += (dy / d) * pull;
+                this.vx += (dx / d) * .012;
+                this.vy += (dy / d) * .012;
               }
             }
           }
         }
-
-        // Soft center gravity — keeps particles from drifting to edges
         this.vx += (W * .5 - this.x) * .00003;
         this.vy += (H * .5 - this.y) * .00003;
-
         const cap2 = p.speedCap * p.speedCap;
         const sp2 = this.vx*this.vx + this.vy*this.vy;
         if (sp2 > cap2) { const inv = p.speedCap / Math.sqrt(sp2); this.vx *= inv; this.vy *= inv; }
@@ -733,16 +776,17 @@ class Particle {
       }
       case 'swirling': {
         const f = this.targetF;
-        this.orbitA += this.orbitSpd * 3.2;
+        this.orbitA += this.orbitSpd * 1.6;
         const tx = f.x + Math.cos(this.orbitA) * this.orbitR;
         const ty = f.y + Math.sin(this.orbitA) * this.orbitR;
-        this.vx += (tx - this.x) * .16;
-        this.vy += (ty - this.y) * .16;
-        this.vx *= .78; this.vy *= .78;
+        this.vx += (tx - this.x) * .08;
+        this.vy += (ty - this.y) * .08;
+        this.vx *= .86; this.vy *= .86;
         break;
       }
     }
 
+        // Wrap around edges ...
     this.x += this.vx;
     this.y += this.vy;
     // Wrap around edges — particles never leave the canvas
@@ -866,22 +910,14 @@ function pruneAllTypes() {
 function spawnMBTI(mbti, color) {
   if (!mbtiParticles[mbti]) mbtiParticles[mbti] = [];
 
-  const side = Math.floor(Math.random() * 4);
-  let bx, by;
-  switch (side) {
-    case 0: bx = Math.random()*W;  by = -20;    break;
-    case 1: bx = W+20;             by = Math.random()*H; break;
-    case 2: bx = Math.random()*W;  by = H+20;   break;
-    case 3: bx = -20;              by = Math.random()*H; break;
-  }
+  // Big Bang: all particles burst from screen center
+  const bx = W / 2, by = H / 2;
 
   for (let i = 0; i < SPAWN_PER_JOIN; i++) {
-    const p = new Particle(
-      bx + (Math.random() - .5) * 60,
-      by + (Math.random() - .5) * 60,
-      color,
-      mbti
-    );
+    const p = new Particle(bx, by, color, mbti);
+    // Override initial velocity — explosive burst
+    p.vx = (Math.random() - .5) * 40;
+    p.vy = (Math.random() - .5) * 40;
     particles.push(p);
     mbtiParticles[mbti].push(p);
   }
@@ -890,19 +926,113 @@ function spawnMBTI(mbti, color) {
   pruneAllTypes();
 }
 
-// ── Face detection (MediaPipe FaceMesh) ───────────────────────────────────────
+// ── Camera + MediaPipe ─────────────────────────────────────────────────────────
+// Architecture: ONE getUserMedia stream → ONE rAF processing loop → FaceMesh + Hands
+// Never use MediaPipe Camera class — it fights with the manual stream for srcObject.
+
+// 核心修复：坐标映射换算器 (修复裁切导致的错位)
+function mapToCanvas(normX, normY) {
+  if (!video || video.videoWidth === 0) return { x: 0, y: 0 };
+  const scale = Math.max(W / video.videoWidth, H / video.videoHeight);
+  const dw = video.videoWidth * scale;
+  const dh = video.videoHeight * scale;
+  const dx = (W - dw) / 2;
+  const dy = (H - dh) / 2;
+  
+  // 结合镜像翻转 (1 - normX) 和裁切偏移量
+  return {
+    x: dx + (1 - normX) * dw,
+    y: dy + normY * dh
+  };
+}
+
 let faces   = [];
 let emotion = 'neutral';
 const video = document.getElementById('video-bg');
 
+
+
+// Model instances (assigned once models load)
+let _faceMesh = null;
+let _hands    = null;
+
+// Latest raw hand results for skeleton rendering
+let handsResults     = null;
+let activePinchPoint = null;
+
+// ── Draw Mode State Machine ────────────────────────────────────────────────────
+// Phases: 'idle' → 'gathering' → 'drawing' → 'dissolving' → 'idle'
+const DRAW_MODE = {
+  phase: 'idle',       // current phase
+  strokePath: [],      // recorded hand trajectory [{x,y,t}]
+  gatherTimer: 0,      // frames spent with enough particles near pinch
+  dissolveTimer: 0,    // frames since pinch released
+};
+
+// Thresholds
+const GATHER_RADIUS    = 120;   // px — how close particles must be to count as "gathered"
+const GATHER_THRESHOLD = 0.55;  // 55% of non-field particles must be within radius
+const GATHER_FRAMES    = 40;    // sustained frames needed to trigger draw mode
+const DISSOLVE_FRAMES  = 90;    // frames for dissolve animation before returning to idle
+const MAX_PATH_POINTS  = 800;   // max trajectory points stored
+
+// Each particle gets a drawTarget when in drawing mode (a point on the stroke path)
+// We store it on the particle itself as p._drawTarget = {x, y}
+
+// Standard MediaPipe hand bone connections (21 landmarks)
+const HAND_CONNECTIONS = [
+  [0,1],[1,2],[2,3],[3,4],
+  [0,5],[5,6],[6,7],[7,8],
+  [5,9],[9,10],[10,11],[11,12],
+  [9,13],[13,14],[14,15],[15,16],
+  [13,17],[17,18],[18,19],[19,20],
+  [0,17],
+];
+
+// 核心修復 1：防崩潰且自動節流的多執行緒非同步處理
+let _processing = false;
+
+async function _processFrame() {
+  if (!_processing) { requestAnimationFrame(_processFrame); return; }
+
+  if (video.readyState >= 2) {
+    try {
+      // 串行发送：先 FaceMesh，再 Hands，避免两者并发争用同一 WASM 线程
+      // Promise.all 并发会导致 Hands 回调被丢弃，骨架永远不显示
+      if (_faceMesh) await _faceMesh.send({ image: video });
+      if (_hands)    await _hands.send({ image: video });
+    } catch (e) {
+      // 吞掉偶然丢帧，保证循环永不中断
+    }
+  }
+
+  requestAnimationFrame(_processFrame);
+}
+
+// 核心修復 2：強制等待引擎就緒
 function setupCamera() {
   navigator.mediaDevices.getUserMedia({ video: { width: 1280, height: 720 }, audio: false })
     .then(stream => {
       video.srcObject = stream;
-      video.onloadedmetadata = () => {
+      // 注意這裡加上了 async
+      video.onloadedmetadata = async () => {
         video.play();
         video.classList.add('ready');
-        tryMediaPipe();
+        
+        // 1. 先建立模型的外殼
+        _initFaceMesh();
+        _initHands();
+        
+        // 2. 關鍵修復：強制等待底層 WebAssembly 引擎完全載入完畢
+        try {
+          if (_faceMesh) await _faceMesh.initialize();
+          if (_hands)    await _hands.initialize();
+        } catch (e) {
+          console.warn("AI Engine Init Error:", e);
+        }
+        
+        // 3. 所有引擎確定就緒後，才放行讓 _processFrame 開始塞入畫面
+        _processing = true;   
       };
     })
     .catch(err => {
@@ -911,52 +1041,76 @@ function setupCamera() {
     });
 }
 
-function tryMediaPipe() {
-  if (typeof FaceMesh === 'undefined') {
-    console.warn('MediaPipe FaceMesh not loaded');
-    return;
-  }
-
-  const faceMesh = new FaceMesh({
+function _initFaceMesh() {
+  if (typeof FaceMesh === 'undefined') return;
+  _faceMesh = new FaceMesh({
     locateFile: f => `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh@0.4/${f}`
   });
-  faceMesh.setOptions({
-    maxNumFaces:          6,
-    refineLandmarks:      false,
-    minDetectionConfidence: .5,
-    minTrackingConfidence:  .5,
+  _faceMesh.setOptions({
+    maxNumFaces: 6, refineLandmarks: false,
+    minDetectionConfidence: .5, minTrackingConfidence: .5,
   });
-
-  faceMesh.onResults(results => {
+  _faceMesh.onResults(results => {
     faces = [];
     let smiles = 0;
-
     if (results.multiFaceLandmarks) {
       for (const lm of results.multiFaceLandmarks) {
-        // Mirror x (video CSS is scaleX(-1))
-        const fx = (1 - lm[168].x) * W;
-        const fy = lm[168].y * H;
-
-        // Smile: mouth width vs inter-eye distance
+        // 使用新的坐标换算器
+        const pt = mapToCanvas(lm[168].x, lm[168].y);
         const mw = Math.abs(lm[291].x - lm[61].x);
         const ew = Math.abs(lm[263].x - lm[33].x);
         const smile = ew > 0 && (mw / ew) > .57;
         if (smile) smiles++;
-        faces.push({ x: fx, y: fy, smile });
+        faces.push({ x: pt.x, y: pt.y, smile });
       }
     }
-
     emotion = (smiles > faces.length * .5 && faces.length > 0) ? 'smile' : 'neutral';
     updateEmotionBadge();
   });
+}
 
-  if (typeof Camera !== 'undefined') {
-    const cam = new Camera(video, {
-      onFrame: async () => { await faceMesh.send({ image: video }); },
-      width: 1280, height: 720,
-    });
-    cam.start().catch(e => console.warn('Camera utils error:', e));
+function _initHands() {
+  if (typeof Hands === 'undefined') {
+    console.warn('MediaPipe Hands library not loaded');
+    return;
   }
+  _hands = new Hands({
+    locateFile: f => `https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4/${f}`
+  });
+  // 降低检测置信度阈值，让手更容易被识别到
+  _hands.setOptions({
+    maxNumHands: 2,
+    minDetectionConfidence: 0.4,
+    minTrackingConfidence: 0.4,
+    modelComplexity: 0,   // 0=lite速度快, 1=full更准
+  });
+  _hands.onResults(res => {
+    handsResults     = res;
+    activePinchPoint = null;
+
+    // 更新手势调试徽章
+    const badge = document.getElementById('hand-badge');
+    if (!res.multiHandLandmarks || res.multiHandLandmarks.length === 0) {
+      if (badge) badge.textContent = '✋ NO HAND';
+      return;
+    }
+    if (badge) badge.textContent = `✋ ${res.multiHandLandmarks.length} HAND${res.multiHandLandmarks.length > 1 ? 'S' : ''} DETECTED`;
+
+    for (const lm of res.multiHandLandmarks) {
+      const indexTip = mapToCanvas(lm[8].x, lm[8].y);
+      const thumbTip = mapToCanvas(lm[4].x, lm[4].y);
+      const pinchDist = Math.hypot(indexTip.x - thumbTip.x, indexTip.y - thumbTip.y);
+
+      // 捏合阈值：像素距离 < 60px（原来是 W*0.07 约90px，太大且不直观）
+      // 捏合时在徽章上显示距离，方便调试
+      if (badge) badge.textContent += ` | pinch: ${Math.round(pinchDist)}px`;
+      if (pinchDist < 60) {
+        activePinchPoint = { x: (indexTip.x + thumbTip.x) / 2, y: (indexTip.y + thumbTip.y) / 2 };
+        if (badge) badge.textContent += ' 🤌 PINCH!';
+        break;
+      }
+    }
+  });
 }
 
 function updateEmotionBadge() {
@@ -973,6 +1127,7 @@ function updateEmotionBadge() {
   }
 }
 
+requestAnimationFrame(_processFrame);  // start loop (paused until _processing = true)
 setupCamera();
 
 // ── Socket.IO ──────────────────────────────────────────────────────────────────
@@ -1078,33 +1233,221 @@ function seedAmbient(n) {
 seedAmbient(25);
 
 // ── Render loop ────────────────────────────────────────────────────────────────
+// ── Draw Mode: state machine tick (called once per frame) ────────────────────
+function _tickDrawMode() {
+  const dm = DRAW_MODE;
+  const nonFieldParticles = particles.filter(p => p.sizeClass !== 'field');
+  const total = nonFieldParticles.length || 1;
+
+  if (activePinchPoint) {
+    // Count particles within gather radius
+    const gathered = nonFieldParticles.filter(p => {
+      const dx = p.x - activePinchPoint.x, dy = p.y - activePinchPoint.y;
+      return dx*dx + dy*dy < GATHER_RADIUS * GATHER_RADIUS;
+    }).length;
+    const ratio = gathered / total;
+
+    if (dm.phase === 'idle' || dm.phase === 'gathering') {
+      dm.phase = 'gathering';
+      if (ratio >= GATHER_THRESHOLD) {
+        dm.gatherTimer++;
+        // Show gathering progress on badge
+        const pct = Math.round(dm.gatherTimer / GATHER_FRAMES * 100);
+        const badge = document.getElementById('hand-badge');
+        if (badge) badge.textContent = `🤌 GATHERING ${pct}% — keep still…`;
+      } else {
+        dm.gatherTimer = Math.max(0, dm.gatherTimer - 2); // decay if hand moves away
+      }
+
+      if (dm.gatherTimer >= GATHER_FRAMES) {
+        // 🎉 Trigger draw mode!
+        dm.phase = 'drawing';
+        dm.strokePath = [];
+        dm.gatherTimer = 0;
+        const badge = document.getElementById('hand-badge');
+        if (badge) badge.textContent = '✏️ DRAWING MODE — move to paint!';
+      }
+    }
+
+    if (dm.phase === 'drawing') {
+      // Record hand trajectory
+      dm.strokePath.push({ x: activePinchPoint.x, y: activePinchPoint.y, t: Date.now() });
+      if (dm.strokePath.length > MAX_PATH_POINTS) dm.strokePath.shift();
+
+      // Assign each particle a target point on the stroke path
+      // Particles spread evenly along the path for a "living brush stroke" look
+      if (dm.strokePath.length > 2) {
+        for (let i = 0; i < nonFieldParticles.length; i++) {
+          const p = nonFieldParticles[i];
+          // Map particle index → position along path
+          const t  = (i / nonFieldParticles.length);
+          const pi = Math.floor(t * (dm.strokePath.length - 1));
+          const pt = dm.strokePath[pi];
+          // Add small per-particle jitter so they don't stack exactly
+          const jitter = (p.size || 4) * 2.5;
+          p._drawTarget = {
+            x: pt.x + (Math.sin(i * 2.399) * jitter),  // golden-angle spread
+            y: pt.y + (Math.cos(i * 2.399) * jitter),
+          };
+        }
+      }
+    }
+
+  } else {
+    // Pinch released
+    if (dm.phase === 'drawing') {
+      dm.phase = 'dissolving';
+      dm.dissolveTimer = 0;
+      // Clear draw targets — particles will scatter
+      for (const p of nonFieldParticles) {
+        p._drawTarget = null;
+        // Give each particle a strong outward burst from pinch point
+        if (dm.strokePath.length > 0) {
+          const last = dm.strokePath[dm.strokePath.length - 1];
+          const dx = p.x - last.x, dy = p.y - last.y;
+          const d  = Math.sqrt(dx*dx + dy*dy) || 1;
+          p.vx += (dx / d) * (4 + Math.random() * 6);
+          p.vy += (dy / d) * (4 + Math.random() * 6);
+        }
+      }
+      const badge = document.getElementById('hand-badge');
+      if (badge) badge.textContent = '💫 DISSOLVING…';
+    }
+
+    if (dm.phase === 'dissolving') {
+      dm.dissolveTimer++;
+      if (dm.dissolveTimer >= DISSOLVE_FRAMES) {
+        dm.phase = 'idle';
+        dm.strokePath = [];
+        const badge = document.getElementById('hand-badge');
+        if (badge) badge.textContent = '✋ NO HAND';
+      }
+    }
+
+    if (dm.phase === 'gathering') {
+      dm.phase = 'idle';
+      dm.gatherTimer = 0;
+    }
+  }
+}
+
+// ── Draw Mode: render glowing stroke trail overlay ────────────────────────────
+function _drawStrokeOverlay() {
+  const dm = DRAW_MODE;
+  if (dm.phase !== 'drawing' || dm.strokePath.length < 2) return;
+
+  ctx.save();
+  ctx.globalCompositeOperation = 'source-over';
+
+  // Draw the stroke path as a glowing ribbon
+  const path = dm.strokePath;
+  for (let i = 1; i < path.length; i++) {
+    const t   = i / path.length;              // 0→1 along path
+    const age = (Date.now() - path[i].t) / 1000;  // seconds old
+    const fade = Math.max(0, 1 - age * 0.6); // fade older segments
+
+    ctx.beginPath();
+    ctx.moveTo(path[i-1].x, path[i-1].y);
+    ctx.lineTo(path[i].x,   path[i].y);
+    ctx.strokeStyle = `rgba(255,255,255,${t * fade * 0.25})`;
+    ctx.lineWidth   = 3 + t * 6;
+    ctx.lineCap     = 'round';
+    ctx.stroke();
+  }
+
+  // Glow dot at current pinch position
+  if (activePinchPoint) {
+    const grd = ctx.createRadialGradient(
+      activePinchPoint.x, activePinchPoint.y, 0,
+      activePinchPoint.x, activePinchPoint.y, 40
+    );
+    grd.addColorStop(0,   'rgba(255,255,255,0.5)');
+    grd.addColorStop(0.4, 'rgba(255,255,255,0.1)');
+    grd.addColorStop(1,   'rgba(255,255,255,0)');
+    ctx.fillStyle = grd;
+    ctx.beginPath();
+    ctx.arc(activePinchPoint.x, activePinchPoint.y, 40, 0, Math.PI*2);
+    ctx.fill();
+  }
+
+  ctx.restore();
+}
+
 function loop() {
   requestAnimationFrame(loop);
 
   ctx.globalCompositeOperation = 'source-over';
 
-  // 1. Fully opaque dark base — required for 'screen' blend to work correctly
-  ctx.fillStyle = '#05050f';
+  // 1. Semi-transparent light base — creates fluid ink-trail effect
+  ctx.fillStyle = 'rgba(245, 248, 255, 0.12)';
+  //ctx.fillStyle = 'rgba(0, 0, 0, 0.12)';
   ctx.fillRect(0, 0, W, H);
 
-  // 2. Camera feed blended on top of the opaque base
-  if (video.readyState >= 2) {
+  // 2. Camera feed — object-fit: cover (aspect-ratio preserved, fills canvas)
+  if (video.readyState >= 2 && video.videoWidth > 0) {
+    const vw = video.videoWidth, vh = video.videoHeight;
+    const scale = Math.max(W / vw, H / vh);
+    const dw = vw * scale, dh = vh * scale;
+    const dx = (W - dw) / 2, dy = (H - dh) / 2;
     ctx.save();
     ctx.translate(W, 0);
-    ctx.scale(-1, 1);
-    ctx.globalAlpha = 0.38;
-    ctx.drawImage(video, 0, 0, W, H);
+    ctx.scale(-1, 1);          // mirror horizontally (selfie view)
+    ctx.globalAlpha = 0.08;
+    ctx.drawImage(video, dx, dy, dw, dh);  // cover-fit, no stretch
     ctx.restore();
     ctx.globalAlpha = 1;
   }
 
-  // 3. Particles — screen blend works now because background is fully opaque
-  ctx.globalCompositeOperation = 'screen';
+  // 3. Drive draw-mode state machine, then update + draw particles
+  _tickDrawMode();
   for (const p of particles) {
     p.update(faces, emotion);
     p.draw(ctx);
   }
-  ctx.globalCompositeOperation = 'source-over';
+  _drawStrokeOverlay();  // render the glowing trail overlay
+
+  // 4. Hand skeleton — visual feedback for gesture interaction
+  if (handsResults && handsResults.multiHandLandmarks) {
+      for (const lm of handsResults.multiHandLandmarks) {
+        
+        // 核心修复：替换掉原来那行错误的 map 公式
+        const pts = lm.map(p => mapToCanvas(p.x, p.y));
+
+
+
+      // Bone connections
+      ctx.beginPath();
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.6)';
+      ctx.lineWidth   = 1.5;
+      for (const [a, b] of HAND_CONNECTIONS) {
+        ctx.moveTo(pts[a].x, pts[a].y);
+        ctx.lineTo(pts[b].x, pts[b].y);
+      }
+      ctx.stroke();
+
+      // Landmark dots
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.92)';
+      for (const pt of pts) {
+        ctx.beginPath();
+        ctx.arc(pt.x, pt.y, 2.5, 0, TWO_PI);
+        ctx.fill();
+      }
+
+      // Highlight pinch point when active
+      if (activePinchPoint) {
+        ctx.beginPath();
+        ctx.arc(activePinchPoint.x, activePinchPoint.y, 12, 0, TWO_PI);
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.85)';
+        ctx.lineWidth   = 2;
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(activePinchPoint.x, activePinchPoint.y, 4, 0, TWO_PI);
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+        ctx.fill();
+      }
+    }
+    ctx.globalAlpha = 1;
+  }
 }
 
 loop();
@@ -1157,7 +1500,7 @@ function loadSessionHistory() {
       if (data.active) setSessionName(data.active.name);
 
       if (!data.history || data.history.length === 0) {
-        list.innerHTML = '<div style="color:rgba(255,255,255,0.2);font-size:12px;padding:16px 0">暂无历史记录</div>';
+        list.innerHTML = '<div style="color:rgba(30,40,60,0.3);font-size:12px;padding:16px 0">暂无历史记录</div>';
         return;
       }
       list.innerHTML = data.history.map(s => {

@@ -17,10 +17,10 @@ app.get('/join', (req, res) => res.redirect('/mobile.html'));
 
 // ── MBTI Data ─────────────────────────────────────────────────────────────────
 const MBTI_COLORS = {
-  INTJ: '#9D4EDD', INTP: '#00F5FF', ENTJ: '#FF073A', ENTP: '#FF6B00',
-  INFJ: '#CC00FF', INFP: '#FF1493', ENFJ: '#FFD700', ENFP: '#39FF14',
-  ISTJ: '#1E90FF', ISFJ: '#00FFCD', ESTJ: '#FF4500', ESFJ: '#FF69B4',
-  ISTP: '#B8C0FF', ISFP: '#E040FB', ESTP: '#FFE600', ESFP: '#FF6EC7',
+  INTJ: '#4B0082', INTP: '#6495ED', ENTJ: '#FF4500', ENTP: '#FF00FF',
+  INFJ: '#00A86B', INFP: '#DA70D6', ENFJ: '#FC913A', ENFP: '#92FE9D',
+  ISTJ: '#95A5A6', ISFJ: '#BDB76B', ESTJ: '#4682B4', ESFJ: '#FFB6C1',
+  ISTP: '#4A4A4A', ISFP: '#00CED1', ESTP: '#FF2400', ESFP: '#7B68EE',
 };
 
 const MBTI_NAMES = {
