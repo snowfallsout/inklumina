@@ -201,6 +201,21 @@ body {
 @keyframes tIn  { from { opacity:0; transform: scale(.85) translateY(8px); } to { opacity:1; transform: scale(1); } }
 @keyframes tOut { to   { opacity:0; transform: scale(.9) translateY(-6px); } }
 
+/* Interaction hint at bottom */
+#interaction-hint {
+  position: absolute;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(30,40,60,0.28);
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-align: center;
+  pointer-events: none;
+  white-space: nowrap;
+  animation: breath 4s ease-in-out infinite;
+}
+
 /* Waiting hint */
 #waiting {
   position: absolute;
@@ -348,6 +363,42 @@ body {
 }
 #sp-close:hover { color: rgba(30,40,60,0.75); }
 
+/* Camera toggle button */
+#cam-toggle {
+  position: absolute;
+  top: 28px;
+  right: 22px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.4), rgba(255,255,255,0.15));
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.5);
+  border-radius: 30px;
+  color: rgba(30,40,60,0.5);
+  font-size: 10px;
+  letter-spacing: 2px;
+  padding: 7px 16px;
+  cursor: pointer;
+  pointer-events: all;
+  transition: background .2s, color .2s;
+  text-transform: uppercase;
+}
+#cam-toggle:hover { background: rgba(255,255,255,0.6); color: rgba(30,40,60,0.85); }
+#cam-toggle.on { color: rgba(30,40,60,0.85); border-color: rgba(100,140,255,0.5); }
+
+/* Smile emoji — 持久单例，微笑时显示，不笑时淡出 */
+.smile-emoji-persistent {
+  position: absolute;
+  font-size: 52px;
+  pointer-events: none;
+  user-select: none;
+  line-height: 1;
+  opacity: 0;
+  transform: scale(0.5);
+  /* translate(-50%, 0) 让 emoji 水平居中于人脸 */
+  translate: -50% 0;
+  transition: opacity 0.25s ease, transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.18));
+}
+
 /* Film grain noise overlay */
 .noise-overlay {
   position: fixed; inset: 0;
@@ -355,6 +406,39 @@ body {
   opacity: 0.12; mix-blend-mode: multiply;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
   background-repeat: repeat;
+}
+
+/* Corner QR code block */
+#corner-qr-box {
+  margin-top: 8px;
+  display: inline-block;
+  text-align: center;
+}
+#corner-qr-box canvas, #corner-qr-box img {
+  display: block !important;
+  background: #fff;
+  border-radius: 6px;
+  padding: 5px;
+  border: 1px solid rgba(200,210,230,0.45);
+  box-shadow: 0 2px 8px rgba(31,38,135,0.08);
+  width: 120px !important;
+  height: 120px !important;
+}
+#corner-qr-url {
+  font-size: 9px;
+  color: rgba(30,40,60,0.4);
+  letter-spacing: 0.5px;
+  margin-top: 4px;
+  word-break: break-all;
+  max-width: 120px;
+}
+#corner-qr-hint {
+  font-size: 9px;
+  color: rgba(30,40,60,0.35);
+  letter-spacing: 1px;
+  margin-top: 6px;
+  max-width: 130px;
+  line-height: 1.6;
 }
 </style>
 </head>
@@ -371,6 +455,7 @@ body {
   </div>
 
   <div id="emotion-badge">● FACE TRACKING</div>
+  <button id="cam-toggle" onclick="toggleCamera()">◎ 摄像头 OFF</button>
   <div id="hand-badge" style="
     position:absolute; top:54px; left:28px;
     color:rgba(30,40,60,0.28); font-size:10px;
@@ -390,12 +475,19 @@ body {
     </div>
     <div id="join-block">
       <b>SCAN TO JOIN</b>
-      Phone → localhost:3000/mobile.html
+      <div id="corner-qr-box">
+        <div id="corner-qr"></div>
+        <div id="corner-qr-url"></div>
+        <div id="corner-qr-hint">在活动管理中<br>设置局域网 IP</div>
+      </div>
     </div>
   </div>
 
   <div id="session-name"></div>
   <div id="waiting">Waiting for participants to join…</div>
+  <div id="interaction-hint">
+    Try smiling &nbsp;·&nbsp; Pinch your fingers and move your hands
+  </div>
   <button id="session-btn" onclick="openSessionPanel()">⊕ 新场次 / 历史</button>
 </div>
 
@@ -408,6 +500,21 @@ body {
       <input id="sp-name-input" type="text" placeholder="新活动名称（可留空）" maxlength="30">
       <button class="sp-btn" onclick="createNewSession()">开始新场次</button>
     </div>
+
+    <!-- Mobile join QR -->
+    <div style="margin-top:18px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.15)">
+      <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px">
+        <input id="sp-ip-input" type="text"
+          placeholder="PC 局域网 IP（如 192.168.0.68）"
+          style="flex:1;padding:8px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.25);background:rgba(0,0,0,0.25);color:#fff;font-size:12px;outline:none">
+        <button class="sp-btn" style="padding:8px 14px;font-size:12px" onclick="generateJoinQR()">生成二维码</button>
+      </div>
+      <div id="sp-qr-wrap" style="display:none;text-align:center;padding:14px;background:rgba(255,255,255,0.92);border-radius:10px">
+        <div id="sp-qr" style="display:inline-block"></div>
+        <div id="sp-qr-url" style="margin-top:8px;font-size:11px;color:#333;word-break:break-all;letter-spacing:0.5px"></div>
+        <div style="margin-top:4px;font-size:10px;color:#888;letter-spacing:2px">SCAN TO JOIN · 手机扫码加入</div>
+      </div>
+    </div>
     <div id="sp-history-title">历史记录</div>
     <div id="sp-history-list">
       <div style="color:rgba(255,255,255,0.2);font-size:12px;padding:16px 0">暂无历史记录</div>
@@ -417,6 +524,7 @@ body {
 
 <!-- Socket.io & MediaPipe -->
 <script src="/socket.io/socket.io.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh@0.4/face_mesh.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4/hands.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.3/camera_utils.js" crossorigin="anonymous"></script>
@@ -623,9 +731,9 @@ AMBIENT_COLS.forEach(c => getDotSprite(c));
 //   blob:   9% — medium soft blobs (12-30px), lower alpha, medium trail
 //   field:  3% — large color fields (35-65px), very low alpha, short trail
 const SIZE_CLASS_PARAMS = {
-  dot:   { sizeMin:1.5, sizeMax:8,  alphaMin:.35, alphaMax:.95, speedCap:6,   drag:.992, accel:.45, trailMax:10 },
-  blob:  { sizeMin:12,  sizeMax:30, alphaMin:.12, alphaMax:.30, speedCap:4,   drag:.986, accel:.20, trailMax:6  },
-  field: { sizeMin:35,  sizeMax:65, alphaMin:.04, alphaMax:.12, speedCap:2,   drag:.978, accel:.08, trailMax:3  },
+  dot:   { sizeMin:2, sizeMax:12,  alphaMin:.35, alphaMax:.95, speedCap:6,   drag:.992, accel:.45, trailMax:10 },
+  blob:  { sizeMin:20,  sizeMax:40, alphaMin:.12, alphaMax:.30, speedCap:4,   drag:.986, accel:.20, trailMax:6  },
+  field: { sizeMin:40,  sizeMax:80, alphaMin:.04, alphaMax:.12, speedCap:2,   drag:.978, accel:.08, trailMax:3  },
 };
 
 function pickSizeClass() {
@@ -653,7 +761,7 @@ class Particle {
     this.state   = 'born';
     this.age     = 0;
     this.trail      = [];
-    this.myTrailMax = Math.floor(Math.random() * 35) + 5;  // individual trail length variance
+    this.myTrailMax = Math.floor(Math.random() * 12) + 4;  // individual trail length variance (was 5-40, now 4-16)
     this.orbitA  = Math.random() * TWO_PI;
     this.orbitR  = 55 + Math.random() * 90;
     this.orbitSpd= (.022 + Math.random() * .03) * (Math.random() > .5 ? 1 : -1);
@@ -673,7 +781,7 @@ class Particle {
     // Trail — per-particle length for visual variety
     if (this.age % 2 === 0) {
       this.trail.push({ x: this.x, y: this.y, s: this.size });
-      if (this.trail.length > this.myTrailMax) this.trail.shift();
+      if (this.trail.length > this.myTrailMax) this.trail.splice(0, this.trail.length - this.myTrailMax);
     }
 
     // ══════════════════════════════════════════════════════════
@@ -973,27 +1081,27 @@ const HAND_CONNECTIONS = [
 
 // 核心修復 1：防崩潰且自動節流的多執行緒非同步處理
 let _processing = false;
+let _frameCounter = 0;
 
 async function _processFrame() {
-  if (!_processing) { requestAnimationFrame(_processFrame); return; }
-
-  if (video.readyState >= 2) {
-    try {
-      // 串行发送：先 FaceMesh，再 Hands，避免两者并发争用同一 WASM 线程
-      // Promise.all 并发会导致 Hands 回调被丢弃，骨架永远不显示
-      if (_faceMesh) await _faceMesh.send({ image: video });
-      if (_hands)    await _hands.send({ image: video });
-    } catch (e) {
-      // 吞掉偶然丢帧，保证循环永不中断
-    }
-  }
-
+  // 先排下一帧：即使本帧 send() 卡死或抛错，循环也不会中断
   requestAnimationFrame(_processFrame);
+  if (!_processing || video.readyState < 2) return;
+
+  _frameCounter++;
+  try {
+    // 错帧推理：FaceMesh 偶数帧、Hands 奇数帧。粒子仍 60fps，检测 30fps 足够
+    if (_faceMesh && (_frameCounter & 1) === 0) {
+      await _faceMesh.send({ image: video });
+    } else if (_hands) {
+      await _hands.send({ image: video });
+    }
+  } catch (e) { /* 吞掉偶然丢帧 */ }
 }
 
 // 核心修復 2：強制等待引擎就緒
 function setupCamera() {
-  navigator.mediaDevices.getUserMedia({ video: { width: 1280, height: 720 }, audio: false })
+  navigator.mediaDevices.getUserMedia({ video: { width: 640, height: 480 }, audio: false })
     .then(stream => {
       video.srcObject = stream;
       // 注意這裡加上了 async
@@ -1062,9 +1170,9 @@ function _initHands() {
   // 降低检测置信度阈值，让手更容易被识别到
   _hands.setOptions({
     maxNumHands: 2,
-    minDetectionConfidence: 0.4,
-    minTrackingConfidence: 0.4,
-    modelComplexity: 0,   // 0=lite速度快, 1=full更准
+    minDetectionConfidence: 0.7,
+    minTrackingConfidence: 0.6,
+    modelComplexity: 1,   // 0=lite速度快, 1=full更准
   });
   _hands.onResults(res => {
     handsResults      = res;
@@ -1092,6 +1200,85 @@ function _initHands() {
     }
     if (badge) badge.textContent = parts.join(' | ');
   });
+}
+
+// ── Camera toggle ─────────────────────────────────────────────────────────────
+let _camOn = false;   // 默认关闭
+
+function toggleCamera() {
+  _camOn = !_camOn;
+  const btn = document.getElementById('cam-toggle');
+  btn.textContent = _camOn ? '◎ 摄像头 ON' : '◎ 摄像头 OFF';
+  btn.classList.toggle('on', _camOn);
+}
+
+// ── Smile Emoji System ────────────────────────────────────────────────────────
+// emoji 池：色块 + 天气 + 植物
+const SMILE_EMOJIS = [
+  // 色块 & 光效
+  '🔴','🟠','🟡','🟢','🔵','🟣','⚫','⚪','🟤',
+  '🔶','🔷','🔸','🔹','🔺','🔻','💠','🔘','🔲','🔳',
+  '✨','💫','⚡','🔥','💥','🌟','⭐','🌈',
+  // 天气
+  '☀️','🌤️','⛅','🌥️','☁️','🌦️','🌧️','⛈️','🌩️','🌨️',
+  '❄️','☃️','⛄','🌬️','💨','🌀','🌊','💧','💦','☔',
+  '⛱️','🌙','🌛','🌜','🌚','🌝','🌞','☄️','🌪️',
+  // 植物
+  '🌱','🌿','🍀','🍃','🍂','🍁','🌵','🌾','🎋','🎍',
+  '🌺','🌸','🌼','🌻','🌹','🥀','🌷','🪷','🪴',
+  '🌲','🌳','🌴','🪵','🪨',
+];
+
+function _faceHash(x, y) {
+  return `${Math.round(x/32)}_${Math.round(y/32)}`;
+}
+
+function _randomEmoji() {
+  return SMILE_EMOJIS[Math.floor(Math.random() * SMILE_EMOJIS.length)];
+}
+
+// 上一帧每张脸的smile状态，用来检测"刚刚开始笑"的边缘触发
+const _prevSmile = new Map();
+
+// 全局唯一的 emoji 元素，微笑时显示，不微笑时隐藏
+let _emojiEl = null;
+
+function _getOrCreateEmojiEl() {
+  if (!_emojiEl) {
+    _emojiEl = document.createElement('div');
+    _emojiEl.className = 'smile-emoji-persistent';
+    document.getElementById('ui').appendChild(_emojiEl);
+  }
+  return _emojiEl;
+}
+
+// 用全局 bool 追踪"上一帧是否有人笑"
+// 不用坐标 hash，避免人物移动时 hash 变化导致 emoji 不断刷新
+let _wasAnySmiling = false;
+
+function _tickSmileEmoji() {
+  const anySmiling  = faces.some(f => f.smile);
+  const el          = _getOrCreateEmojiEl();
+
+  if (anySmiling) {
+    const smilingFace = faces.find(f => f.smile);
+
+    if (!_wasAnySmiling) {
+      // 从"不笑"→"笑"的第一帧：随机选一个 emoji，此后锁定不再换
+      el.textContent = _randomEmoji();
+    }
+    // 持续跟随人脸位置（emoji 内容不变，只更新坐标）
+    el.style.left      = smilingFace.x + 'px';
+    el.style.top       = (smilingFace.y - 70) + 'px';
+    el.style.opacity   = '1';
+    el.style.transform = 'scale(1)';
+  } else {
+    // 没有人笑：淡出隐藏
+    el.style.opacity   = '0';
+    el.style.transform = 'scale(0.5)';
+  }
+
+  _wasAnySmiling = anySmiling;
 }
 
 function updateEmotionBadge() {
@@ -1358,21 +1545,21 @@ function loop() {
   ctx.globalCompositeOperation = 'source-over';
 
   // 1. Semi-transparent light base — creates fluid ink-trail effect
-  ctx.fillStyle = 'rgba(245, 248, 255, 0.12)';
+  ctx.fillStyle = 'rgba(245, 248, 255, 1)';
   //ctx.fillStyle = 'rgba(0, 0, 0, 0.12)';
   ctx.fillRect(0, 0, W, H);
 
-  // 2. Camera feed — object-fit: cover (aspect-ratio preserved, fills canvas)
-  if (video.readyState >= 2 && video.videoWidth > 0) {
+  // 2. Camera feed — 受开关 _camOn 控制
+  if (_camOn && video.readyState >= 2 && video.videoWidth > 0) {
     const vw = video.videoWidth, vh = video.videoHeight;
     const scale = Math.max(W / vw, H / vh);
     const dw = vw * scale, dh = vh * scale;
     const dx = (W - dw) / 2, dy = (H - dh) / 2;
     ctx.save();
     ctx.translate(W, 0);
-    ctx.scale(-1, 1);          // mirror horizontally (selfie view)
-    ctx.globalAlpha = 0.05;
-    ctx.drawImage(video, dx, dy, dw, dh);  // cover-fit, no stretch
+    ctx.scale(-1, 1);
+    ctx.globalAlpha = 0.45;   // 开启时用较高透明度，让观众清晰看到自己
+    ctx.drawImage(video, dx, dy, dw, dh);
     ctx.restore();
     ctx.globalAlpha = 1;
   }
@@ -1384,6 +1571,7 @@ function loop() {
     p.draw(ctx);
   }
   _drawStrokeOverlay();  // render the glowing trail overlay
+  _tickSmileEmoji();     // spawn emoji floaters on smile edge
 
   // 4. Hand skeleton — visual feedback for gesture interaction
   if (handsResults && handsResults.multiHandLandmarks) {
@@ -1464,11 +1652,100 @@ function createNewSession() {
     .then(data => {
       if (data.ok) {
         document.getElementById('sp-name-input').value = '';
-        closeSessionPanel();
+        // 新场次开始后，如果已填过 IP 就自动刷新二维码
+        const ipEl = document.getElementById('sp-ip-input');
+        if (ipEl && ipEl.value.trim()) generateJoinQR();
+        else closeSessionPanel();
       }
     })
     .catch(e => alert('请求失败: ' + e.message));
 }
+
+// ── Mobile join QR ─────────────────────────────────────────────────────────────
+// 根据 PC 在 WiFi 下的局域网 IP（如 192.168.0.68）生成手机可扫的链接
+// 手机必须和 PC 在同一 WiFi 下。IPv4 从 PowerShell `ipconfig` 的 WLAN 适配器读取
+function generateJoinQR() {
+  const raw = document.getElementById('sp-ip-input').value.trim();
+  if (!raw) { alert('请先填写 PC 的局域网 IPv4 地址（ipconfig → WLAN 适配器 IPv4 Address）'); return; }
+
+  // 允许用户直接粘完整 URL，或只粘 IP，或 IP:port
+  let host = raw.replace(/^https?:\/\//, '').replace(/\/.*$/, '');
+  if (!/^[\d.]+(:\d+)?$/.test(host)) {
+    alert('IP 格式看起来不对，示例：192.168.0.68  或  192.168.0.68:3000');
+    return;
+  }
+  // 自动带上当前端口（如果 PC 这个页面本身是 http://host:port 打开的，手机也走同端口）
+  if (!host.includes(':') && location.port) host = host + ':' + location.port;
+
+  const url = `http://${host}/mobile.html`;
+  try { localStorage.setItem('colorfield_pc_ip', raw); } catch(e){}
+
+  const wrap = document.getElementById('sp-qr-wrap');
+  const qrBox = document.getElementById('sp-qr');
+  qrBox.innerHTML = '';
+  // qrcodejs 需要一个空容器
+  new QRCode(qrBox, {
+    text: url,
+    width: 180,
+    height: 180,
+    colorDark: '#000',
+    colorLight: '#fff',
+    correctLevel: QRCode.CorrectLevel.M,
+  });
+  document.getElementById('sp-qr-url').textContent = url;
+  wrap.style.display = 'block';
+  refreshCornerQR();
+}
+
+// ── Corner QR (main screen, bottom-right) ──────────────────────────────────────
+// Reads the last-saved IP from localStorage and renders a small QR into #corner-qr.
+// Called on page load and whenever generateJoinQR() saves a new IP.
+function refreshCornerQR() {
+  const box   = document.getElementById('corner-qr');
+  const urlEl = document.getElementById('corner-qr-url');
+  const hint  = document.getElementById('corner-qr-hint');
+  if (!box) return;
+
+  let raw;
+  try { raw = localStorage.getItem('colorfield_pc_ip'); } catch(e) {}
+
+  if (!raw) {
+    box.innerHTML = '';
+    if (urlEl) urlEl.textContent = '';
+    if (hint)  hint.style.display = '';
+    return;
+  }
+
+  let host = raw.replace(/^https?:\/\//, '').replace(/\/.*$/, '');
+  if (!host.includes(':') && location.port) host = host + ':' + location.port;
+  const url = `http://${host}/mobile.html`;
+
+  box.innerHTML = '';
+  if (hint) hint.style.display = 'none';
+  new QRCode(box, {
+    text: url,
+    width: 120,
+    height: 120,
+    colorDark:  '#000',
+    colorLight: '#fff',
+    correctLevel: QRCode.CorrectLevel.M,
+  });
+  if (urlEl) urlEl.textContent = url;
+}
+
+// 打开面板时回填上次用的 IP
+(function restoreSavedIP(){
+  try {
+    const saved = localStorage.getItem('colorfield_pc_ip');
+    if (saved) {
+      const el = document.getElementById('sp-ip-input');
+      if (el) el.value = saved;
+    }
+  } catch(e){}
+})();
+
+// 页面加载后立即渲染角落二维码（如果之前保存过 IP）
+refreshCornerQR();
 
 function loadSessionHistory() {
   fetch('/api/sessions')
