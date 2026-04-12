@@ -1,14 +1,19 @@
 {
-  "name": "colorfield",
-  "version": "1.0.0",
-  "description": "Interactive MBTI Particle Art Installation",
-  "main": "server.js",
+  "name": "colorfield-svelte",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
   "scripts": {
-    "start": "node server.js",
-    "dev": "npx nodemon server.js"
+    "dev": "vite dev",
+    "build": "vite build",
+    "preview": "vite preview",
+    "start": "node build"
   },
-  "dependencies": {
-    "express": "^4.18.2",
-    "socket.io": "^4.7.2"
+  "devDependencies": {
+    "@sveltejs/adapter-node": "^5.5.4",
+    "@sveltejs/kit": "^2.57.1",
+    "@sveltejs/vite-plugin-svelte": "^3.1.2",
+    "svelte": "^4.2.0",
+    "vite": "^5.0.3"
   }
 }
