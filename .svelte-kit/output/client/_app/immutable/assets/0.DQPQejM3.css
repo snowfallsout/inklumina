@@ -1,1 +1,0 @@
-:root{--bg: #f5f8ff;--text: rgba(30,40,60,.88)}html,body,#svelte{height:100%}body{background:var(--bg);color:var(--text);font-family:Inter,system-ui,Segoe UI,Arial}.canvas-wrap{position:fixed;top:0;right:0;bottom:0;left:0}.ui-layer{position:fixed;top:0;right:0;bottom:0;left:0;pointer-events:none}
