@@ -126,6 +126,3 @@ An interactive particle art installation.
 專案��面：https://github.com/snowfallsout/16colorfield
 
 ---
-
-## 致謝
-感謝參考的視覺藝術與互動設計理念、以及任何提供資料的合作者。
