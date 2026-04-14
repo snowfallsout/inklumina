@@ -5,6 +5,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const SESSIONS_FILE = path.join(__dirname, '..', 'sessions.json');
+const fsPromises = fs.promises;
 
 function loadSessions() {
   try {
@@ -15,8 +16,17 @@ function loadSessions() {
   return { active: null, history: [] };
 }
 
+// Serialized async writer to avoid concurrent sync I/O and race conditions.
+let writeQueue = Promise.resolve();
 function saveSessions(data) {
-  fs.writeFileSync(SESSIONS_FILE, JSON.stringify(data, null, 2), 'utf8');
+  // queue writes sequentially; write to temp file then rename for atomicity
+  writeQueue = writeQueue.then(() => {
+    const tmp = `${SESSIONS_FILE}.tmp`;
+    return fsPromises.writeFile(tmp, JSON.stringify(data, null, 2), 'utf8')
+      .then(() => fsPromises.rename(tmp, SESSIONS_FILE))
+      .catch((err) => console.warn('Failed to write sessions file:', err));
+  });
+  return writeQueue;
 }
 
 let sessionsData = loadSessions();
@@ -50,7 +60,7 @@ export function createNew(name) {
     counts: {},
     total: 0,
   };
-  saveSessions(sessionsData);
+  void saveSessions(sessionsData);
   return sessionsData.active;
 }
 
@@ -62,7 +72,7 @@ export function deleteHistoryById(id) {
   const idx = sessionsData.history.findIndex(h => h.id === id);
   if (idx === -1) return false;
   sessionsData.history.splice(idx, 1);
-  saveSessions(sessionsData);
+  void saveSessions(sessionsData);
   return true;
 }
 
@@ -70,6 +80,6 @@ export function incrementMbti(mbti) {
   const counts = sessionsData.active.counts;
   counts[mbti] = (counts[mbti] || 0) + 1;
   sessionsData.active.total++;
-  saveSessions(sessionsData);
+  void saveSessions(sessionsData);
   return { counts: sessionsData.active.counts, total: sessionsData.active.total };
 }

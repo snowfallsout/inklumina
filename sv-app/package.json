@@ -5,15 +5,17 @@
 	"type": "module",
 	"scripts": {
 		"dev": "vite dev",
-		"dev:socket": "bun server.cjs",
+		"dev:socket": "node server/index.js",
 		"smoke": "node scripts/smoke-test.js",
 		"build": "vite build",
+		"build-and-serve": "npm run build && node server/index.js",
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync || echo ''",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
 	},
 	"dependencies": {
+		"@mediapipe/tasks-vision": "^0.10.34",
 		"express": "^5.1.0",
 		"qrcode": "^1.5.4",
 		"socket.io": "^4.8.1",

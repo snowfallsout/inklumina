@@ -10,13 +10,17 @@ const config = {
 		csp: {
 			mode: 'auto',
 			directives: {
-				'default-src': ['self'],
-				'script-src': ['self', 'unsafe-inline', 'https://cdn.jsdelivr.net'],
-				'script-src-elem': ['self', 'unsafe-inline', 'https://cdn.jsdelivr.net'],
+				'default-src': ['self', 'https://cdn.jsdelivr.net'],
+				// Relaxed for development: allow unsafe-eval for MediaPipe WASM
+				'script-src': ['self', 'unsafe-inline', 'unsafe-eval', 'https://cdn.jsdelivr.net', 'wasm-unsafe-eval'],
+				'script-src-elem': ['self', 'unsafe-inline', 'unsafe-eval', 'https://cdn.jsdelivr.net', 'wasm-unsafe-eval'],
 				'style-src': ['self', 'unsafe-inline'],
 				'style-src-elem': ['self', 'unsafe-inline'],
 				'style-src-attr': ['unsafe-inline'],
-				'img-src': ['self', 'data:', 'blob:']
+				'img-src': ['self', 'data:', 'blob:', 'http:', 'https:', 'https://cdn.jsdelivr.net'],
+				'connect-src': ['self', 'ws:', 'wss:', 'http:', 'https:', 'https://cdn.jsdelivr.net'],
+				'worker-src': ['self', 'blob:', 'https://cdn.jsdelivr.net'],
+				'font-src': ['self', 'data:', 'https://cdn.jsdelivr.net']
 			}
 		},
 		// adapter-auto only supports some environments, see https://svelte.dev/docs/kit/adapter-auto for a list.

@@ -1,15 +1,280 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import './display.css';
-	import DisplayFrame from './components/DisplayFrame.svelte';
-	import { displayState } from '$lib/display/state';
+	import Frame from '$lib/components/display/Frame.svelte';
+	import { displayState } from '$lib/features/display/state';
+	import { initDisplayRuntime } from '$lib/features/display/runtime';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
 
 	onMount(() => {
 		displayState.patch(data.sample);
+		initDisplayRuntime();
 	});
 </script>
 
-<DisplayFrame />
+<Frame />
+
+<style>
+	:global(html),
+	:global(body) {
+		width: 100%;
+		height: 100%;
+		overflow: hidden;
+	}
+
+	:global(.display-route),
+	:global(.display-route *) {
+		margin: 0;
+		padding: 0;
+		box-sizing: border-box;
+	}
+
+	:global(.display-route) {
+		background: #f5f8ff;
+		overflow: hidden;
+		font-family: -apple-system, 'Segoe UI', sans-serif;
+		min-height: 100vh;
+		position: relative;
+	}
+
+	:global(#video-bg) {
+		position: fixed;
+		inset: 0;
+		z-index: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		transform: scaleX(-1);
+		opacity: 0;
+		transition: opacity 0.25s ease;
+		pointer-events: none;
+	}
+
+	:global(#video-bg.on) {
+		opacity: 1;
+	}
+
+	:global(#scene-bg) {
+		position: fixed;
+		inset: 0;
+		z-index: 5;
+		pointer-events: none;
+		background: linear-gradient(180deg, rgba(245, 248, 255, 0.78), rgba(236, 241, 252, 0.92));
+	}
+
+	:global(#canvas) {
+		position: fixed;
+		inset: 0;
+		z-index: 10;
+		background: transparent;
+	}
+
+	:global(#ui) {
+		position: fixed;
+		inset: 0;
+		z-index: 20;
+		pointer-events: none;
+	}
+
+	:global(.noise-overlay) {
+		position: fixed;
+		inset: 0;
+		pointer-events: none;
+		/* keep the noise above the camera but below the effect canvas */
+		z-index: 6;
+		/* reduce intensity so it doesn't wash out visuals */
+		opacity: 0.06;
+		mix-blend-mode: normal;
+		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+		background-repeat: repeat;
+	}
+
+	:global(.toast-wrap) {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		pointer-events: none;
+	}
+
+	:global(.toast-pill) {
+		display: inline-block;
+		padding: 10px 28px;
+		border-radius: 50px;
+		background: linear-gradient(135deg, rgba(255,255,255,0.55), rgba(255,255,255,0.25));
+		backdrop-filter: blur(20px);
+		border: 1px solid rgba(255,255,255,0.6);
+		box-shadow: 0 4px 16px rgba(31,38,135,0.08);
+		color: #333;
+		font-size: 15px;
+		font-weight: 300;
+		letter-spacing: 1px;
+		animation: tIn .35s ease, tOut .35s 2.3s ease forwards;
+		white-space: nowrap;
+	}
+
+	@keyframes tIn {
+		from {
+			opacity: 0;
+			transform: scale(.85) translateY(8px);
+		}
+		to {
+			opacity: 1;
+			transform: scale(1);
+		}
+	}
+
+	@keyframes tOut {
+		to {
+			opacity: 0;
+			transform: scale(.9) translateY(-6px);
+		}
+	}
+
+	:global(.smile-emoji-persistent) {
+		position: absolute;
+		font-size: 52px;
+		pointer-events: none;
+		user-select: none;
+		line-height: 1;
+		opacity: 0;
+		transform: scale(0.5);
+		translate: -50% 0;
+		transition: opacity 0.25s ease, transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+		filter: drop-shadow(0 2px 8px rgba(0,0,0,0.18));
+	}
+
+	:global(.sp-btn.danger) {
+		border-color: rgba(200,60,60,0.35);
+		color: rgba(180,50,50,0.9);
+	}
+
+	:global(.sp-btn.danger:hover) {
+		background: rgba(255,220,220,0.6);
+	}
+
+	:global(.sp-row) {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		padding: 11px 0;
+		border-bottom: 1px solid rgba(0,0,0,0.06);
+	}
+
+	:global(.sp-row:last-child) {
+		border-bottom: none;
+	}
+
+	:global(.sp-row-info) {
+		flex: 1;
+	}
+
+	:global(.sp-row-name) {
+		font-size: 13px;
+		color: rgba(30,40,60,0.85);
+	}
+
+	:global(.sp-row-meta) {
+		font-size: 10px;
+		color: rgba(30,40,60,0.4);
+		letter-spacing: 1px;
+		margin-top: 2px;
+	}
+
+	:global(#sp-close) {
+		cursor: pointer;
+		pointer-events: all;
+	}
+
+	:global(#sp-close:hover) {
+		color: rgba(30,40,60,0.75);
+	}
+
+	:global(#corner-qr-box canvas) {
+		display: block !important;
+		background: #fff;
+		border-radius: 6px;
+		padding: 5px;
+		border: 1px solid rgba(200,210,230,0.45);
+		box-shadow: 0 2px 8px rgba(31,38,135,0.08);
+		width: 120px !important;
+		height: 120px !important;
+	}
+
+	:global(#corner-qr-box img) {
+		display: none !important;
+	}
+
+	:global(#legend) {
+		position: absolute;
+		left: 22px;
+		top: 50%;
+		transform: translateY(-50%);
+		background: linear-gradient(135deg, rgba(255,255,255,0.4), rgba(255,255,255,0.1));
+		backdrop-filter: blur(24px);
+		border: 1px solid rgba(255,255,255,0.6);
+		box-shadow: 0 8px 32px rgba(31,38,135,0.07), inset 0 0 12px rgba(255,255,255,0.3);
+		border-radius: 20px;
+		padding: 18px 14px;
+		min-width: 158px;
+	}
+
+	:global(#legend h3) {
+		color: rgba(0,0,0,0.35);
+		font-size: 9px;
+		letter-spacing: 3px;
+		text-align: center;
+		text-transform: uppercase;
+		margin-bottom: 14px;
+	}
+
+	:global(.display-route .row) {
+		display: flex;
+		align-items: center;
+		gap: 7px;
+		padding: 2.5px 0;
+		opacity: 1;
+		transform: translateX(0);
+		transition: opacity 0.4s, transform 0.4s;
+		-webkit-font-smoothing: antialiased;
+	}
+
+	:global(.display-route .row.on) { opacity: 1; transform: translateX(0); }
+	:global(.display-route .dot) {
+		width: 8px;
+		height: 8px;
+		border-radius: 50%;
+		flex-shrink: 0;
+		filter: drop-shadow(0 0 4px var(--c));
+	}
+
+	:global(.display-route .lbl) {
+		color: rgba(0,0,0,0.85);
+		font-size: 12px;
+		font-weight: 700;
+		min-width: 34px;
+	}
+
+	:global(.display-route .track) {
+		flex: 1;
+		height: 3px;
+		background: rgba(255,255,255,0.06);
+		border-radius: 2px;
+		overflow: hidden;
+	}
+
+	:global(.display-route .fill) {
+		height: 100%;
+		border-radius: 2px;
+		transition: width 0.7s cubic-bezier(0.4,0,0.2,1);
+		width: 0%;
+	}
+
+	:global(.display-route .cnt) {
+		color: rgba(0,0,0,0.65);
+		font-size: 11px;
+		min-width: 16px;
+		text-align: right;
+	}
+</style>
