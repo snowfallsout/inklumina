@@ -1,0 +1,77 @@
+{
+  "active": {
+    "id": "mny541af",
+    "name": "123123123",
+    "createdAt": "2026-04-14T04:47:20.199Z",
+    "counts": {
+      "ESFJ": 1,
+      "ISFJ": 1,
+      "ENFP": 1,
+      "ENTP": 1,
+      "INTP": 6,
+      "INFJ": 1,
+      "ESFP": 1,
+      "ISTP": 1,
+      "ESTP": 1
+    },
+    "total": 14
+  },
+  "history": [
+    {
+      "id": "mny541ab",
+      "name": "123123123",
+      "createdAt": "2026-04-14T04:47:20.195Z",
+      "counts": {},
+      "total": 0,
+      "archivedAt": "2026-04-14T04:47:20.199Z"
+    },
+    {
+      "id": "mnwgsq36",
+      "name": "活动 2",
+      "createdAt": "2026-04-13T00:38:55.506Z",
+      "counts": {
+        "ESFJ": 2,
+        "ISFP": 1,
+        "INTJ": 5
+      },
+      "total": 8,
+      "participants": [
+        {
+          "id": "p_mnwjc1yve0xs0t",
+          "sessionId": "mnwgsq36",
+          "mbti": "INTJ",
+          "color": "#4B0082",
+          "nickname": "战略家",
+          "luckyPhrase": "深邃星河",
+          "createdAt": "2026-04-13T01:49:56.599Z"
+        },
+        {
+          "id": "p_mnwy4c271rvga5",
+          "sessionId": "mnwgsq36",
+          "mbti": "INTJ",
+          "color": "#4B0082",
+          "nickname": "战略家",
+          "luckyPhrase": "深邃星河",
+          "createdAt": "2026-04-13T08:43:50.671Z"
+        }
+      ],
+      "lastParticipantAt": "2026-04-13T08:43:50.671Z",
+      "archivedAt": "2026-04-14T04:47:20.195Z"
+    },
+    {
+      "id": "mnw8zc85",
+      "name": "默认活动",
+      "createdAt": "2026-04-12T21:00:07.205Z",
+      "archivedAt": "2026-04-13T00:38:55.506Z",
+      "counts": {
+        "INTJ": 1
+      },
+      "total": 1,
+      "participants": []
+    }
+  ],
+  "meta": {
+    "version": 2,
+    "updatedAt": "2026-04-13T08:43:50.671Z"
+  }
+}
