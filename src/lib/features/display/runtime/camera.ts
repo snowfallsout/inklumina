@@ -24,6 +24,7 @@ function failSafeAbort(message?: string) {
 // Attempt to use the installed @mediapipe/tasks-vision package (preferred)
 async function tryUseTasksVision(): Promise<boolean> {
  	try {
+ 		// @ts-expect-error — @mediapipe/tasks-vision is an optional runtime dependency; falls back to CDN
  		const tasks = await import('@mediapipe/tasks-vision');
  		const FilesetResolver = (tasks as any).FilesetResolver || (tasks as any).filesetResolver;
  		const FaceLandmarker = (tasks as any).FaceLandmarker || (tasks as any).faceLandmarker?.FaceLandmarker;

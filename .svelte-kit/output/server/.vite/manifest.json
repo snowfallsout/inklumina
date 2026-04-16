@@ -1,0 +1,237 @@
+{
+  ".svelte-kit/generated/server/internal.js": {
+    "file": "internal.js",
+    "name": "internal",
+    "src": ".svelte-kit/generated/server/internal.js",
+    "isEntry": true,
+    "imports": [
+      "_environment.js",
+      "_internal.js"
+    ]
+  },
+  "_dev.js": {
+    "file": "chunks/dev.js",
+    "name": "dev"
+  },
+  "_environment.js": {
+    "file": "chunks/environment.js",
+    "name": "environment"
+  },
+  "_exports.js": {
+    "file": "chunks/exports.js",
+    "name": "exports"
+  },
+  "_index-server.js": {
+    "file": "chunks/index-server.js",
+    "name": "index-server",
+    "imports": [
+      "_dev.js"
+    ]
+  },
+  "_index-server2.js": {
+    "file": "chunks/index-server2.js",
+    "name": "index-server",
+    "imports": [
+      "_dev.js"
+    ]
+  },
+  "_internal.js": {
+    "file": "chunks/internal.js",
+    "name": "internal",
+    "imports": [
+      "_index-server.js",
+      "_environment.js",
+      "_dev.js"
+    ]
+  },
+  "_sessions.js": {
+    "file": "chunks/sessions.js",
+    "name": "sessions"
+  },
+  "_shared.js": {
+    "file": "chunks/shared.js",
+    "name": "shared",
+    "imports": [
+      "_index-server.js"
+    ]
+  },
+  "_socket-client.js": {
+    "file": "chunks/socket-client.js",
+    "name": "socket-client"
+  },
+  "_utils.js": {
+    "file": "chunks/utils.js",
+    "name": "utils",
+    "imports": [
+      "_environment.js",
+      "_shared.js"
+    ]
+  },
+  "node_modules/@sveltejs/kit/src/runtime/app/server/remote/index.js": {
+    "file": "remote-entry.js",
+    "name": "remote-entry",
+    "src": "node_modules/@sveltejs/kit/src/runtime/app/server/remote/index.js",
+    "isEntry": true,
+    "imports": [
+      "_environment.js",
+      "_utils.js",
+      "_shared.js"
+    ]
+  },
+  "node_modules/@sveltejs/kit/src/runtime/components/svelte-5/error.svelte": {
+    "file": "entries/fallbacks/error.svelte.js",
+    "name": "entries/fallbacks/error.svelte",
+    "src": "node_modules/@sveltejs/kit/src/runtime/components/svelte-5/error.svelte",
+    "isEntry": true,
+    "imports": [
+      "_index-server.js",
+      "_environment.js",
+      "_internal.js",
+      "_exports.js",
+      "_shared.js",
+      "_dev.js",
+      "_index-server2.js"
+    ]
+  },
+  "node_modules/@sveltejs/kit/src/runtime/server/index.js": {
+    "file": "index.js",
+    "name": "index",
+    "src": "node_modules/@sveltejs/kit/src/runtime/server/index.js",
+    "isEntry": true,
+    "imports": [
+      "_environment.js",
+      "_internal.js",
+      "_utils.js",
+      "_exports.js",
+      "_shared.js",
+      "_dev.js",
+      "_index-server2.js"
+    ]
+  },
+  "src/routes/(app)/+layout.svelte": {
+    "file": "entries/pages/(app)/_layout.svelte.js",
+    "name": "entries/pages/(app)/_layout.svelte",
+    "src": "src/routes/(app)/+layout.svelte",
+    "isEntry": true,
+    "imports": [
+      "_dev.js"
+    ]
+  },
+  "src/routes/(app)/+layout.ts": {
+    "file": "entries/pages/(app)/_layout.ts.js",
+    "name": "entries/pages/(app)/_layout.ts",
+    "src": "src/routes/(app)/+layout.ts",
+    "isEntry": true
+  },
+  "src/routes/(app)/display/+error.svelte": {
+    "file": "entries/pages/(app)/display/_error.svelte.js",
+    "name": "entries/pages/(app)/display/_error.svelte",
+    "src": "src/routes/(app)/display/+error.svelte",
+    "isEntry": true,
+    "imports": [
+      "_dev.js"
+    ],
+    "css": [
+      "_app/immutable/assets/_error.DzI2Nn0R.css"
+    ]
+  },
+  "src/routes/(app)/display/+page.server.ts": {
+    "file": "entries/pages/(app)/display/_page.server.ts.js",
+    "name": "entries/pages/(app)/display/_page.server.ts",
+    "src": "src/routes/(app)/display/+page.server.ts",
+    "isEntry": true
+  },
+  "src/routes/(app)/display/+page.svelte": {
+    "file": "entries/pages/(app)/display/_page.svelte.js",
+    "name": "entries/pages/(app)/display/_page.svelte",
+    "src": "src/routes/(app)/display/+page.svelte",
+    "isEntry": true,
+    "imports": [
+      "_index-server.js",
+      "_dev.js",
+      "_index-server2.js",
+      "_socket-client.js"
+    ],
+    "css": [
+      "_app/immutable/assets/_page.BkpNHW-0.css"
+    ]
+  },
+  "src/routes/(app)/mobile/+page.server.ts": {
+    "file": "entries/pages/(app)/mobile/_page.server.ts.js",
+    "name": "entries/pages/(app)/mobile/_page.server.ts",
+    "src": "src/routes/(app)/mobile/+page.server.ts",
+    "isEntry": true
+  },
+  "src/routes/(app)/mobile/+page.svelte": {
+    "file": "entries/pages/(app)/mobile/_page.svelte.js",
+    "name": "entries/pages/(app)/mobile/_page.svelte",
+    "src": "src/routes/(app)/mobile/+page.svelte",
+    "isEntry": true,
+    "imports": [
+      "_index-server.js",
+      "_dev.js",
+      "_index-server2.js",
+      "_socket-client.js"
+    ],
+    "css": [
+      "_app/immutable/assets/_page.BDlJQbW9.css"
+    ]
+  },
+  "src/routes/+layout.svelte": {
+    "file": "entries/pages/_layout.svelte.js",
+    "name": "entries/pages/_layout.svelte",
+    "src": "src/routes/+layout.svelte",
+    "isEntry": true,
+    "imports": [
+      "_dev.js"
+    ],
+    "css": [
+      "_app/immutable/assets/_layout.B4YUQ93i.css"
+    ]
+  },
+  "src/routes/+page.svelte": {
+    "file": "entries/pages/_page.svelte.js",
+    "name": "entries/pages/_page.svelte",
+    "src": "src/routes/+page.svelte",
+    "isEntry": true,
+    "imports": [
+      "_dev.js"
+    ],
+    "css": [
+      "_app/immutable/assets/_page.DepZKevu.css"
+    ]
+  },
+  "src/routes/+page.ts": {
+    "file": "entries/pages/_page.ts.js",
+    "name": "entries/pages/_page.ts",
+    "src": "src/routes/+page.ts",
+    "isEntry": true
+  },
+  "src/routes/api/sessions/+server.ts": {
+    "file": "entries/endpoints/api/sessions/_server.ts.js",
+    "name": "entries/endpoints/api/sessions/_server.ts",
+    "src": "src/routes/api/sessions/+server.ts",
+    "isEntry": true,
+    "imports": [
+      "_sessions.js"
+    ]
+  },
+  "src/routes/api/sessions/[id]/+server.ts": {
+    "file": "entries/endpoints/api/sessions/_id_/_server.ts.js",
+    "name": "entries/endpoints/api/sessions/_id_/_server.ts",
+    "src": "src/routes/api/sessions/[id]/+server.ts",
+    "isEntry": true,
+    "imports": [
+      "_sessions.js"
+    ]
+  },
+  "src/routes/api/sessions/new/+server.ts": {
+    "file": "entries/endpoints/api/sessions/new/_server.ts.js",
+    "name": "entries/endpoints/api/sessions/new/_server.ts",
+    "src": "src/routes/api/sessions/new/+server.ts",
+    "isEntry": true,
+    "imports": [
+      "_sessions.js"
+    ]
+  }
+}

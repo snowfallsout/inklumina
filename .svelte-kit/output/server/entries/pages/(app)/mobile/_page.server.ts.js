@@ -1,0 +1,74 @@
+//#region src/lib/features/mobile/data.ts
+var mobilePageData = {
+	copy: {
+		title: "Colorfield",
+		subtitle: "MBTI · Particle Art · Live",
+		descriptionLines: ["你的 MBTI 将化作一簇专属色彩的粒子", "汇入现场大屏的流体画布"],
+		startButton: "开始加入 →",
+		hTitle: "Inside Out the Color",
+		hSub: "选择你的 MBTI",
+		submitIdle: "加入画布",
+		submitLoading: "色彩解析中…",
+		saveHint: "长按图片保存",
+		cardKicker: "INSIDE OUT THE COLOR",
+		cardKickerSub: "Sixteen Personalities",
+		resultDefaultName: "—",
+		resultDefaultSubtitle: "Select four dimensions",
+		resultTagline: "INSIDE OUT THE COLOR",
+		resultSite: "colorfield.live",
+		resultHandle: "@snowfallsout"
+	},
+	mbti: {
+		colors: {
+			INTJ: "#4B0082",
+			INTP: "#6495ED",
+			ENTJ: "#FF4500",
+			ENTP: "#FF00FF",
+			INFJ: "#00A86B",
+			INFP: "#DA70D6",
+			ENFJ: "#FC913A",
+			ENFP: "#92FE9D",
+			ISTJ: "#95A5A6",
+			ISFJ: "#BDB76B",
+			ESTJ: "#4682B4",
+			ESFJ: "#FFB6C1",
+			ISTP: "#4A4A4A",
+			ISFP: "#00CED1",
+			ESTP: "#FF2400",
+			ESFP: "#7B68EE"
+		},
+		names: {
+			INTJ: "战略家",
+			INTP: "逻辑学家",
+			ENTJ: "指挥官",
+			ENTP: "辩论家",
+			INFJ: "提倡者",
+			INFP: "调停者",
+			ENFJ: "主人公",
+			ENFP: "竞选者",
+			ISTJ: "检察官",
+			ISFJ: "守护者",
+			ESTJ: "总经理",
+			ESFJ: "执政官",
+			ISTP: "鉴赏家",
+			ISFP: "探险家",
+			ESTP: "企业家",
+			ESFP: "表演者"
+		},
+		letterColors: {
+			E: "#FF6B4A",
+			I: "#5B5B9F",
+			N: "#9B6BDB",
+			S: "#4AB8A0",
+			T: "#4A7BD6",
+			F: "#FF6FA3",
+			J: "#F5A94A",
+			P: "#7DD87D"
+		}
+	}
+};
+//#endregion
+//#region src/routes/(app)/mobile/+page.server.ts
+var load = () => ({ payload: mobilePageData });
+//#endregion
+export { load };

@@ -7,8 +7,6 @@
 	<p>{$displayState.header.subtitle}</p>
 </div>
 
-<div id="emotion-badge">{$displayState.header.emotionBadge}</div>
-
 <button
 	id="cam-toggle"
 	type="button"
@@ -17,8 +15,6 @@
 >
 	{$displayState.cameraEnabled ? $displayState.header.cameraToggleOn : $displayState.header.cameraToggleOff}
 </button>
-
-<div id="hand-badge">{$displayState.header.handBadge}</div>
 
 <div id="session-name">{$displayState.sessionName}</div>
 
@@ -48,26 +44,6 @@
 		margin-top: 5px;
 		text-transform: uppercase;
 	}
-
-	#emotion-badge {
-		position: absolute;
-		top: 28px;
-		left: 28px;
-		color: rgba(30,40,60,0.28);
-		font-size: 10px;
-		letter-spacing: 2px;
-		text-transform: uppercase;
-		transition: color 0.5s;
-		z-index: 22; /* keep badge above canvas/ui layers */
-		display: inline-block;
-		white-space: nowrap;
-		max-width: 40vw;
-		overflow: hidden;
-		text-overflow: ellipsis;
-	}
-
-	:global(#emotion-badge.smile) { color: #B08800; }
-	:global(#emotion-badge.sad) { color: #4169E1; }
 
 	#session-name {
 		position: absolute;
@@ -103,15 +79,4 @@
 
 	#cam-toggle:hover { background: rgba(255,255,255,0.6); color: rgba(30,40,60,0.85); }
 	:global(#cam-toggle.on) { color: rgba(30,40,60,0.85); border-color: rgba(100,140,255,0.5); }
-
-	#hand-badge {
-		position: absolute;
-		top: 54px;
-		left: 28px;
-		color: rgba(30,40,60,0.28);
-		font-size: 10px;
-		letter-spacing: 2px;
-		text-transform: uppercase;
-		transition: color 0.3s;
-	}
 </style>

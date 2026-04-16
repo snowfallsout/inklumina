@@ -1,5 +1,5 @@
 import QRCode from 'qrcode';
-import { buildJoinUrl, STORAGE_KEY } from '../session';
+import { buildJoinUrl, STORAGE_KEY } from './utils';
 
 export function restoreSavedIp(): void {
 	const saved = window.localStorage.getItem(STORAGE_KEY);
