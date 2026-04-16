@@ -10,7 +10,7 @@ return {
 	assets: new Set(["mediapipe/blaze_face_full_range_sparse.tflite","mediapipe/face_landmarker.task","mediapipe/gesture_recognizer.task","mediapipe/hand_landmarker.task","mediapipe/hands_solution_packed_assets.data","mediapipe/hands_solution_simd_wasm_bin.wasm","mediapipe/vision_wasm_internal.js","mediapipe/vision_wasm_internal.wasm","mediapipe/vision_wasm_module_internal.js","mediapipe/vision_wasm_module_internal.wasm","mediapipe/vision_wasm_nosimd_internal.js","mediapipe/vision_wasm_nosimd_internal.wasm","robots.txt","server.js"]),
 	mimeTypes: {".wasm":"application/wasm",".js":"text/javascript",".txt":"text/plain"},
 	_: {
-		client: {start:"_app/immutable/entry/start.BDll3Nmo.js",app:"_app/immutable/entry/app.DcYR4jYI.js",imports:["_app/immutable/entry/start.BDll3Nmo.js","_app/immutable/chunks/VLHaPjam.js","_app/immutable/chunks/BbFoXf0W.js","_app/immutable/chunks/Tk1NZ0p8.js","_app/immutable/entry/app.DcYR4jYI.js","_app/immutable/chunks/BbFoXf0W.js","_app/immutable/chunks/DxLN9Q9A.js","_app/immutable/chunks/v_jBEYI6.js"],stylesheets:[],fonts:[],uses_env_dynamic_public:false},
+		client: {start:"_app/immutable/entry/start.Dfc4IvKx.js",app:"_app/immutable/entry/app.CiIXnbzk.js",imports:["_app/immutable/entry/start.Dfc4IvKx.js","_app/immutable/chunks/C4UV9N8s.js","_app/immutable/chunks/BbFoXf0W.js","_app/immutable/chunks/Tk1NZ0p8.js","_app/immutable/entry/app.CiIXnbzk.js","_app/immutable/chunks/BbFoXf0W.js","_app/immutable/chunks/DxLN9Q9A.js","_app/immutable/chunks/v_jBEYI6.js"],stylesheets:[],fonts:[],uses_env_dynamic_public:false},
 		nodes: [
 			__memo(() => import('./nodes/0.js')),
 			__memo(() => import('./nodes/1.js')),
