@@ -9,11 +9,8 @@ const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: '*' } });
 
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')));
-
-// Route shortcuts
-app.get('/', (req, res) => res.redirect('/display.html'));
-app.get('/join', (req, res) => res.redirect('/mobile.html'));
+const DIST_DIR = path.join(__dirname, 'dist');
+app.use(express.static(DIST_DIR));
 
 // ── MBTI Data ─────────────────────────────────────────────────────────────────
 const MBTI_COLORS = {
@@ -36,6 +33,14 @@ const MBTI_LUCKY_PHRASES = {
   ISTJ: '蓝海稳浪', ISFJ: '碧玉守护', ESTJ: '烈红征途', ESFJ: '樱粉温暖',
   ISTP: '银弦孤鸣', ISFP: '兰紫自由', ESTP: '电光闪耀', ESFP: '霓虹盛放',
 };
+
+app.get('/api/meta', (req, res) => {
+  res.json({
+    colors: MBTI_COLORS,
+    names: MBTI_NAMES,
+    luckyPhrases: MBTI_LUCKY_PHRASES,
+  });
+});
 
 // ── Sessions (活动场次) ──────────────────────────────────────────────────────
 const SESSIONS_FILE = path.join(__dirname, 'sessions.json');
@@ -124,6 +129,10 @@ app.delete('/api/sessions/:id', (req, res) => {
   res.json({ ok: true });
 });
 
+app.get('*', (req, res) => {
+  res.sendFile(path.join(DIST_DIR, 'index.html'));
+});
+
 // ── Socket.IO ─────────────────────────────────────────────────────────────────
 io.on('connection', (socket) => {
   // Sync new client with active session
@@ -168,8 +177,8 @@ server.listen(PORT, '0.0.0.0', () => {
   console.log('\n╔══════════════════════════════════════╗');
   console.log('║         COLORFIELD  SERVER            ║');
   console.log('╚══════════════════════════════════════╝');
-  console.log(`\n  Display  →  http://localhost:${PORT}/display.html`);
-  console.log(`  Mobile   →  http://${ip}:${PORT}/mobile.html`);
+  console.log(`\n  Display  →  http://localhost:${PORT}/`);
+  console.log(`  Mobile   →  http://${ip}:${PORT}/join`);
   console.log(`\n  Put the mobile URL / QR on the big screen!\n`);
 });
 
