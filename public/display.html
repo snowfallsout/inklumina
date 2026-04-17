@@ -1178,7 +1178,7 @@ function _initHands() {
     maxNumHands: 2,
     minDetectionConfidence: 0.7,
     minTrackingConfidence: 0.6,
-    modelComplexity: 1,   // 0=lite速度快, 1=full更准
+    modelComplexity: 0,   // 0=lite速度快, 1=full更准
   });
   _hands.onResults(res => {
     handsResults      = res;
