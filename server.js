@@ -15,6 +15,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', (req, res) => res.redirect('/display.html'));
 app.get('/join', (req, res) => res.redirect('/mobile.html'));
 
+// serve root-level app.html so release users can open /app.html directly
+app.get('/app.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'app.html'));
+});
+
 // ── MBTI Data ─────────────────────────────────────────────────────────────────
 const MBTI_COLORS = {
   INTJ: '#4B0082', INTP: '#6495ED', ENTJ: '#FF4500', ENTP: '#FF00FF',
