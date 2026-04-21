@@ -410,42 +410,155 @@ body {
   background-repeat: repeat;
 }
 
-/* Corner QR code block */
-#corner-qr-box {
-  margin-top: 8px;
-  display: inline-block;
+
+/* ── Start overlay ────────────────────────────── */
+#start-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(240,245,255,0.92), rgba(230,235,255,0.85));
+  backdrop-filter: blur(32px);
+  pointer-events: all;
+}
+#start-btn {
+  background: linear-gradient(135deg, rgba(255,255,255,0.85), rgba(200,210,255,0.55));
+  border: 1.5px solid rgba(140,160,255,0.55);
+  border-radius: 60px;
+  padding: 22px 64px;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: rgba(30,40,120,0.85);
+  cursor: pointer;
+  box-shadow: 0 0 0 1px rgba(120,140,255,0.18), 0 8px 40px rgba(80,100,255,0.12),
+              0 0 60px rgba(100,120,255,0.08), inset 0 0 20px rgba(255,255,255,0.5);
+  transition: box-shadow .3s, transform .15s, background .3s;
   text-align: center;
+  line-height: 1.7;
 }
-/* qrcodejs appends both a <canvas> and an <img> fallback — show only canvas */
-#corner-qr-box canvas {
-  display: block !important;
-  background: #fff;
-  border-radius: 6px;
-  padding: 5px;
-  border: 1px solid rgba(200,210,230,0.45);
-  box-shadow: 0 2px 8px rgba(31,38,135,0.08);
-  width: 120px !important;
-  height: 120px !important;
+#start-btn span { font-size: 10px; letter-spacing: 4px; opacity: 0.6; display: block; }
+#start-btn:hover {
+  box-shadow: 0 0 0 1px rgba(120,140,255,0.35), 0 12px 48px rgba(80,100,255,0.2),
+              0 0 80px rgba(120,140,255,0.15), inset 0 0 24px rgba(255,255,255,0.55);
+  transform: scale(1.025);
 }
-#corner-qr-box img {
-  display: none !important;
+#start-btn:active { transform: scale(0.97); }
+
+/* ── MBTI selector panel ──────────────────────── */
+#mbti-toggle {
+  position: absolute;
+  right: 22px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: linear-gradient(135deg, rgba(255,255,255,0.38), rgba(200,210,255,0.22));
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(160,180,255,0.45);
+  border-radius: 30px;
+  color: rgba(30,40,120,0.65);
+  font-size: 10px;
+  letter-spacing: 3px;
+  padding: 9px 18px;
+  cursor: pointer;
+  pointer-events: all;
+  text-transform: uppercase;
+  transition: background .2s, color .2s, box-shadow .2s;
+  writing-mode: vertical-rl;
+  box-shadow: 0 0 20px rgba(100,120,255,0.08), inset 0 0 8px rgba(255,255,255,0.3);
 }
-#corner-qr-url {
-  font-size: 9px;
-  color: rgba(30,40,60,0.4);
-  letter-spacing: 0.5px;
-  margin-top: 4px;
-  word-break: break-all;
-  max-width: 120px;
+#mbti-toggle:hover {
+  background: rgba(255,255,255,0.6);
+  color: rgba(30,40,120,0.9);
+  box-shadow: 0 0 30px rgba(100,120,255,0.18), inset 0 0 12px rgba(255,255,255,0.4);
 }
-#corner-qr-hint {
-  font-size: 9px;
-  color: rgba(30,40,60,0.35);
-  letter-spacing: 1px;
-  margin-top: 6px;
-  max-width: 130px;
-  line-height: 1.6;
+#mbti-panel {
+  position: fixed;
+  right: 72px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+  background: linear-gradient(135deg, rgba(255,255,255,0.42), rgba(220,228,255,0.28));
+  backdrop-filter: blur(28px);
+  border: 1px solid rgba(180,200,255,0.5);
+  border-radius: 22px;
+  padding: 22px 18px 18px;
+  width: 200px;
+  box-shadow: 0 8px 40px rgba(60,80,200,0.1), 0 0 60px rgba(100,120,255,0.06),
+              inset 0 0 16px rgba(255,255,255,0.35);
+  pointer-events: all;
+  transition: opacity .3s, transform .3s;
 }
+#mbti-panel.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-50%) translateX(20px);
+}
+.mbti-panel-header {
+  font-size: 8px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(30,40,120,0.45);
+  text-align: center;
+  margin-bottom: 14px;
+}
+.dim-row {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+.dim-btn {
+  flex: 1;
+  padding: 0;
+  height: 52px;
+  background: rgba(255,255,255,0.55);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(200,210,255,0.7);
+  border-radius: 12px;
+  color: rgba(30,40,80,0.85);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  transition: background .2s, border-color .2s, transform .12s, box-shadow .2s;
+  box-shadow: 0 2px 8px rgba(60,80,180,0.05), inset 0 0 0 1px rgba(255,255,255,0.5);
+  pointer-events: all;
+}
+.dim-btn .big { font-size: 17px; font-weight: 700; line-height: 1; letter-spacing: 0.5px; }
+.dim-btn .hint { font-size: 7px; font-weight: 400; letter-spacing: 1.2px; color: rgba(30,40,80,0.5); text-transform: uppercase; }
+.dim-btn:active { transform: scale(0.94); }
+.dim-btn.sel {
+  background: rgba(30,40,100,0.9);
+  border-color: rgba(60,80,200,0.8);
+  box-shadow: 0 4px 16px rgba(30,40,180,0.22), 0 0 20px rgba(80,100,255,0.15);
+  color: #fff;
+}
+.dim-btn.sel .big { color: #fff; }
+.dim-btn.sel .hint { color: rgba(255,255,255,0.6); }
+#mbti-panel .btn {
+  background: rgba(30,40,100,0.85);
+  border: none;
+  border-radius: 30px;
+  padding: 12px 28px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #fff;
+  cursor: pointer;
+  width: 100%;
+  transition: background .2s, box-shadow .2s, transform .12s;
+  box-shadow: 0 4px 18px rgba(30,40,180,0.18);
+  pointer-events: all;
+}
+#mbti-panel .btn:hover { background: rgba(30,40,130,0.95); box-shadow: 0 6px 24px rgba(30,40,180,0.28); }
+#mbti-panel .btn:active { transform: scale(0.97); }
+#mbti-panel .btn:disabled { opacity: 0.4; cursor: not-allowed; pointer-events: none; }
+#mbti-panel, #mbti-toggle, #start-overlay, #start-btn { pointer-events: auto; }
 </style>
 </head>
 <body>
@@ -479,14 +592,6 @@ body {
       Participants
       <strong id="total-num">0</strong>
     </div>
-    <div id="join-block">
-      <b>SCAN TO JOIN</b>
-      <div id="corner-qr-box">
-        <div id="corner-qr"></div>
-        <div id="corner-qr-url"></div>
-        <div id="corner-qr-hint">在活动管理中<br>设置局域网 IP</div>
-      </div>
-    </div>
   </div>
 
   <div id="session-name"></div>
@@ -495,6 +600,36 @@ body {
     Try smiling &nbsp;·&nbsp; Pinch your fingers and move your hands
   </div>
   <button id="session-btn" onclick="openSessionPanel()">⊕ 新场次 / 历史</button>
+
+  <!-- MBTI toggle button & floating selector panel -->
+  <button id="mbti-toggle" onclick="toggleMBTIPanel()">✦ MBTI</button>
+  <div id="mbti-panel" class="hidden">
+    <div class="mbti-panel-header">Inside Out the Color</div>
+    <div class="dim-row">
+      <button class="dim-btn" data-d="0" onclick="pick(0,'E',this)"><span class="big">E</span><span class="hint">Extrovert</span></button>
+      <button class="dim-btn" data-d="0" onclick="pick(0,'I',this)"><span class="big">I</span><span class="hint">Introvert</span></button>
+    </div>
+    <div class="dim-row">
+      <button class="dim-btn" data-d="1" onclick="pick(1,'N',this)"><span class="big">N</span><span class="hint">Intuitive</span></button>
+      <button class="dim-btn" data-d="1" onclick="pick(1,'S',this)"><span class="big">S</span><span class="hint">Sensing</span></button>
+    </div>
+    <div class="dim-row">
+      <button class="dim-btn" data-d="2" onclick="pick(2,'T',this)"><span class="big">T</span><span class="hint">Thinking</span></button>
+      <button class="dim-btn" data-d="2" onclick="pick(2,'F',this)"><span class="big">F</span><span class="hint">Feeling</span></button>
+    </div>
+    <div class="dim-row">
+      <button class="dim-btn" data-d="3" onclick="pick(3,'J',this)"><span class="big">J</span><span class="hint">Judging</span></button>
+      <button class="dim-btn" data-d="3" onclick="pick(3,'P',this)"><span class="big">P</span><span class="hint">Perceiving</span></button>
+    </div>
+    <div style="text-align:center;margin-top:12px">
+      <button class="btn" id="submit-btn" disabled onclick="submitMBTI()">加入画布</button>
+    </div>
+  </div>
+</div>
+
+<!-- Start camera overlay -->
+<div id="start-overlay">
+  <button id="start-btn" onclick="startCamera()">▶ 开启摄像头<span>Start Camera</span></button>
 </div>
 
 <!-- Session manager panel -->
@@ -507,20 +642,6 @@ body {
       <button class="sp-btn" onclick="createNewSession()">开始新场次</button>
     </div>
 
-    <!-- Mobile join QR -->
-    <div style="margin-top:18px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.15)">
-      <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px">
-        <input id="sp-ip-input" type="text"
-          placeholder="PC 局域网 IP（如 192.168.0.68）"
-          style="flex:1;padding:8px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.25);background:rgba(0,0,0,0.25);color:#fff;font-size:12px;outline:none">
-        <button class="sp-btn" style="padding:8px 14px;font-size:12px" onclick="generateJoinQR()">生成二维码</button>
-      </div>
-      <div id="sp-qr-wrap" style="display:none;text-align:center;padding:14px;background:rgba(255,255,255,0.92);border-radius:10px">
-        <div id="sp-qr" style="display:inline-block"></div>
-        <div id="sp-qr-url" style="margin-top:8px;font-size:11px;color:#333;word-break:break-all;letter-spacing:0.5px"></div>
-        <div style="margin-top:4px;font-size:10px;color:#888;letter-spacing:2px">SCAN TO JOIN · 手机扫码加入</div>
-      </div>
-    </div>
     <div id="sp-history-title">历史记录</div>
     <div id="sp-history-list">
       <div style="color:rgba(255,255,255,0.2);font-size:12px;padding:16px 0">暂无历史记录</div>
@@ -528,9 +649,7 @@ body {
   </div>
 </div>
 
-<!-- Socket.io & MediaPipe -->
-<script src="/socket.io/socket.io.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<!-- MediaPipe -->
 <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh@0.4/face_mesh.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4/hands.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.3/camera_utils.js" crossorigin="anonymous"></script>
@@ -553,6 +672,13 @@ const MBTI_NAMES = {
   ISTJ:'检察官', ISFJ:'守护者', ESTJ:'总经理', ESFJ:'执政官',
   ISTP:'鉴赏家', ISFP:'探险家', ESTP:'企业家', ESFP:'表演者',
 };
+const MBTI_LUCKY_PHRASES = {
+  INTJ:'深邃星河', INTP:'量子涟漪', ENTJ:'赤焰烈炬', ENTP:'橙光裂变',
+  INFJ:'紫境幽光', INFP:'蔷薇共鸣', ENFJ:'黄金旋律', ENFP:'荧光奇境',
+  ISTJ:'蓝海稳浪', ISFJ:'碧玉守护', ESTJ:'烈红征途', ESFJ:'樱粉温暖',
+  ISTP:'银弦孤鸣', ISFP:'兰紫自由', ESTP:'电光闪耀', ESFP:'霓虹盛放',
+};
+const LETTER_COLORS = {E:'#FF6B4A',I:'#5B5B9F',N:'#9B6BDB',S:'#4AB8A0',T:'#4A7BD6',F:'#FF6FA3',J:'#F5A94A',P:'#7DD87D'};
 const MBTI_ORDER = [
   'INTJ','INTP','ENTJ','ENTP',
   'INFJ','INFP','ENFJ','ENFP',
@@ -1307,48 +1433,62 @@ function updateEmotionBadge() {
 }
 
 requestAnimationFrame(_processFrame);  // start loop (paused until _processing = true)
-setupCamera();
+// Camera starts on user click via startCamera() — see #start-overlay
 
-// ── Socket.IO ──────────────────────────────────────────────────────────────────
-const socket     = io();
+// ── Local state (replaces Socket.IO) ──────────────────────────────────────────
 const mbtiCounts = {};
+let _localSession = {
+  id: Date.now().toString(36),
+  name: '默认活动',
+  createdAt: new Date().toISOString(),
+  counts: {},
+  total: 0,
+};
+const _sessionHistory = [];
+renderLegend();
 
-socket.on('state', data => {
-  Object.assign(mbtiCounts, data.counts || {});
-  renderLegend();
-  if (data.session) setSessionName(data.session.name);
-});
+// ── Start camera ───────────────────────────────────────────────────────────────
+function startCamera() {
+  document.getElementById('start-overlay').style.display = 'none';
+  setupCamera();
+}
 
-socket.on('spawn_particles', data => {
-  const { mbti, color, counts, total, nickname } = data;
-  Object.assign(mbtiCounts, counts || {});
+// ── MBTI selector logic ────────────────────────────────────────────────────────
+const sel = [null, null, null, null];
+
+function toggleMBTIPanel() {
+  document.getElementById('mbti-panel').classList.toggle('hidden');
+}
+
+function pick(dim, val, btn) {
+  document.querySelectorAll(`[data-d="${dim}"]`).forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+  sel[dim] = val;
+  document.getElementById('submit-btn').disabled = !sel.every(Boolean);
+}
+
+function submitMBTI() {
+  if (!sel.every(Boolean)) return;
+  const mbti    = sel.join('');
+  const color    = MBTI_COLORS[mbti];
+  const nickname = MBTI_NAMES[mbti];
+  mbtiCounts[mbti] = (mbtiCounts[mbti] || 0) + 1;
+  _localSession.counts[mbti] = mbtiCounts[mbti];
+  _localSession.total++;
   spawnMBTI(mbti, color);
   renderLegend();
-  document.getElementById('total-num').textContent = total || Object.values(mbtiCounts).reduce((a,b)=>a+b,0);
+  document.getElementById('total-num').textContent =
+    Object.values(mbtiCounts).reduce((a, b) => a + b, 0);
   showToast(`✦ ${mbti} ${nickname} joined`, color);
-  if (particles.length > 0) {
-    document.getElementById('waiting').style.display = 'none';
-  }
-});
+  document.getElementById('waiting').style.display = 'none';
+  _resetSelector();
+}
 
-// When a new session starts, reset the canvas and counts
-socket.on('session_reset', data => {
-  // Clear all MBTI counts
-  for (const k of Object.keys(mbtiCounts)) delete mbtiCounts[k];
-  // Remove all MBTI particles (keep ambient)
-  for (const mbti of Object.keys(mbtiParticles)) {
-    for (const p of mbtiParticles[mbti]) {
-      const idx = particles.indexOf(p);
-      if (idx !== -1) particles.splice(idx, 1);
-    }
-    delete mbtiParticles[mbti];
-  }
-  renderLegend();
-  document.getElementById('total-num').textContent = '0';
-  document.getElementById('waiting').style.display = '';
-  if (data.session) setSessionName(data.session.name);
-  showToast('✦ 新场次已开始', '#ffffff');
-});
+function _resetSelector() {
+  sel.fill(null);
+  document.querySelectorAll('.dim-btn').forEach(b => b.classList.remove('sel'));
+  document.getElementById('submit-btn').disabled = true;
+}
 
 // ── Legend ─────────────────────────────────────────────────────────────────────
 (function buildLegend() {
@@ -1612,7 +1752,7 @@ function loop() {
 
       // Bone connections
       ctx.beginPath();
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.6)';
+      ctx.strokeStyle = 'rgba(55, 55, 55, 0.2)';
       ctx.lineWidth   = 1.5;
       for (const [a, b] of HAND_CONNECTIONS) {
         ctx.moveTo(pts[a].x, pts[a].y);
@@ -1671,156 +1811,70 @@ function createNewSession() {
   const name = document.getElementById('sp-name-input').value.trim();
   if (!confirm(`开始新场次"${name || '新活动'}"？当前数据将存入历史记录。`)) return;
 
-  fetch('/api/sessions/new', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name }),
-  })
-    .then(r => r.json())
-    .then(data => {
-      if (data.ok) {
-        document.getElementById('sp-name-input').value = '';
-        // 新场次开始后，如果已填过 IP 就自动刷新二维码
-        const ipEl = document.getElementById('sp-ip-input');
-        if (ipEl && ipEl.value.trim()) generateJoinQR();
-        else closeSessionPanel();
-      }
-    })
-    .catch(e => alert('请求失败: ' + e.message));
-}
+  _sessionHistory.unshift({ ..._localSession, archivedAt: new Date().toISOString() });
+  _localSession = {
+    id: Date.now().toString(36),
+    name: name || '新活动',
+    createdAt: new Date().toISOString(),
+    counts: {},
+    total: 0,
+  };
 
-// ── Mobile join QR ─────────────────────────────────────────────────────────────
-// 根据 PC 在 WiFi 下的局域网 IP（如 192.168.0.68）生成手机可扫的链接
-// 手机必须和 PC 在同一 WiFi 下。IPv4 从 PowerShell `ipconfig` 的 WLAN 适配器读取
-function generateJoinQR() {
-  const raw = document.getElementById('sp-ip-input').value.trim();
-  if (!raw) { alert('请先填写 PC 的局域网 IPv4 地址（ipconfig → WLAN 适配器 IPv4 Address）'); return; }
-
-  // 允许用户直接粘完整 URL，或只粘 IP，或 IP:port
-  let host = raw.replace(/^https?:\/\//, '').replace(/\/.*$/, '');
-  if (!/^[\d.]+(:\d+)?$/.test(host)) {
-    alert('IP 格式看起来不对，示例：192.168.0.68  或  192.168.0.68:3000');
-    return;
-  }
-  // 自动带上当前端口（如果 PC 这个页面本身是 http://host:port 打开的，手机也走同端口）
-  if (!host.includes(':') && location.port) host = host + ':' + location.port;
-
-  const url = `http://${host}/mobile.html`;
-  try { localStorage.setItem('colorfield_pc_ip', raw); } catch(e){}
-
-  const wrap = document.getElementById('sp-qr-wrap');
-  const qrBox = document.getElementById('sp-qr');
-  qrBox.innerHTML = '';
-  // qrcodejs 需要一个空容器
-  new QRCode(qrBox, {
-    text: url,
-    width: 180,
-    height: 180,
-    colorDark: '#000',
-    colorLight: '#fff',
-    correctLevel: QRCode.CorrectLevel.M,
-  });
-  document.getElementById('sp-qr-url').textContent = url;
-  wrap.style.display = 'block';
-  refreshCornerQR();
-}
-
-// ── Corner QR (main screen, bottom-right) ──────────────────────────────────────
-// Reads the last-saved IP from localStorage and renders a small QR into #corner-qr.
-// Called on page load and whenever generateJoinQR() saves a new IP.
-function refreshCornerQR() {
-  const box   = document.getElementById('corner-qr');
-  const urlEl = document.getElementById('corner-qr-url');
-  const hint  = document.getElementById('corner-qr-hint');
-  if (!box) return;
-
-  let raw;
-  try { raw = localStorage.getItem('colorfield_pc_ip'); } catch(e) {}
-
-  if (!raw) {
-    box.innerHTML = '';
-    if (urlEl) urlEl.textContent = '';
-    if (hint)  hint.style.display = '';
-    return;
-  }
-
-  let host = raw.replace(/^https?:\/\//, '').replace(/\/.*$/, '');
-  if (!host.includes(':') && location.port) host = host + ':' + location.port;
-  const url = `http://${host}/mobile.html`;
-
-  box.innerHTML = '';
-  if (hint) hint.style.display = 'none';
-  new QRCode(box, {
-    text: url,
-    width: 120,
-    height: 120,
-    colorDark:  '#000',
-    colorLight: '#fff',
-    correctLevel: QRCode.CorrectLevel.M,
-  });
-  if (urlEl) urlEl.textContent = url;
-}
-
-// 打开面板时回填上次用的 IP
-(function restoreSavedIP(){
-  try {
-    const saved = localStorage.getItem('colorfield_pc_ip');
-    if (saved) {
-      const el = document.getElementById('sp-ip-input');
-      if (el) el.value = saved;
+  // Reset canvas state
+  for (const k of Object.keys(mbtiCounts)) delete mbtiCounts[k];
+  for (const mbti of Object.keys(mbtiParticles)) {
+    for (const p of mbtiParticles[mbti]) {
+      const i = particles.indexOf(p);
+      if (i !== -1) particles.splice(i, 1);
     }
-  } catch(e){}
-})();
-
-// 页面加载后立即渲染角落二维码（如果之前保存过 IP）
-refreshCornerQR();
+    delete mbtiParticles[mbti];
+  }
+  renderLegend();
+  document.getElementById('total-num').textContent = '0';
+  document.getElementById('waiting').style.display = '';
+  setSessionName(_localSession.name);
+  showToast('✦ 新场次已开始', '#ffffff');
+  document.getElementById('sp-name-input').value = '';
+  closeSessionPanel();
+}
 
 function loadSessionHistory() {
-  fetch('/api/sessions')
-    .then(r => r.json())
-    .then(data => {
-      const list = document.getElementById('sp-history-list');
-      // Update current session name display
-      if (data.active) setSessionName(data.active.name);
+  const list = document.getElementById('sp-history-list');
+  setSessionName(_localSession.name);
 
-      if (!data.history || data.history.length === 0) {
-        list.innerHTML = '<div style="color:rgba(30,40,60,0.3);font-size:12px;padding:16px 0">暂无历史记录</div>';
-        return;
-      }
-      list.innerHTML = data.history.map(s => {
-        const d = new Date(s.createdAt);
-        const dateStr = `${d.getMonth()+1}/${d.getDate()} ${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`;
-        return `
-          <div class="sp-row">
-            <div class="sp-row-info">
-              <div class="sp-row-name">${escHtml(s.name)}</div>
-              <div class="sp-row-meta">${dateStr} · ${s.total} 人参与</div>
-            </div>
-            <button class="sp-btn" onclick="viewSession('${s.id}')">查看</button>
-            <button class="sp-btn danger" onclick="deleteSession('${s.id}', this)">删除</button>
-          </div>`;
-      }).join('');
-    })
-    .catch(e => console.warn('Failed to load sessions:', e));
+  if (_sessionHistory.length === 0) {
+    list.innerHTML = '<div style="color:rgba(30,40,60,0.3);font-size:12px;padding:16px 0">暂无历史记录</div>';
+    return;
+  }
+  list.innerHTML = _sessionHistory.map(s => {
+    const d = new Date(s.createdAt);
+    const dateStr = `${d.getMonth()+1}/${d.getDate()} ${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`;
+    return `
+      <div class="sp-row">
+        <div class="sp-row-info">
+          <div class="sp-row-name">${escHtml(s.name)}</div>
+          <div class="sp-row-meta">${dateStr} · ${s.total} 人参与</div>
+        </div>
+        <button class="sp-btn" onclick="viewSession('${s.id}')">查看</button>
+        <button class="sp-btn danger" onclick="deleteSession('${s.id}', this)">删除</button>
+      </div>`;
+  }).join('');
 }
 
 function viewSession(id) {
-  fetch(`/api/sessions/${id}`)
-    .then(r => r.json())
-    .then(s => {
-      const lines = Object.entries(s.counts || {})
-        .sort((a, b) => b[1] - a[1])
-        .map(([m, n]) => `${m}: ${n}人`)
-        .join('\n');
-      alert(`${s.name}\n创建: ${new Date(s.createdAt).toLocaleString()}\n总人数: ${s.total}\n\n${lines || '无数据'}`);
-    });
+  const s = _sessionHistory.find(x => x.id === id);
+  if (!s) return;
+  const lines = Object.entries(s.counts || {})
+    .sort((a, b) => b[1] - a[1])
+    .map(([m, n]) => `${m}: ${n}人`)
+    .join('\n');
+  alert(`${s.name}\n创建: ${new Date(s.createdAt).toLocaleString()}\n总人数: ${s.total}\n\n${lines || '无数据'}`);
 }
 
 function deleteSession(id, btn) {
   if (!confirm('确认删除此历史记录？')) return;
-  fetch(`/api/sessions/${id}`, { method: 'DELETE' })
-    .then(r => r.json())
-    .then(d => { if (d.ok) btn.closest('.sp-row').remove(); });
+  const i = _sessionHistory.findIndex(x => x.id === id);
+  if (i !== -1) { _sessionHistory.splice(i, 1); btn.closest('.sp-row').remove(); }
 }
 
 function escHtml(s) {
