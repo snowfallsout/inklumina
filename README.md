@@ -1,12 +1,12 @@
-# Colorfield — 線上 Demo 🎨
+# inklumina — 線上 Demo 🎨
 
-👉 先看 Demo（不用安裝）：https://snowfallsout.github.io/colorfield/  
+👉 先看 Demo（不用安裝）：https://snowfallsout.github.io/inklumina/  
 
 這個 demo 是「純前端」的展示頁（相機/粒子效果），不會儲存任何數據或上傳資料。若你想在本機跑完整伺服器版本，請往下看操作指引。
 
 ---
 
-# Colorfield — 給零經驗使用者的完全操作指南 🎨🚀
+# inklumina — 給零經驗使用者的完全操作指南 🎨🚀
 
 這份 README 針對「完全沒有開發經驗的小白」撰寫，步驟非常詳細，示範如何：
 - 從 GitHub 網頁下載完整 repo ZIP（純 WebUI）⬇️  
@@ -31,7 +31,7 @@
 - 注意：某些瀏覽器對 file:// 開啟時會限制相機（getUserMedia）；如果你需要 camera 功能，請跟著「在本機啟動簡單靜態伺服器」步驟。
 
 步驟（從零開始）
-1. 打開瀏覽器，前往專案 GitHub 頁面（例如：https://github.com/snowfallsout/colorfield）  
+1. 打開瀏覽器，前往專案 GitHub 頁面（例如：https://github.com/snowfallsout/inklumina）  
 2. 在頁面右上或綠色按鈕附近，按「Code」 → 選「Download ZIP」：  
    - 點 Code 按鈕 → 選 Download ZIP → 下載到你的電腦。📥
 3. 解壓 ZIP 檔（在檔案總管 / Finder 上右鍵解壓）。📂
@@ -51,14 +51,14 @@
 - Windows / macOS / Linux 都適用（通常系統已有 Python）。
 步驟：
 1. 開啟「命令提示字元」或「終端機」。  
-2. 切換到剛剛解壓的資料夾（例如 Downloads/colorfield）：  
+2. 切換到剛剛解壓的資料夾（例如 Downloads/inklumina）：  
    - Windows:
      ```
-     cd C:\Users\<你的帳號>\Downloads\colorfield
+     cd C:\Users\<你的帳號>\Downloads\inklumina
      ```
    - macOS / Linux:
      ```
-     cd ~/Downloads/colorfield
+     cd ~/Downloads/inklumina
      ```
 3. 啟動簡單伺服器：
    - 若 Python 3：
@@ -91,7 +91,7 @@
 1. 開啟終端機 / 命令提示字元。  
 2. 進到專案資料夾（解壓後或 clone 後）：
    ```
-   cd C:\path\to\colorfield
+   cd C:\path\to\inklumina
    ```
 3. 安裝套件：
    ```
@@ -123,17 +123,17 @@
 步驟（簡潔）
 1. 在專案根目錄建立 Docker image（或使用已有人推的 image）：
    ```
-   docker build -t colorfield:latest .
+   docker build -t inklumina:latest .
    ```
 2. 啟動 container 並對應埠 3000：
    ```
-   docker run -d -p 3000:3000 --name colorfield colorfield:latest
+   docker run -d -p 3000:3000 --name inklumina inklumina:latest
    ```
 3. 打開瀏覽器：http://localhost:3000/display.html  
 4. 停止 container：
    ```
-   docker stop colorfield
-   docker rm colorfield
+   docker stop inklumina
+   docker rm inklumina
    ```
 
 ------------------------------------------------------------------
@@ -171,8 +171,8 @@ A: 打開 app.html 檔案 → 使用瀏覽器的「檢查（F12）」→ Console
 - 如果用 `npm start`：在終端機按 Ctrl+C 停止。  
 - 如果用 Docker：
   ```
-  docker stop colorfield
-  docker rm colorfield
+  docker stop inklumina
+  docker rm inklumina
   ```
 - 若你在瀏覽器允許了相機，關閉該分頁或在網站設定移除相機權限。
 
@@ -186,7 +186,7 @@ A: 打開 app.html 檔案 → 使用瀏覽器的「檢查（F12）」→ Console
 快速本地 http server（Python）
 ```bash
 # 進入解壓資料夾
-cd /path/to/colorfield
+cd /path/to/inklumina
 # 啟動
 python -m http.server 8000
 # 在瀏覽器打開
@@ -195,7 +195,7 @@ http://localhost:8000/app.html
 
 快速啟動 Node server
 ```bash
-cd /path/to/colorfield
+cd /path/to/inklumina
 npm ci
 npm start
 # 開啟 http://localhost:3000/display.html
@@ -203,7 +203,7 @@ npm start
 
 快速 build & run Docker
 ```bash
-docker build -t colorfield:latest .
-docker run -d -p 3000:3000 --name colorfield colorfield:latest
+docker build -t inklumina:latest .
+docker run -d -p 3000:3000 --name inklumina inklumina:latest
 # 開啟 http://localhost:3000/display.html
 ```
