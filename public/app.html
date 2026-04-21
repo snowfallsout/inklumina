@@ -135,13 +135,6 @@
       submitMbti(select.value);
     });
 
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'Enter' && document.activeElement !== document.getElementById('submit-btn') && document.activeElement !== select) {
-        event.preventDefault();
-        submitMbti(select.value);
-      }
-    });
-
     window.addEventListener('resize', resizeCanvas);
     window.addEventListener('storage', (e) => {
       if (e.key === STORAGE_KEY) {
@@ -262,6 +255,7 @@
       const raw = hex.replace('#', '');
       const full = raw.length === 3 ? raw.split('').map((c) => c + c).join('') : raw;
       const n = parseInt(full, 16);
+      if (Number.isNaN(n)) return `rgba(255,255,255,${alpha.toFixed(3)})`;
       const r = (n >> 16) & 255;
       const g = (n >> 8) & 255;
       const b = n & 255;
