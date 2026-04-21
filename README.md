@@ -1,8 +1,6 @@
 # Ink Lumina — 墨境流光
 
-## Online Demo 🎨
-
-👉 先看 Demo（不用安裝）：https://snowfallsout.github.io/inklumina/  
+## 🎨 Online Demo 👉 先看 Demo（不用安裝）：https://snowfallsout.github.io/inklumina/  
 
 這個 demo 是「純前端」的展示頁（相機/粒子效果），不會儲存任何數據或上傳資料。若你想在本機跑完整伺服器版本，請往下看操作指引。
 
