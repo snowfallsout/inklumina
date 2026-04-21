@@ -1,267 +1,268 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-Hant">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Colorfield Offline Demo</title>
-  <style>
-    :root {
-      --bg: #0f1221;
-      --panel: #171a2e;
-      --panel-2: #202542;
-      --text: #eef0ff;
-      --muted: #a7add3;
-      --accent: #7d87ff;
-      --border: rgba(255, 255, 255, 0.12);
-    }
-
-    * { box-sizing: border-box; }
-    html, body { margin: 0; height: 100%; font-family: Inter, Segoe UI, Roboto, Arial, sans-serif; background: radial-gradient(circle at 20% 0%, #1b2140 0%, var(--bg) 45%); color: var(--text); }
-
-    .layout { min-height: 100%; display: grid; grid-template-columns: minmax(300px, 1fr) minmax(300px, 420px); }
-
-    .stage { position: relative; min-height: 55vh; border-right: 1px solid var(--border); }
-    #canvas { width: 100%; height: 100%; display: block; cursor: crosshair; }
-    .stage-tip { position: absolute; left: 12px; bottom: 12px; font-size: 12px; color: #d5d9ff; background: rgba(0, 0, 0, 0.35); border: 1px solid var(--border); border-radius: 999px; padding: 6px 10px; }
-
-    .panel { padding: 18px; display: flex; flex-direction: column; gap: 12px; }
-    .card { background: linear-gradient(180deg, var(--panel), var(--panel-2)); border: 1px solid var(--border); border-radius: 14px; padding: 14px; }
-    h1 { margin: 0 0 6px; font-size: 20px; }
-    .badge { display: inline-block; margin-bottom: 8px; background: rgba(125, 135, 255, 0.2); color: #dce0ff; border: 1px solid rgba(125, 135, 255, 0.5); border-radius: 999px; padding: 4px 10px; font-size: 12px; }
-    p { margin: 4px 0; color: var(--muted); line-height: 1.45; }
-
-    form { display: grid; gap: 10px; }
-    label { font-size: 13px; color: #d6dbff; }
-    select, button { width: 100%; border-radius: 10px; border: 1px solid var(--border); font-size: 15px; }
-    select { background: #0e1330; color: var(--text); padding: 10px; }
-    button { background: var(--accent); color: white; padding: 10px; font-weight: 700; cursor: pointer; }
-    button:hover { filter: brightness(1.07); }
-    button:focus-visible, select:focus-visible { outline: 2px solid #c7ccff; outline-offset: 2px; }
-
-    .meta { display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: 14px; }
-    .pill { background: rgba(255, 255, 255, 0.08); border: 1px solid var(--border); border-radius: 999px; padding: 5px 10px; }
-    .lucky { min-height: 24px; color: #ffe8b0; }
-
-    .counts { max-height: 38vh; overflow: auto; }
-    .row { display: grid; grid-template-columns: 62px 1fr auto; align-items: center; gap: 10px; padding: 7px 0; border-bottom: 1px dashed rgba(255, 255, 255, 0.09); }
-    .swatch { width: 12px; height: 12px; border-radius: 50%; display: inline-block; margin-right: 6px; border: 1px solid rgba(255,255,255,.5); vertical-align: middle; }
-    .muted { color: var(--muted); }
-
-    @media (max-width: 980px) {
-      .layout { grid-template-columns: 1fr; }
-      .stage { min-height: 42vh; border-right: 0; border-bottom: 1px solid var(--border); }
-    }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Colorfield — Offline Demo (Virtual Socket, No State)</title>
+<style>
+  :root { --bg:#071021; --panel:#0f1724; --muted:#9aa4b2; --accent:#7b61ff; color-scheme: dark; }
+  html,body{height:100%;margin:0;font-family:system-ui,Segoe UI,Roboto,"Noto Sans",Arial;background:var(--bg);color:#eaf0ff}
+  .app{display:flex;gap:12px;height:100vh;padding:12px;box-sizing:border-box}
+  .left{flex:1;background:linear-gradient(180deg,#07101a,#071422);border-radius:8px;overflow:hidden;position:relative}
+  canvas{width:100%;height:100%;display:block;cursor:grab}
+  .right{width:340px;background:linear-gradient(180deg,#0b1224,#0e1730);border-radius:8px;padding:14px;box-sizing:border-box;display:flex;flex-direction:column;gap:10px}
+  h1{margin:0;font-size:17px}
+  .small{color:var(--muted);font-size:13px}
+  select,button{width:100%;padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:inherit}
+  button.primary{background:linear-gradient(90deg,var(--accent),#ff6b6b);border:none;color:#fff;font-weight:700;cursor:pointer}
+  .meta{display:flex;gap:8px;align-items:center;justify-content:space-between}
+  .info{font-size:13px;color:var(--muted)}
+  .overlay{text-align:center;position:absolute;left:12px;top:12px;padding:6px 10px;background:rgba(0,0,0,0.35);border-radius:999px;border:1px solid rgba(255,255,255,0.04);color:#dfe6ff;font-size:13px}
+  .hint{font-size:12px;color:var(--muted)}
+  .row{display:flex;gap:8px}
+  .tiny{padding:6px 8px;font-size:13px}
+</style>
 </head>
 <body>
-  <main class="layout">
-    <section class="stage" aria-label="Particle display area">
-      <canvas id="canvas"></canvas>
-      <div class="stage-tip">Click/tap canvas for fallback particle burst</div>
-    </section>
+<div class="app">
+  <div class="left" id="stage">
+    <canvas id="canvas" aria-label="Particle display"></canvas>
+    <div class="overlay">Offline virtual-socket demo — no saving</div>
+  </div>
 
-    <aside class="panel">
-      <section class="card">
-        <span class="badge">Offline Demo</span>
-        <h1>Colorfield — local single-file demo</h1>
-        <p>No server/socket needed. Data stays in this browser via localStorage.</p>
-        <p>Tip: open this <strong>same file</strong> in two tabs on one machine (display + mobile simulation).</p>
-      </section>
+  <div class="right">
+    <div>
+      <h1>Colorfield — 虛擬 Socket Demo</h1>
+      <div class="small">提交後不會記錄任何 state。只在頁面內模擬 socket 事件以觸發粒子與暫時文字顯示。</div>
+    </div>
 
-      <section class="card">
-        <form id="mbti-form">
-          <label for="mbti-select">Select MBTI and submit (Enter supported)</label>
-          <select id="mbti-select" required></select>
-          <button id="submit-btn" type="submit">Submit MBTI</button>
-        </form>
-        <p id="lucky" class="lucky" aria-live="polite"></p>
-      </section>
+    <div>
+      <label class="small">選擇 MBTI</label>
+      <select id="mbtiSelect" aria-label="MBTI select"></select>
+    </div>
 
-      <section class="card">
-        <div class="meta">
-          <strong>Total submissions</strong>
-          <span class="pill" id="total">0</span>
-        </div>
-        <div id="counts" class="counts" aria-live="polite"></div>
-      </section>
-    </aside>
-  </main>
+    <div class="row">
+      <button id="submitBtn" class="primary">提交並觸發粒子</button>
+      <button id="clearBtn" class="tiny">清除粒子</button>
+    </div>
 
-  <script>
-    'use strict';
+    <div>
+      <p class="hint">相機控制：拖曳平移，滑鼠滾輪縮放，點擊畫布亦可在點擊位置產生粒子。</p>
+      <p class="hint">建議：在同一台電腦開兩個分頁以模擬 display 與 mobile（兩者都是本地單機，不同步）。</p>
+    </div>
+  </div>
+</div>
 
-    const MBTI_COLORS = {
-      INTJ: '#4B0082', INTP: '#6495ED', ENTJ: '#FF4500', ENTP: '#FF00FF',
-      INFJ: '#00A86B', INFP: '#DA70D6', ENFJ: '#FC913A', ENFP: '#92FE9D',
-      ISTJ: '#95A5A6', ISFJ: '#BDB76B', ESTJ: '#4682B4', ESFJ: '#FFB6C1',
-      ISTP: '#4A4A4A', ISFP: '#00CED1', ESTP: '#FF2400', ESFP: '#7B68EE',
-    };
+<script>
+/* ===== MBTI data (copied from server) ===== */
+const MBTI_COLORS = {
+  INTJ:'#4B0082', INTP:'#6495ED', ENTJ:'#FF4500', ENTP:'#FF00FF',
+  INFJ:'#00A86B', INFP:'#DA70D6', ENFJ:'#FC913A', ENFP:'#92FE9D',
+  ISTJ:'#95A5A6', ISFJ:'#BDB76B', ESTJ:'#4682B4', ESFJ:'#FFB6C1',
+  ISTP:'#4A4A4A', ISFP:'#00CED1', ESTP:'#FF2400', ESFP:'#7B68EE'
+};
+const MBTI_NAMES = {
+  INTJ:'战略家', INTP:'逻辑学家', ENTJ:'指挥官', ENTP:'辩论家',
+  INFJ:'提倡者', INFP:'调停者', ENFJ:'主人公', ENFP:'竞选者',
+  ISTJ:'检察官', ISFJ:'守护者', ESTJ:'总经理', ESFJ:'执政官',
+  ISTP:'鉴赏家', ISFP:'探险家', ESTP:'企业家', ESFP:'表演者'
+};
+const MBTI_LUCKY_PHRASES = {
+  INTJ:'深邃星河', INTP:'量子涟漪', ENTJ:'赤焰烈炬', ENTP:'橙光裂变',
+  INFJ:'紫境幽光', INFP:'蔷薇共鸣', ENFJ:'黄金旋律', ENFP:'荧光奇境',
+  ISTJ:'蓝海稳浪', ISFJ:'碧玉守护', ESTJ:'烈红征途', ESFJ:'樱粉温暖',
+  ISTP:'银弦孤鸣', ISFP:'兰紫自由', ESTP:'电光闪耀', ESFP:'霓虹盛放'
+};
 
-    const MBTI_NAMES = {
-      INTJ: '战略家', INTP: '逻辑学家', ENTJ: '指挥官', ENTP: '辩论家',
-      INFJ: '提倡者', INFP: '调停者', ENFJ: '主人公', ENFP: '竞选者',
-      ISTJ: '检察官', ISFJ: '守护者', ESTJ: '总经理', ESFJ: '执政官',
-      ISTP: '鉴赏家', ISFP: '探险家', ESTP: '企业家', ESFP: '表演者',
-    };
+/* ===== Virtual socket (in-memory, no persistence) ===== */
+function createVirtualSocket() {
+  const handlers = {};
+  return {
+    on(ev, cb){ (handlers[ev]||(handlers[ev]=[])).push(cb); },
+    emit(ev, data){ (handlers[ev]||[]).slice().forEach(fn => { try{ fn(data); }catch(e){} }); }
+  };
+}
+const socket = createVirtualSocket();
 
-    const MBTI_LUCKY_PHRASES = {
-      INTJ: '深邃星河', INTP: '量子涟漪', ENTJ: '赤焰烈炬', ENTP: '橙光裂变',
-      INFJ: '紫境幽光', INFP: '蔷薇共鸣', ENFJ: '黄金旋律', ENFP: '荧光奇境',
-      ISTJ: '蓝海稳浪', ISFJ: '碧玉守护', ESTJ: '烈红征途', ESFJ: '樱粉温暖',
-      ISTP: '银弦孤鸣', ISFP: '兰紫自由', ESTP: '电光闪耀', ESFP: '霓虹盛放',
-    };
+/* ===== UI wiring ===== */
+const mbtiSelect = document.getElementById('mbtiSelect');
+const submitBtn = document.getElementById('submitBtn');
+const clearBtn = document.getElementById('clearBtn');
 
-    const STORAGE_KEY = 'colorfield.offline.counts.v1';
-    const MBTI_TYPES = Object.keys(MBTI_COLORS);
+Object.keys(MBTI_COLORS).forEach(k=>{
+  const o = document.createElement('option'); o.value=k; o.textContent=`${k} — ${MBTI_NAMES[k]}`; mbtiSelect.appendChild(o);
+});
 
-    const form = document.getElementById('mbti-form');
-    const select = document.getElementById('mbti-select');
-    const totalEl = document.getElementById('total');
-    const countsEl = document.getElementById('counts');
-    const luckyEl = document.getElementById('lucky');
-    const canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
+/* ===== Canvas + camera + particles ===== */
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d', { alpha: false });
+let DPR = Math.min(2, window.devicePixelRatio || 1);
 
-    let counts = loadCounts();
-    let particles = [];
+function resize(){
+  const rect = canvas.getBoundingClientRect();
+  canvas.width = Math.max(300, Math.floor(rect.width * DPR));
+  canvas.height = Math.max(200, Math.floor(rect.height * DPR));
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+}
+window.addEventListener('resize', resize);
+resize();
 
-    setupSelect();
-    resizeCanvas();
-    renderCounts();
-    requestAnimationFrame(tick);
+/* camera */
+let cam = { x:0, y:0, z:1 }; // z = scale
+let isPanning=false, lastPan=null;
+canvas.addEventListener('mousedown', (e)=>{ isPanning=true; canvas.style.cursor='grabbing'; lastPan=[e.clientX,e.clientY]; });
+window.addEventListener('mouseup', ()=>{ isPanning=false; canvas.style.cursor='grab'; lastPan=null; });
+window.addEventListener('mousemove', (e)=>{
+  if(isPanning && lastPan){
+    const dx = (e.clientX - lastPan[0]) / cam.z;
+    const dy = (e.clientY - lastPan[1]) / cam.z;
+    cam.x += dx; cam.y += dy;
+    lastPan=[e.clientX,e.clientY];
+  }
+});
+canvas.addEventListener('wheel', (e)=>{
+  e.preventDefault();
+  const delta = -e.deltaY;
+  const scaleFactor = (delta>0)?1.08:0.92;
+  // zoom around cursor
+  const rect = canvas.getBoundingClientRect();
+  const cx = (e.clientX - rect.left);
+  const cy = (e.clientY - rect.top);
+  // world coords before zoom
+  const wx = (cx - cam.x) / cam.z;
+  const wy = (cy - cam.y) / cam.z;
+  cam.z *= scaleFactor;
+  // adjust cam.x,y so zoom centers at cursor
+  cam.x = cx - wx * cam.z;
+  cam.y = cy - wy * cam.z;
+}, { passive:false });
 
-    form.addEventListener('submit', (event) => {
-      event.preventDefault();
-      submitMbti(select.value);
+/* particles */
+let particles = [];
+function spawnParticles(x,y,color,count=28){
+  for(let i=0;i<count;i++){
+    const angle = Math.random()*Math.PI*2;
+    const speed = 0.6 + Math.random()*3.5;
+    particles.push({
+      x,y,
+      vx:Math.cos(angle)*speed,
+      vy:Math.sin(angle)*speed - (Math.random()*1.5),
+      size:1+Math.random()*6,
+      life:50 + Math.random()*80,
+      color
     });
+  }
+}
+canvas.addEventListener('click', (e)=>{
+  // convert screen coords to world coords
+  const rect = canvas.getBoundingClientRect();
+  const sx = (e.clientX - rect.left);
+  const sy = (e.clientY - rect.top);
+  const wx = (sx - cam.x) / cam.z;
+  const wy = (sy - cam.y) / cam.z;
+  // emit a virtual submit event as if from a client
+  socket.emit('submit_mbti', { mbti: mbtiSelect.value, x: wx, y: wy });
+});
 
-    window.addEventListener('resize', resizeCanvas);
-    window.addEventListener('storage', (e) => {
-      if (e.key === STORAGE_KEY) {
-        counts = loadCounts();
-        renderCounts();
-      }
-    });
+/* display overlay text (short-lived) */
+let flashes = [];
+function flash(text, ttl=120){ flashes.push({text,ttl}); if(flashes.length>3) flashes.shift(); }
 
-    canvas.addEventListener('click', (e) => {
-      const rect = canvas.getBoundingClientRect();
-      spawnBurst(e.clientX - rect.left, e.clientY - rect.top, MBTI_COLORS[select.value] || '#ffffff', 40);
-    });
+/* animation loop */
+function step(){
+  // draw background (solid for performance)
+  ctx.fillStyle = '#071021';
+  ctx.fillRect(0,0, canvas.clientWidth, canvas.clientHeight);
 
-    function setupSelect() {
-      const frag = document.createDocumentFragment();
-      MBTI_TYPES.forEach((type) => {
-        const option = document.createElement('option');
-        option.value = type;
-        option.textContent = `${type} · ${MBTI_NAMES[type]}`;
-        frag.appendChild(option);
-      });
-      select.appendChild(frag);
-    }
+  // apply camera transform
+  ctx.save();
+  ctx.translate(cam.x, cam.y);
+  ctx.scale(cam.z, cam.z);
 
-    function loadCounts() {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        const parsed = raw ? JSON.parse(raw) : {};
-        const normalized = {};
-        MBTI_TYPES.forEach((type) => {
-          const value = Number(parsed[type] || 0);
-          normalized[type] = Number.isFinite(value) && value >= 0 ? Math.floor(value) : 0;
-        });
-        return normalized;
-      } catch (_) {
-        return Object.fromEntries(MBTI_TYPES.map((type) => [type, 0]));
-      }
-    }
+  // fade rectangle for trails
+  ctx.fillStyle = 'rgba(6,10,20,0.12)';
+  ctx.fillRect(-cam.x/cam.z, -cam.y/cam.z, canvas.width/cam.z + 50, canvas.height/cam.z + 50);
 
-    function persistCounts() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(counts));
-    }
+  // update and draw particles
+  for(let i=particles.length-1;i>=0;i--){
+    const p = particles[i];
+    p.vy += 0.02; // gravity
+    p.x += p.vx; p.y += p.vy;
+    p.life -= 1;
+    if(p.life<=0){ particles.splice(i,1); continue; }
+    const alpha = Math.max(0, p.life/120);
+    ctx.fillStyle = hexToRgba(p.color, alpha);
+    ctx.beginPath();
+    ctx.arc(p.x,p.y, p.size, 0, Math.PI*2);
+    ctx.fill();
+  }
 
-    function submitMbti(mbti) {
-      if (!MBTI_COLORS[mbti]) return;
-      counts[mbti] = (counts[mbti] || 0) + 1;
-      persistCounts();
-      renderCounts();
-      luckyEl.textContent = `${mbti} · ${MBTI_NAMES[mbti]} — ${MBTI_LUCKY_PHRASES[mbti]}`;
-      spawnBurst(canvas.width * 0.5, canvas.height * 0.5, MBTI_COLORS[mbti], 90);
-    }
+  ctx.restore();
 
-    function renderCounts() {
-      const total = MBTI_TYPES.reduce((sum, type) => sum + (counts[type] || 0), 0);
-      totalEl.textContent = String(total);
-      countsEl.innerHTML = MBTI_TYPES.map((type) => {
-        const c = counts[type] || 0;
-        return `<div class="row"><strong>${type}</strong><span class="muted"><span class="swatch" style="background:${MBTI_COLORS[type]}"></span>${MBTI_NAMES[type]}</span><span>${c}</span></div>`;
-      }).join('');
-    }
+  // draw flashes (HUD, not affected by camera)
+  if(flashes.length){
+    ctx.save();
+    ctx.resetTransform();
+    ctx.textAlign = 'center';
+    ctx.font = '22px system-ui, sans-serif';
+    ctx.fillStyle = 'rgba(255,255,255,0.95)';
+    ctx.fillText(flashes[flashes.length-1].text, canvas.clientWidth/2, 60);
+    ctx.restore();
+    for(let f of flashes) f.ttl--;
+    flashes = flashes.filter(f=>f.ttl>0);
+  }
 
-    function resizeCanvas() {
-      const MAX_DPR = 2;
-      const dpr = Math.min(window.devicePixelRatio || 1, MAX_DPR);
-      const rect = canvas.getBoundingClientRect();
-      canvas.width = Math.floor(rect.width * dpr);
-      canvas.height = Math.floor(rect.height * dpr);
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    }
+  requestAnimationFrame(step);
+}
+requestAnimationFrame(step);
 
-    function spawnBurst(x, y, color, count) {
-      const maxParticles = 900;
-      const overflow = particles.length + count - maxParticles;
-      if (overflow > 0) particles.splice(0, overflow);
-      for (let i = 0; i < count; i++) {
-        const angle = Math.random() * Math.PI * 2;
-        const speed = 0.5 + Math.random() * 2.8;
-        particles.push({
-          x, y,
-          vx: Math.cos(angle) * speed,
-          vy: Math.sin(angle) * speed,
-          size: 1 + Math.random() * 3,
-          life: 45 + Math.random() * 35,
-          maxLife: 80,
-          color,
-        });
-      }
-    }
+function hexToRgba(hex,a=1){
+  const c = hex.replace('#','');
+  const n = parseInt((c.length===3?c.split('').map(ch=>ch+ch).join(''):c),16);
+  const r=(n>>16)&255,g=(n>>8)&255,b=n&255;
+  return `rgba(${r},${g},${b},${a})`;
+}
 
-    function tick() {
-      ctx.fillStyle = 'rgba(10, 12, 26, 0.24)';
-      ctx.fillRect(0, 0, canvas.clientWidth, canvas.clientHeight);
+/* ===== virtual socket listeners: display side ===== */
+/* On 'submit_mbti' we spawn particles and flash short text.
+   The event payload is { mbti, x, y } where x,y are world coords (optional).
+*/
+socket.on('submit_mbti', (data)=>{
+  const mbti = (data.mbti||'').toUpperCase();
+  if(!MBTI_COLORS[mbti]) return;
+  const color = MBTI_COLORS[mbti];
+  // if coordinates provided, use them; otherwise center of visible canvas
+  let wx = data.x, wy = data.y;
+  if(typeof wx !== 'number' || typeof wy !== 'number'){
+    // center in world coords
+    const cx = canvas.clientWidth/2, cy = 120;
+    wx = (cx - cam.x) / cam.z;
+    wy = (cy - cam.y) / cam.z;
+  }
+  spawnParticles(wx, wy, color, 90);
+  flash(`${mbti} · ${MBTI_NAMES[mbti]} — ${MBTI_LUCKY_PHRASES[mbti]}`, 140);
+});
 
-      for (let i = particles.length - 1; i >= 0; i--) {
-        const p = particles[i];
-        p.x += p.vx;
-        p.y += p.vy;
-        p.vy += 0.01;
-        p.vx *= 0.995;
-        p.vy *= 0.995;
-        p.life -= 1;
+/* ===== UI submit: emits virtual socket event (no storage) ===== */
+submitBtn.addEventListener('click', ()=>{
+  socket.emit('submit_mbti', { mbti: mbtiSelect.value });
+});
+clearBtn.addEventListener('click', ()=>{ particles.length = 0; flashes.length = 0; });
 
-        if (p.life <= 0) {
-          particles.splice(i, 1);
-          continue;
-        }
+/* keyboard */
+document.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') submitBtn.click(); });
 
-        const alpha = Math.max(0, p.life / p.maxLife);
-        ctx.fillStyle = hexToRgba(p.color, alpha);
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fill();
-      }
+/* initial camera fit */
+(function initCamera(){
+  // center camera so world origin roughly center of screen
+  const rect = canvas.getBoundingClientRect();
+  cam.x = rect.width / 2;
+  cam.y = rect.height / 2;
+  cam.z = Math.min(1.0, Math.max(0.6, (rect.width / 1000)));
+})();
 
-      requestAnimationFrame(tick);
-    }
-
-    function hexToRgba(hex, alpha) {
-      const raw = hex.replace('#', '');
-      const full = raw.length === 3 ? raw.split('').map((c) => c + c).join('') : raw;
-      const n = parseInt(full, 16);
-      if (Number.isNaN(n)) return `rgba(255,255,255,${alpha.toFixed(3)})`;
-      const r = (n >> 16) & 255;
-      const g = (n >> 8) & 255;
-      const b = n & 255;
-      return `rgba(${r},${g},${b},${alpha.toFixed(3)})`;
-    }
-  </script>
+/* ensure canvas has client dims for initial resize */
+setTimeout(resize, 50);
+</script>
 </body>
 </html>
