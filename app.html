@@ -53,6 +53,18 @@
   </div>
 </div>
 
+<!-- tiny offline control: pick MBTI and emit submit_mbti on virtual socket -->
+<div id="offline-control" style="position:fixed;right:12px;bottom:12px;z-index:9999;background:rgba(255,255,255,0.06);backdrop-filter:blur(6px);padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.06)">
+  <select id="__offline_mbti" style="padding:6px;margin-bottom:6px">
+    <option value="">— MBTI —</option>
+  </select>
+  <div style="display:flex;gap:6px">
+    <button id="__offline_submit" style="padding:6px 8px">Submit</button>
+    <button id="__offline_spawn" style="padding:6px 8px">Spawn</button>
+  </div>
+</div>
+<script>
+  
 <script>
 /* ===== MBTI data (copied from server) ===== */
 const MBTI_COLORS = {
@@ -263,6 +275,64 @@ document.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') submitBtn.clic
 
 /* ensure canvas has client dims for initial resize */
 setTimeout(resize, 50);
+
+(function(){
+  const sel = document.getElementById('__offline_mbti');
+  Object.keys({
+    INTJ:'#4B0082', INTP:'#6495ED', ENTJ:'#FF4500', ENTP:'#FF00FF',
+    INFJ:'#00A86B', INFP:'#DA70D6', ENFJ:'#FC913A', ENFP:'#92FE9D',
+    ISTJ:'#95A5A6', ISFJ:'#BDB76B', ESTJ:'#4682B4', ESFJ:'#FFB6C1',
+    ISTP:'#4A4A4A', ISFP:'#00CED1', ESTP:'#FF2400', ESFP:'#7B68EE'
+  }).forEach(k=>{
+    const o = document.createElement('option'); o.value = k; o.textContent = k; sel.appendChild(o);
+  });
+  document.getElementById('__offline_submit').addEventListener('click', ()=>{
+    const mbti = sel.value || 'INTJ';
+    // emulate mobile submit payload used by server: { mbti: 'INTJ' }
+    window._offline_emit_submit({ mbti });
+  });
+  document.getElementById('__offline_spawn').addEventListener('click', ()=>{
+    const mbti = sel.value || 'INTJ';
+    // spawn_particles payload used by display: choose minimal fields display expects
+    window._offline_emit_spawn({
+      mbti,
+      color: '#FFFFFF',
+      nickname: mbti,
+      luckyPhrase: '',
+      count: 1,
+      total: 1
+    });
+  });
+})();
+  
+/* Virtual socket shim for offline app.html.
+   Provides io() → socket with on/emit so display code works unchanged.
+   No persistence, all events live in-memory on this page only. */
+(function(){
+  function VirtualSocket(){
+    const handlers = Object.create(null);
+    this.on = function(ev, cb){
+      (handlers[ev] || (handlers[ev]=[])).push(cb);
+    };
+    this.off = function(ev, cb){
+      if(!handlers[ev]) return;
+      handlers[ev] = handlers[ev].filter(f=>f!==cb);
+    };
+    this.emit = function(ev, payload){
+      (handlers[ev] || []).slice().forEach(fn=>{ try{ fn(payload); }catch(e){ console.warn(e); } });
+    };
+    this.connect = function(){ /* noop */ };
+    this.disconnect = function(){ /* noop */ };
+  }
+  // single global socket instance
+  window.__virtualSocket = new VirtualSocket();
+  // mimic io() factory used by display.js
+  window.io = function(){ return window.__virtualSocket; };
+  // convenience helpers for manual triggering from the page/console
+  window._offline_emit_submit = function(payload){ window.__virtualSocket.emit('submit_mbti', payload); };
+  window._offline_emit_spawn  = function(payload){ window.__virtualSocket.emit('spawn_particles', payload); };
+})();
+  
 </script>
 </body>
 </html>
