@@ -3,24 +3,26 @@
   Doc: Displays session metadata and history and provides simple share/copy
   actions.
   Notation:
-    - Reads `sessionName` and `history` from `$lib/stores/session`.
+    - Reads `sessionName` and `history` from `$lib/runes/session`.
     - Does not mutate session state; actions are client-side only.
 -->
 
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { sessionName, history, loadHistory, getJoinUrl, panelOpen } from '$lib/stores/session';
+  import { sessionName, history, loadHistory, getJoinUrl, panelOpen, setPanelOpen } from '$lib/runes/session.svelte';
+  import { createSession, deleteSession, viewSession } from '$lib/runes/session.svelte';
+  import { showToast } from '$lib/runes/ui.svelte';
 
   onMount(() => {
     // attempt to populate history if an implementation exists
     loadHistory().catch(() => {});
   });
 
-  let newName = '';
+  let newName = $state('');
 
   function copySession() {
-    if (!$sessionName) return;
-    const url = getJoinUrl($sessionName);
+    if (!sessionName) return;
+    const url = getJoinUrl(sessionName);
     if (navigator.clipboard?.writeText) {
       navigator.clipboard.writeText(url).catch(() => {});
     } else {
@@ -29,9 +31,6 @@
   }
 
   // New session actions (use store helpers)
-  import { createSession, deleteSession, viewSession } from '$lib/stores/session';
-  import { showToast } from '$lib/stores/ui';
-
   function handleCreate() {
     const name = newName && newName.trim() ? newName.trim() : undefined;
     createSession(name).then(() => {
@@ -52,21 +51,21 @@
   }
 </script>
 
-<div class="session-panel" role="dialog" tabindex="0" onkeydown={(e: KeyboardEvent) => { if (e.key === 'Escape') panelOpen.set(false); }} onclick={(e) => {
+<div class="session-panel" role="dialog" tabindex="0" onkeydown={(e: KeyboardEvent) => { if (e.key === 'Escape') setPanelOpen(false); }} onclick={(e) => {
     const el = e.target as Element | null;
     // don't close when clicking inside the panel box
     if (el && el.closest && el.closest('.session-box')) return;
     // ignore clicks originating from toast elements
     if (el && el.closest && el.closest('.toast-pill, .toast-wrap')) return;
-    panelOpen.set(false);
+    setPanelOpen(false);
   }}>
   <div class="session-box">
-    <button id="sp-close" class="sp-close-btn" aria-label="Close sessions" onclick={() => panelOpen.set(false)} onkeydown={(e: KeyboardEvent) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); panelOpen.set(false); } }}>
+    <button id="sp-close" class="sp-close-btn" aria-label="Close sessions" onclick={() => setPanelOpen(false)} onkeydown={(e: KeyboardEvent) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setPanelOpen(false); } }}>
       ×
     </button>
     <div class="session-top">
       <div class="label">Session</div>
-      <div class="name">{$sessionName || '—'}</div>
+      <div class="name">{sessionName || '—'}</div>
       <div class="actions">
         <button class="sp-btn" onclick={copySession} title="Copy session link">Copy</button>
       </div>
@@ -84,9 +83,9 @@
 
     <div id="sp-history-title">历史记录</div>
     <div id="sp-history-list">
-      {#if $history.length}
+      {#if history.length}
         <ul>
-          {#each $history as item}
+          {#each history as item}
             <li>
               <div class="sp-row">
                 <div class="sp-row-info">

@@ -15,7 +15,7 @@ To recreate this project with the same configuration:
 
 ```sh
 # recreate this project
-npx sv@0.15.1 create --template minimal --types ts --install npm 16cf-sv
+npx sv@0.15.1 create --template minimal --types ts --install npm re-sv-v3
 ```
 
 ## Developing
@@ -38,5 +38,9 @@ npm run build
 ```
 
 You can preview the production build with `npm run preview`.
+
+## Prompts
+
+本專案的 LLM prompt 範本、測試與範例集中於 `prompts/` 資料夾；請參閱 `prompts/README.md` 以取得貢獻規範與協作說明。
 
 > To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.

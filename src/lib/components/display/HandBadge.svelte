@@ -2,15 +2,15 @@
   HandBadge.svelte
   Doc: Displays brief hand-tracking status text from the `ui` store.
   Notation:
-    - Subscribes to `$handBadgeText` from `$lib/stores/ui`.
+    - Subscribes to `$handBadgeText` from `$lib/runes/ui`.
     - Styled to match original absolute placement and typography.
 -->
 
 <script lang="ts">
-  import { handBadgeText } from '$lib/stores/ui';
+  import { handBadgeText } from '$lib/runes/ui.svelte';
 </script>
 
-<div class="hand-badge">{$handBadgeText}</div>
+<div class="hand-badge">{handBadgeText}</div>
 
 <style>
   /* Match static/display.html hand-badge styles (placement and transition) */

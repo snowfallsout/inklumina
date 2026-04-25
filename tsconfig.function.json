@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "skipLibCheck": true
+  },
+  "include": [
+    "src/lib/function/*.ts",
+    "src/lib/function/types/**/*.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "src/lib/function/**/*.js"
+  ]
+}

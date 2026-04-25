@@ -2,30 +2,33 @@
   Footer.svelte
   Doc: Bottom footer with participant totals and join / QR area.
   Notation:
-    - Uses `$total` from `$lib/stores/mbti` and composes `CornerQR` component.
+    - Uses `$total` from `$lib/runes/mbti` and composes `CornerQR` component.
 -->
 
 <script lang="ts">
-  import QrCode from './qrCode.svelte';
-  import { total } from '$lib/stores/mbti';
-  import { sessionName, panelOpen } from '$lib/stores/session';
+	import QrCode from './QrCode.svelte';
+  import { total } from '$lib/runes/mbti.svelte';
+  import { sessionName, setPanelOpen } from '$lib/runes/session.svelte';
+  import { waitingVisible } from '$lib/runes/ui.svelte';
 </script>
 
 <footer class="display-footer">
   <div class="left-col">
     <div class="total-block">
       <div class="label">Participants</div>
-      <strong class="num">{$total}</strong>
+      <strong class="num">{total}</strong>
     </div>
   </div>
 
   <div class="center-col">
     <div class="center-block">
-      <div id="session-name">{$sessionName || '— 默认活动 —'}</div>
-      <div id="waiting">Waiting for participants to join…</div>
+      <div id="session-name">{sessionName || '— 默认活动 —'}</div>
+      {#if waitingVisible}
+        <div id="waiting">Waiting for participants to join…</div>
+      {/if}
       <div id="interaction-hint">Try smiling &nbsp;·&nbsp; Pinch your fingers and move your hands</div>
     </div>
-    <button id="session-btn" onclick={() => panelOpen.set(true)} title="Open sessions">⊕ 新场次 / 历史</button>
+    <button id="session-btn" onclick={() => setPanelOpen(true)} title="Open sessions">⊕ 新场次 / 历史</button>
   </div>
 
   <div class="right-col">

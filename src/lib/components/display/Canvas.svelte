@@ -3,26 +3,27 @@
   Doc: Main display canvas mounting the `ParticleEngine` and driving
   animations via requestAnimationFrame. Responsibilities:
     - Actively consume `spawnQueue` using `popSpawn()` (FIFO, pull model)
-    - Convert normalized coords from stores -> pixel coords for engine
+    - Convert normalized coords from runes -> pixel coords for engine
     - Wire `ParticleEngine` interactions and render loop
   Notation:
-    - Input stores provide normalized coords in [0..1]
+    - Input runes provide normalized coords in [0..1]
     - All engine interactions and drawing use PIXEL space (canvas coords)
 -->
 
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
   import ParticleEngine from '$lib/core/particleEngine';
-  import { popSpawn } from '$lib/stores/particles';
-  import { crowd, activeInteractions } from '$lib/stores/media';
+  import { popSpawn } from '$lib/runes/particles.svelte';
+  import { crowd, activeInteractions } from '$lib/runes/media.svelte';
   import { connect as socketConnect } from '$lib/services/socket';
+  import { mountCoordinator } from '$lib/function/coordinator';
 
-  let canvas: HTMLCanvasElement | null = null;
-  let ctx: CanvasRenderingContext2D | null = null;
-  let engine: ParticleEngine | null = null;
+  let canvas = $state<HTMLCanvasElement | null>(null);
+  let ctx = $state<CanvasRenderingContext2D | null>(null);
+  let engine = $state<ParticleEngine | null>(null);
   let rafId = 0;
   let last = 0;
-  let videoEl: HTMLVideoElement | null = null;
+  let videoEl = $state<HTMLVideoElement | null>(null);
 
   // perFrameSpawnCap: maximum number of spawn events to pull per frame
   let perFrameSpawnCap = 1; // configurable
@@ -100,12 +101,30 @@
     engine.render(ctx);
   }
 
+  $effect(() => {
+    if (!engine) return;
+    crowd;
+    engine.setFaces(crowd.map((p) => {
+      const c = mapToCanvas(p.x, p.y);
+      return { x: c.x, y: c.y, smile: (p as any).smile || false };
+    }));
+  });
+
+  $effect(() => {
+    if (!engine) return;
+    activeInteractions;
+    engine.setInteractions(activeInteractions.map((p) => {
+      const c = mapToCanvas(p.x, p.y);
+      return { x: c.x, y: c.y, score: p.score || 1 };
+    }));
+  });
+
   onMount(() => {
     /*
       Initialization:
         - Get canvas context and create ParticleEngine instance
         - Seed ambient particles for visual interest
-        - Subscribe to stores for interaction updates
+        - Subscribe to runes for interaction updates
         - Set up window resize listener and socket connection
     */
     if (!canvas) return; // type guard for TS
@@ -120,23 +139,11 @@
     // initialize last timestamp and capture video element for mapping
     last = performance.now();
     videoEl = document.getElementById('video-bg') as HTMLVideoElement | null;
+    // register video element and start coordinator (camera, socket, UI wiring)
+    let coordCleanup: (() => void) | null = null;
+    try { coordCleanup = mountCoordinator(videoEl); } catch (e) { /* ignore in SSR or missing APIs */ }
 
-    // subscribe stores for interaction mapping
-    const unsubCrowd = crowd.subscribe(list => {
-      const faces = list.map(p => {
-        const c = mapToCanvas(p.x, p.y);
-        return { x: c.x, y: c.y, smile: (p as any).smile || false };
-      });
-      engine?.setFaces(faces);
-    });
-    const unsubActive = activeInteractions.subscribe(list => {
-      const pts = list.map(p => { // map normalized coords to canvas pixels for engine interactions
-        const c = mapToCanvas(p.x, p.y); // mirror X axis in mapping to match original coordinate system  
-        return { x: c.x, y: c.y, score: p.score || 1 }; // score is optional; default to 1 if not provided
-      });
-      engine?.setInteractions(pts); // feed mapped interaction points to engine for visual response
-    });
-
+    // subscribe runes for interaction mapping
     window.addEventListener('resize', resize);
     // connect socket (client-only)
     socketConnect();
@@ -154,9 +161,10 @@
         - Cancel animation frame
       */
       cancelAnimationFrame(rafId);
-      unsubCrowd(); unsubActive();
       window.removeEventListener('resize', resize);
       clearInterval(dbg);
+      // stop coordinator if started
+      try { if (coordCleanup) coordCleanup(); } catch (e) {}
     });
   });
 </script>

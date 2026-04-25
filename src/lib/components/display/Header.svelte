@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { sessionName } from '$lib/stores/session';
 </script>
 
 <div class="display-header">

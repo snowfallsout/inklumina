@@ -32,3 +32,13 @@
 - 對於會被程式引用的 prompt，提供 JSON/YAML 機器可讀版本。
 
 如需範例，請參考 `prompt_template.md`。
+
+## 協作
+
+- **目的**：建立可追溯、版本化的 prompt 資產，方便團隊共用與自動化測試。
+- **如何貢獻**：透過 Pull Request (PR) 提交變更；PR 說明應包含變更摘要、影響範圍與測試樣例。請在 PR 標題或描述中標註受影響的 prompt 檔案路徑。
+- **檔頭規範**：每個 prompt 檔案請包含 `Title`, `Version`, `Owner`, `Last_review` 欄位；`Owner` 表示主要負責人，`Last_review` 記錄審查者與日期。
+- **版本管理**：重大格式或語意變更請新增版本資料夾（例如 `v2/`），避免覆寫歷史版本；小改動請於 Changelog 中記錄。
+- **測試與自動化**：對可能被程式引用的 prompt，請提供可機器讀取的 JSON/YAML 版本，並在 `tests/` 中加入回歸測試樣例。
+- **敏感資料**：禁止將 API keys、私人 prompt 或機敏內容直接加入版本庫。請使用 CI/Secrets 或私有儲存機制管理機敏資料。
+- **聯絡與爭議處理**：遇到設計或使用爭議，請開 Issue 並 @maintainers 或直接聯絡 `Owner`，以便協調與決策。

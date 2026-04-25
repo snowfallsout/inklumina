@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
-  import { start as startSmile, stop as stopSmile, registerElement, unregisterElement } from '$lib/stores/smile';
+  import { start as startSmile, stop as stopSmile, registerElement, unregisterElement } from '$lib/runes/smile.svelte';
 
   let el: HTMLDivElement | null = null;
 

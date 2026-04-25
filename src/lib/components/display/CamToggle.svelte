@@ -4,7 +4,7 @@
 -->
 
 <script lang="ts">
-  import { camOn, initCamera, stopCamera } from '$lib/stores/media';
+  import { camOn, initCamera, stopCamera } from '$lib/runes/media.svelte';
   import { onMount, onDestroy } from 'svelte';
 
   /*
@@ -13,7 +13,7 @@
     - Updates store `camOn` is expected to be handled by those helpers.
   */
   function toggleCamera() {
-    if ($camOn) {
+    if (camOn) {
       stopCamera();
     } else {
       initCamera().catch(() => {});
@@ -33,8 +33,8 @@
   });
 </script>
 
-<button id="cam-toggle" class="cam-toggle" class:on={$camOn} onclick={toggleCamera}>
-  { $camOn ? '◎ 摄像头 ON' : '◎ 摄像头 OFF' }
+<button id="cam-toggle" class="cam-toggle" class:on={camOn} onclick={toggleCamera}>
+  { camOn ? '◎ 摄像头 ON' : '◎ 摄像头 OFF' }
 </button>
 
 <style>

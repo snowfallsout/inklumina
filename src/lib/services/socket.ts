@@ -1,11 +1,15 @@
 import { browser } from '$app/environment';
-import { mbtiCounts } from '$lib/runes/mbti';
+import { updateCounts } from '$lib/runes/mbti.svelte';
 import { MBTI_PALETTES } from '$lib/config/mbti';
-import { sessionName, history } from '$lib/runes/session';
-import { pushSpawn } from '$lib/runes/particles';
-import { showToast } from '$lib/runes/ui';
+import { setSessionName } from '$lib/runes/session.svelte';
+import { pushSpawn } from '$lib/runes/particles.svelte';
+import { setWaitingVisible, showToast } from '$lib/runes/ui.svelte';
 
 let socket: any = null;
+
+function totalFromCounts(counts: Record<string, number> | undefined) {
+  return Object.values(counts || {}).reduce((sum, value) => sum + Number(value || 0), 0);
+}
 
 function safeEmit(event: string, payload: any) {
   if (!socket) return;
@@ -39,8 +43,10 @@ export async function connect(opts?: { url?: string }) {
   socket.on('disconnect', () => showToast('Socket disconnected', '#ffb86b'));
 
   socket.on('state', (data: any) => {
-    if (data && data.counts) mbtiCounts.set({ ...data.counts });
-    if (data && data.session) sessionName.set(data.session.name || null);
+    if (data && data.counts) updateCounts(data.counts);
+    if (data && data.session) setSessionName(data.session.name || null);
+    const total = data?.total ?? totalFromCounts(data?.counts);
+    setWaitingVisible(!(total > 0));
   });
 
   socket.on('spawn_particles', (data: any) => {
@@ -50,7 +56,8 @@ export async function connect(opts?: { url?: string }) {
       const palette = MBTI_PALETTES[mbtiKey as keyof typeof MBTI_PALETTES];
       const color = data.color || (palette ? palette.mid || palette.core : undefined);
       pushSpawn({ mbti: mbtiKey, color, nickname: data.nickname, counts: data.counts, total: data.total });
-      if (data.counts) mbtiCounts.set({ ...data.counts });
+      if (data.counts) updateCounts(data.counts);
+      setWaitingVisible(false);
       if (data.total !== undefined) {
         // no-op here; UI can derive total from mbtiCounts
       }
@@ -60,8 +67,9 @@ export async function connect(opts?: { url?: string }) {
 
   socket.on('session_reset', (data: any) => {
     // reset counts and notify
-    if (data && data.counts) mbtiCounts.set({ ...data.counts });
-    if (data && data.session) sessionName.set(data.session.name || null);
+    if (data && data.counts) updateCounts(data.counts);
+    if (data && data.session) setSessionName(data.session.name || null);
+    setWaitingVisible(true);
     showToast('✦ 新场次已开始', '#ffffff');
   });
 }
