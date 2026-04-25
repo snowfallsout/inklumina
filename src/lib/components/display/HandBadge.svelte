@@ -7,10 +7,10 @@
 -->
 
 <script lang="ts">
-  import { handBadgeText } from '$lib/runes/ui.svelte';
+  import { ui } from '$lib/runes/ui.svelte';
 </script>
 
-<div class="hand-badge">{handBadgeText}</div>
+<div class="hand-badge">{ui.handBadgeText}</div>
 
 <style>
   /* Match static/display.html hand-badge styles (placement and transition) */

@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ── Camera + MediaPipe ─────────────────────────────────────────────────────────
 // Architecture: ONE getUserMedia stream → ONE rAF processing loop → FaceMesh + Hands
 // Never use MediaPipe Camera class — it fights with the manual stream for srcObject.

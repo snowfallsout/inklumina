@@ -8,14 +8,14 @@
 
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { sessionName } from '$lib/runes/session.svelte';
+  import { session } from '$lib/runes/session.svelte';
 
   let origin = $state('');
 
   // Build an absolute join URL after the component mounts on the client.
   const url = $derived.by(() => {
-    if (!origin || !sessionName) return '';
-    return `${origin}/join/${sessionName}`;
+    if (!origin || !session.sessionName) return '';
+    return `${origin}/join/${session.sessionName}`;
   });
 
   // Use a remote QR image as the simplest renderable fallback.

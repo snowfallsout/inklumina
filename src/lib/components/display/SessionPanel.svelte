@@ -9,7 +9,7 @@
 
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { sessionName, history, loadHistory, getJoinUrl, panelOpen, setPanelOpen } from '$lib/runes/session.svelte';
+  import { session, loadHistory, getJoinUrl, setPanelOpen } from '$lib/runes/session.svelte';
   import { createSession, deleteSession, viewSession } from '$lib/runes/session.svelte';
   import { showToast } from '$lib/runes/ui.svelte';
 
@@ -21,8 +21,8 @@
   let newName = $state('');
 
   function copySession() {
-    if (!sessionName) return;
-    const url = getJoinUrl(sessionName);
+    if (!session.sessionName) return;
+    const url = getJoinUrl(session.sessionName);
     if (navigator.clipboard?.writeText) {
       navigator.clipboard.writeText(url).catch(() => {});
     } else {
@@ -65,7 +65,7 @@
     </button>
     <div class="session-top">
       <div class="label">Session</div>
-      <div class="name">{sessionName || '—'}</div>
+      <div class="name">{session.sessionName || '—'}</div>
       <div class="actions">
         <button class="sp-btn" onclick={copySession} title="Copy session link">Copy</button>
       </div>
@@ -83,9 +83,9 @@
 
     <div id="sp-history-title">历史记录</div>
     <div id="sp-history-list">
-      {#if history.length}
+      {#if session.history.length}
         <ul>
-          {#each history as item}
+          {#each session.history as item}
             <li>
               <div class="sp-row">
                 <div class="sp-row-info">

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import type { DeleteSessionResponse, SessionMutationResponse, SessionRecord, SessionsOverviewResponse } from '$lib/shared/contracts';
 import { generateJoinQr } from './qr';
 

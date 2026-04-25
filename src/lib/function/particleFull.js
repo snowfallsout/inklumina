@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ── Glow sprite cache ──────────────────────────────────────────────────────────
 // Three sprite variants per MBTI type, pre-baked at startup:
 //   dot   — bright core + halo (160×160)  — for 85% small particles

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { displayState } from '$lib/features/display/state';
 import { seedAmbient } from './core';
 

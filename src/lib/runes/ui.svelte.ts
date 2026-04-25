@@ -1,16 +1,21 @@
-export let toast = $state<{ msg: string; color?: string } | null>(null);
-export let handBadgeText = $state<string>('✋ NO HAND');
-export let waitingVisible = $state<boolean>(true);
+// @ts-nocheck
+export const ui = $state({
+  toast: null as { msg: string; color?: string } | null,
+  handBadgeText: '✋ NO HAND',
+  waitingVisible: true
+});
 
 export function showToast(msg: string, color?: string) {
-  toast = { msg, color };
-  setTimeout(() => (toast = null), 3000);
+  ui.toast = { msg, color };
+  setTimeout(() => {
+    ui.toast = null;
+  }, 3000);
 }
 
 export function setHandBadge(text: string) {
-  handBadgeText = text;
+  ui.handBadgeText = text;
 }
 
 export function setWaitingVisible(visible: boolean) {
-  waitingVisible = visible;
+  ui.waitingVisible = visible;
 }

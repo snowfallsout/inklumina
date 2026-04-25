@@ -14,7 +14,7 @@
   import { onMount, onDestroy } from 'svelte';
   import ParticleEngine from '$lib/core/particleEngine';
   import { popSpawn } from '$lib/runes/particles.svelte';
-  import { crowd, activeInteractions } from '$lib/runes/media.svelte';
+  import { media } from '$lib/runes/media.svelte';
   import { connect as socketConnect } from '$lib/services/socket';
   import { mountCoordinator } from '$lib/function/coordinator';
 
@@ -103,8 +103,8 @@
 
   $effect(() => {
     if (!engine) return;
-    crowd;
-    engine.setFaces(crowd.map((p) => {
+		media.crowd;
+    engine.setFaces(media.crowd.map((p) => {
       const c = mapToCanvas(p.x, p.y);
       return { x: c.x, y: c.y, smile: (p as any).smile || false };
     }));
@@ -112,8 +112,8 @@
 
   $effect(() => {
     if (!engine) return;
-    activeInteractions;
-    engine.setInteractions(activeInteractions.map((p) => {
+		media.activeInteractions;
+    engine.setInteractions(media.activeInteractions.map((p) => {
       const c = mapToCanvas(p.x, p.y);
       return { x: c.x, y: c.y, score: p.score || 1 };
     }));

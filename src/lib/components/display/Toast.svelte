@@ -8,7 +8,7 @@
 
 <script lang="ts">
   import { fade } from 'svelte/transition';
-  import { toast } from '$lib/runes/ui.svelte';
+  import { ui } from '$lib/runes/ui.svelte';
 
   /*
     Behavior:
@@ -18,9 +18,9 @@
   */
 </script>
 
-{#if toast}
+{#if ui.toast}
   <div class="toast" transition:fade>
-    <div class="bubble" style="background: {toast.color || '#222'}">{toast.msg}</div>
+    <div class="bubble" style="background: {ui.toast.color || '#222'}">{ui.toast.msg}</div>
   </div>
 {/if}
 

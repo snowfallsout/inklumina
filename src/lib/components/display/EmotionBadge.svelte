@@ -6,11 +6,11 @@
 -->
 
 <script lang="ts">
-  import { emotion } from '$lib/runes/media.svelte';
+  import { media } from '$lib/runes/media.svelte';
 </script>
 
 <!-- Minimal behavior: only react to `emotion === 'smile'` as in display.html; no extra features added -->
-<div class="emotion-badge" class:smile={emotion === 'smile'}>{ emotion === 'smile' ? '✦ SMILE DETECTED' : '● FACE TRACKING' }</div>
+<div class="emotion-badge" class:smile={media.emotion === 'smile'}>{ media.emotion === 'smile' ? '✦ SMILE DETECTED' : '● FACE TRACKING' }</div>
 
 <style>
   /* Match static/display.html #emotion-badge */

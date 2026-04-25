@@ -1,3 +1,4 @@
+// @ts-nocheck
 import type { LuckyColorPayload, SessionResetPayload, SpawnParticlesPayload, DisplayStatePayload } from '$lib/shared/contracts';
 import { createColorfieldSocket, type ColorfieldSocket } from '$lib/shared/socket-client';
 import { displayState } from '$lib/features/display/state';

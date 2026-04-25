@@ -7,11 +7,12 @@
 -->
 
 <script lang="ts">
-  import { mbtiCounts, total } from '$lib/runes/mbti.svelte';
+  import { mbti, getTotal } from '$lib/runes/mbti.svelte';
   import { MBTI_ORDER, MBTI_PALETTES } from '$lib/config/mbti';
 
   type MbtiKey = keyof typeof MBTI_PALETTES;
   type Entry = { k: MbtiKey; v: number; pct: number };
+  let total = $derived.by(() => getTotal());
 
   /*
     colorFor(key)
@@ -28,7 +29,7 @@
 
   // Derive a list of all MBTI types (preserve MBTI_ORDER), include zero-counts
   let entries = $derived.by((): Entry[] => MBTI_ORDER.map((k) => {
-    const v = mbtiCounts[k] ? mbtiCounts[k] : 0;
+    const v = mbti.counts[k] ? mbti.counts[k] : 0;
     return { k, v, pct: total ? v / total : 0 };
   }));
 

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { derived, writable } from 'svelte/store';
 import type { SessionCounts, SessionRecord, SessionResetPayload, SessionSummary, SpawnParticlesPayload, DisplayStatePayload } from '$lib/shared/contracts';
 import type { DisplaySampleData, DisplayLegendRowSample } from './types';

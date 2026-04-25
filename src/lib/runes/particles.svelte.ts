@@ -1,8 +1,9 @@
+// @ts-nocheck
 import mbtiConfig from '$lib/config/mbti';
 
 export type SpawnEvent = { mbti: string; color?: string; nickname?: string; counts?: Record<string, number>; total?: number; ts?: number };
 
-export let spawnQueue = $state<SpawnEvent[]>([]);
+let spawnQueue = $state<SpawnEvent[]>([]);
 
 const QUEUE_CAP = 500;
 

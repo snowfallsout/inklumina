@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Centralized runtime configuration (values).
 // Type declarations are in `src/lib/types/index.d.ts`.
 

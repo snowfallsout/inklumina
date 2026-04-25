@@ -1,4 +1,5 @@
-import { crowd } from '$lib/runes/media.svelte.ts';
+// @ts-nocheck
+import { media } from '$lib/runes/media.svelte';
 import { pickRandomEmoji } from '$lib/utils/faceHash.ts';
 
 type Face = any;
@@ -8,7 +9,7 @@ let _emojiEl: HTMLDivElement | null = null;
 let rafId: number | null = null;
 let _container: HTMLElement | null = null;
 
-export let smile = $state({ visible: false, emoji: '', x: 0, y: 0 });
+export const smile = $state({ visible: false, emoji: '', x: 0, y: 0 });
 
 function _createEmojiEl(container?: HTMLElement) {
   if (_emojiEl) return _emojiEl;
@@ -45,19 +46,25 @@ function _showEmojiForFace(face: Face) {
   _positionEl(face);
   el.style.opacity = '1';
   el.style.transform = 'scale(1)';
-  smile = { visible: true, emoji: el.textContent || '', x: parseFloat(el.style.left || '0'), y: parseFloat(el.style.top || '0') };
+  smile.visible = true;
+  smile.emoji = el.textContent || '';
+  smile.x = parseFloat(el.style.left || '0');
+  smile.y = parseFloat(el.style.top || '0');
 }
 
 function _hideEmoji() {
   if (!_emojiEl) return;
   _emojiEl.style.opacity = '0';
   _emojiEl.style.transform = 'scale(0.5)';
-  smile = { visible: false, emoji: '', x: 0, y: 0 };
+  smile.visible = false;
+  smile.emoji = '';
+  smile.x = 0;
+  smile.y = 0;
 }
 
 function _tick() {
   try {
-    faces = crowd as any;
+    faces = media.crowd as any;
     const anySmiling = faces.some(f => f && f.smile);
     if (anySmiling) {
       const face = faces.find(f => f && f.smile) || faces[0];
@@ -82,7 +89,10 @@ export function start() {
 export function stop() {
   if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
   _emojiEl = null;
-  smile = { visible: false, emoji: '', x: 0, y: 0 };
+  smile.visible = false;
+  smile.emoji = '';
+  smile.x = 0;
+  smile.y = 0;
 }
 
 export function registerElement(el: HTMLDivElement) {

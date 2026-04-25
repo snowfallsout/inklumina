@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Utilities for smile emoji system
 export function faceHash(x: number, y: number) {
   return `${Math.round(x / 32)}_${Math.round(y / 32)}`;

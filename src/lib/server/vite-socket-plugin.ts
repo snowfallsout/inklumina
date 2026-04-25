@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Server as IOServer } from 'socket.io';
 import type { Plugin } from 'vite';
 

@@ -4,7 +4,12 @@
   `src/lib/function` 底下的粒子模組，避免 display 元件繼續引用已刪除的 core 檔案。
 */
 
-import { mbtiParticles, particles, seedAmbient as seedPoolAmbient, spawnMBTI as spawnPoolMBTI } from '../function/pool';
+import {
+	mbtiParticles,
+	particles,
+	seedAmbient as seedPoolAmbient,
+	spawnMBTI as spawnPoolMBTI
+} from '../function/pool';
 import { prewarmAll } from '../function/sprites';
 
 export type ParticleFace = { x: number; y: number; smile?: boolean };
@@ -75,7 +80,14 @@ export default class ParticleEngine {
 	step(_deltaMs: number) {
 		// 驅動所有粒子的物理更新；delta 目前沿用 legacy 固定步進，不直接使用。
 		for (const particle of particles) {
-			particle.update(this.faces, this.emotion, this.interactions, mbtiParticles, this.width, this.height);
+			particle.update(
+				this.faces,
+				this.emotion,
+				this.interactions,
+				mbtiParticles,
+				this.width,
+				this.height
+			);
 		}
 		this.trimOverflow();
 	}
@@ -96,49 +108,5 @@ export default class ParticleEngine {
 			detachParticle(particle);
 		}
 	}
-}import { drawFrame, seedAmbient, spawnMBTI, state } from '$lib/function/function-display-legacy/runtime/core';
-
-type FacePoint = { x: number; y: number; smile?: boolean };
-type InteractionPoint = { x: number; y: number; score?: number };
-
-export default class ParticleEngine {
-  constructor(_: { max?: number } = {}) {}
-
-  get particles() {
-    return state.particles;
-  }
-
-  resize(width: number, height: number) {
-    state.W = width;
-    state.H = height;
-  }
-
-  seedAmbient(count: number) {
-    seedAmbient(count);
-  }
-
-  spawnMBTI(mbti: string, color?: string, _counts?: Record<string, number> | undefined) {
-    spawnMBTI(mbti, color || '#ffffff');
-  }
-
-  setFaces(faces: FacePoint[]) {
-    state.faces = faces as any;
-    state.emotion = faces.some((face) => face.smile) ? 'smile' : 'neutral';
-  }
-
-  setInteractions(points: InteractionPoint[]) {
-    state.activePinchPoints = points as any;
-  }
-
-  step(_: number) {
-    // Legacy runtime draws and advances in render().
-  }
-
-  render(ctx: CanvasRenderingContext2D) {
-    state.ctx = ctx;
-    state.canvas = ctx.canvas as HTMLCanvasElement;
-    state.W = ctx.canvas.width;
-    state.H = ctx.canvas.height;
-    drawFrame();
-  }
 }
+

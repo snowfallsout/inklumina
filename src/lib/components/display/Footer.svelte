@@ -7,9 +7,11 @@
 
 <script lang="ts">
 	import QrCode from './QrCode.svelte';
-  import { total } from '$lib/runes/mbti.svelte';
-  import { sessionName, setPanelOpen } from '$lib/runes/session.svelte';
-  import { waitingVisible } from '$lib/runes/ui.svelte';
+  import { getTotal } from '$lib/runes/mbti.svelte';
+  import { session, setPanelOpen } from '$lib/runes/session.svelte';
+  import { ui } from '$lib/runes/ui.svelte';
+
+	let total = $derived.by(() => getTotal());
 </script>
 
 <footer class="display-footer">
@@ -22,8 +24,8 @@
 
   <div class="center-col">
     <div class="center-block">
-      <div id="session-name">{sessionName || '— 默认活动 —'}</div>
-      {#if waitingVisible}
+      <div id="session-name">{session.sessionName || '— 默认活动 —'}</div>
+      {#if ui.waitingVisible}
         <div id="waiting">Waiting for participants to join…</div>
       {/if}
       <div id="interaction-hint">Try smiling &nbsp;·&nbsp; Pinch your fingers and move your hands</div>

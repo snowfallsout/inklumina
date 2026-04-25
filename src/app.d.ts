@@ -42,29 +42,22 @@ declare module '$lib/utils/faceHash' {
 }
 
 declare module '$lib/runes/particles.svelte' {
-	export const spawnQueue: any;
 	export function pushSpawn(e: any): void;
 	export function popSpawn(): any;
 	export function seedAmbient(n?: number): void;
 }
 
 declare module '$lib/runes/ui.svelte' {
-	export let toast: any;
-	export let handBadgeText: any;
-	export let waitingVisible: any;
+	export const ui: any;
 	export function showToast(msg: string, color?: string): void;
 	export function setHandBadge(text: string): void;
 	export function setWaitingVisible(visible: boolean): void;
 }
 
 declare module '$lib/runes/media.svelte' {
-	export let videoEl: any;
-	export let camOn: any;
+	export const media: any;
 	export const CROWD_CAP: number;
-	export let crowd: any;
 	export const ACTIVE_CAP: number;
-	export let activeInteractions: any;
-	export let emotion: any;
 	export function initCamera(): Promise<void>;
 	export function stopCamera(): void;
 	export function setCrowd(m: any): void;
@@ -73,16 +66,14 @@ declare module '$lib/runes/media.svelte' {
 }
 
 declare module '$lib/runes/mbti.svelte' {
-	export let mbtiCounts: any;
-	export const total: any;
+	export const mbti: any;
+	export function getTotal(): number;
 	export function updateCounts(counts: any): void;
 	export function spawn(mbti: string, color?: string, nickname?: string, counts?: any, totalNum?: number): void;
 }
 
 declare module '$lib/runes/session.svelte' {
-	export let sessionName: any;
-	export let history: any;
-	export let panelOpen: any;
+	export const session: any;
 	export function loadHistory(): Promise<void>;
 	export function createSession(name?: string): Promise<void>;
 	export function getJoinUrl(name?: string): string;
@@ -94,7 +85,7 @@ declare module '$lib/runes/session.svelte' {
 }
 
 declare module '$lib/runes/smile.svelte' {
-	export let smile: any;
+	export const smile: any;
 	export function start(): void;
 	export function stop(): void;
 	export function registerElement(el: HTMLDivElement): void;

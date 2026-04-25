@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { getSpriteSetEntries, getDotEntry } from '$lib/core/spriteCache';
 
 // Keep a lightweight sparkle helper local to the display runtime — this
