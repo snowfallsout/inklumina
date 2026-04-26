@@ -17,6 +17,16 @@ export type MBTIKey = (typeof MBTI_ORDER)[number];
 export type Palette = { core: string; mid: string; edge: string };
 
 
+/** 2π 常數，用於圓周/角度計算 */
+export const TWO_PI = Math.PI * 2;
+
+export const MBTI_COLORS: Record<string, string> = {
+  INTJ: '#4B0082', INTP: '#6495ED', ENTJ: '#FF4500', ENTP: '#FF00FF',
+  INFJ: '#00A86B', INFP: '#DA70D6', ENFJ: '#FC913A', ENFP: '#92FE9D',
+  ISTJ: '#95A5A6', ISFJ: '#BDB76B', ESTJ: '#4682B4', ESFJ: '#FFB6C1',
+  ISTP: '#4A4A4A', ISFP: '#00CED1', ESTP: '#FF2400', ESFP: '#7B68EE',
+};
+
 export const MBTI_PALETTES: Record<MBTIKey, Palette> = {
   INTJ: { core: '#1A0A2E', mid: '#4B0082', edge: '#E0B0FF' },
   INTP: { core: '#002366', mid: '#6495ED', edge: '#F0F8FF' },

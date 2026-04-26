@@ -1,12 +1,18 @@
+/*
+ * src/lib/runes/particles.svelte.ts
+ * Purpose: Manage the particle spawn queue used by the display particle system.
+ */
 // @ts-nocheck
-import mbtiConfig from '$lib/config/mbti';
+import mbtiConfig from '$lib/constants/mbti';
 
+// Payload for a queued particle spawn event.
 export type SpawnEvent = { mbti: string; color?: string; nickname?: string; counts?: Record<string, number>; total?: number; ts?: number };
 
 let spawnQueue = $state<SpawnEvent[]>([]);
 
 const QUEUE_CAP = 500;
 
+// Queue a particle spawn event and normalize its derived fields.
 export function pushSpawn(e: SpawnEvent) {
   const q = [...spawnQueue];
   if (q.length >= QUEUE_CAP) q.shift();

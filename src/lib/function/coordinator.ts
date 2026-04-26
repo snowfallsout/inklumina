@@ -14,7 +14,7 @@
 
 import { spawnMBTI, particles, mbtiParticles, seedAmbient, pruneAllTypes } from './pool';
 import { prewarmAll, getSpriteSet, getDotSprite } from './sprites';
-import { setupCamera, setVideo, getVideo } from './vision';
+import { setupCamera, setVideo, getVideo } from './ml-camera';
 import { buildLegend, renderLegend, showToast, setSessionName, initSocketHandlers } from './overlay';
 import { _tickSmileEmoji, updateEmotionBadge } from './emotion';
 

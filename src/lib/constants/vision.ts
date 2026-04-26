@@ -1,6 +1,6 @@
-import { AMBIENT_COLS as ambientCols } from '$lib/config/mbti';
+import { AMBIENT_COLS } from '$lib/constants/mbti';
 
-export const AMBIENT_COLS = ambientCols;
+export const AMBIENT_COLS_DISPLAY = AMBIENT_COLS;
 
 export const HAND_CONNECTIONS: Array<[number, number]> = [
   [0, 1], [1, 2], [2, 3], [3, 4],

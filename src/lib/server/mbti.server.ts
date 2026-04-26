@@ -11,7 +11,7 @@
  * maps here so server code can import concise values without duplicating
  * palette definitions.
  */
-import { MBTI_PALETTES } from '../config/mbti';
+import { MBTI_PALETTES } from '../constants/mbti';
 
 /**
  * Mapping of MBTI -> hex color string (preferred mid/core color).

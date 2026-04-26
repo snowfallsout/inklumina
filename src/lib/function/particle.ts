@@ -2,7 +2,7 @@
   particle.ts
   說明：包含 `Particle` 類別與相關物理/視覺參數與輔助函式（TypeScript 版本）。
 */
-import { TWO_PI } from '../config/constants';
+import { TWO_PI } from '$lib/constants/mbti';
 import { getSpriteSet, getDotSprite } from './sprites';
 
 export const SIZE_CLASS_PARAMS: Record<string, any> = {

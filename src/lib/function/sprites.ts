@@ -5,7 +5,7 @@
   - 提供 `getDotSprite(color)` 為 ambient/drift 顆粒建立 fallback dot。
   - `prewarmAll()` 可在啟動時預先建立所有 sprite。
 */
-import { MBTI_COLORS, MBTI_PALETTES, MBTI_ORDER, AMBIENT_COLS, TWO_PI } from '../config/constants';
+import { MBTI_COLORS, MBTI_PALETTES, MBTI_ORDER, AMBIENT_COLS, TWO_PI } from '$lib/constants/mbti';
 
 // Sprite 尺寸常數
 const DOT_HALF   = 80;    // 160×160
@@ -82,8 +82,8 @@ export function _makeField(palette: {core:string, mid:string, edge:string}) {
 
 export function getSpriteSet(mbti: string) {
   if (spriteSetCache.has(mbti)) return spriteSetCache.get(mbti);
-  const color   = MBTI_COLORS[mbti];
-  const palette = MBTI_PALETTES[mbti] || { core: color, mid: color, edge: color };
+  const color = MBTI_COLORS[mbti as keyof typeof MBTI_COLORS] || '#888888';
+  const palette = (MBTI_PALETTES as Record<string, { core: string; mid: string; edge: string }>)[mbti] || { core: color, mid: color, edge: color };
   const set = { dot: _makeDot(color), blob: _makeBlob(palette), field: _makeField(palette) };
   spriteSetCache.set(mbti, set);
   return set;

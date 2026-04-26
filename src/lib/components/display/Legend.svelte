@@ -19,8 +19,9 @@
     - Deterministically generate a pleasant color hex from a short key string.
     - Lightweight fallback when no explicit palette is available.
   */
-  function colorFor(key: string) {
-    const seed = Array.from(key).reduce((s, c) => s + c.charCodeAt(0), 0);
+  function colorFor(key: unknown) {
+    const sKey = String(key);
+    const seed = Array.from(sKey).reduce((s, c) => s + c.charCodeAt(0), 0);
     const r = (seed * 137) % 200 + 30;
     const g = (seed * 61) % 200 + 30;
     const b = (seed * 29) % 200 + 30;
@@ -28,9 +29,11 @@
   }
 
   // Derive a list of all MBTI types (preserve MBTI_ORDER), include zero-counts
-  let entries = $derived.by((): Entry[] => MBTI_ORDER.map((k) => {
-    const v = mbti.counts[k] ? mbti.counts[k] : 0;
-    return { k, v, pct: total ? v / total : 0 };
+  let entries = $derived.by((): Entry[] => MBTI_ORDER.map((k: unknown) => {
+    const key = String(k) as MbtiKey;
+    const counts = mbti.counts as Record<string, number>;
+    const v = counts[String(key)] ? counts[String(key)] : 0;
+    return { k: key, v, pct: total ? v / total : 0 };
   }));
 
   // Determine the currently-most-participating MBTI (top) for glow/hover color

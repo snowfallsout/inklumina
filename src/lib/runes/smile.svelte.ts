@@ -1,6 +1,10 @@
+/*
+ * src/lib/runes/smile.svelte.ts
+ * Purpose: Manage a persistent emoji overlay that follows smiling faces.
+ */
 // @ts-nocheck
 import { media } from '$lib/runes/media.svelte';
-import { pickRandomEmoji } from '$lib/utils/faceHash.ts';
+import { pickRandomEmoji } from '$lib/utils/faceHash';
 
 type Face = any;
 
@@ -11,6 +15,7 @@ let _container: HTMLElement | null = null;
 
 export const smile = $state({ visible: false, emoji: '', x: 0, y: 0 });
 
+// Create the persistent emoji element once and attach it to the container.
 function _createEmojiEl(container?: HTMLElement) {
   if (_emojiEl) return _emojiEl;
   const el = document.createElement('div');
@@ -31,6 +36,7 @@ function _createEmojiEl(container?: HTMLElement) {
   return el;
 }
 
+// Position the emoji element relative to the detected face.
 function _positionEl(face: Face) {
   if (!_emojiEl || !face) return;
   const parentRect = (_container && _container.getBoundingClientRect()) || { width: window.innerWidth, height: window.innerHeight, left: 0, top: 0 };
@@ -40,6 +46,7 @@ function _positionEl(face: Face) {
   _emojiEl.style.top = (y - 70) + 'px';
 }
 
+// Show a random emoji for the provided smiling face.
 function _showEmojiForFace(face: Face) {
   const el = _createEmojiEl(_container || undefined);
   el.textContent = pickRandomEmoji();
@@ -52,6 +59,7 @@ function _showEmojiForFace(face: Face) {
   smile.y = parseFloat(el.style.top || '0');
 }
 
+// Hide the persistent emoji overlay.
 function _hideEmoji() {
   if (!_emojiEl) return;
   _emojiEl.style.opacity = '0';
@@ -62,6 +70,7 @@ function _hideEmoji() {
   smile.y = 0;
 }
 
+// Animation loop that tracks the current smiling face state.
 function _tick() {
   try {
     faces = media.crowd as any;
@@ -80,12 +89,14 @@ function _tick() {
   }
 }
 
+// Start the emoji overlay animation loop in the browser.
 export function start() {
   if (typeof window === 'undefined') return;
   if (rafId) return;
   rafId = requestAnimationFrame(_tick);
 }
 
+// Stop the emoji overlay animation loop and reset state.
 export function stop() {
   if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
   _emojiEl = null;
@@ -99,6 +110,7 @@ export function registerElement(el: HTMLDivElement) {
   _emojiEl = el;
 }
 
+// Unregister the emoji element reference.
 export function unregisterElement() {
   _emojiEl = null;
 }

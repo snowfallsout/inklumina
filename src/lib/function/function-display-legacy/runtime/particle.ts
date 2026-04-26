@@ -1,4 +1,4 @@
-import { AMBIENT_COLS } from '$lib/features/display/constants';
+import { AMBIENT_COLS_DISPLAY as AMBIENT_COLS } from '$lib/features/display/vision';
 import { getSpriteSet, getDotSprite, drawDiamondSparkle } from './sprite';
 
 const TWO_PI = Math.PI * 2;

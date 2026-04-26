@@ -1,8 +1,13 @@
-// @ts-nocheck
+/*
+ * src/lib/runes/media.svelte.ts
+ * Purpose: Provide shared media state and camera lifecycle helpers used by
+ * the display features (video element, camera init/stop, sensor state).
+ */
+// file-level: Svelte rune for media state and helpers (typed)
 import appEnv from '$app/environment';
-import settings from '$lib/config/settings.ts';
+import settings from '$lib/config/settings';
 import { setHandBadge } from '$lib/runes/ui.svelte';
-import { init as mediapipeInit, start as mediapipeStart, stop as mediapipeStop } from '$lib/services/mediapipe.ts';
+import { init as mediapipeInit, start as mediapipeStart, stop as mediapipeStop } from '$lib/services/mediapipe';
 
 export type CrowdMember = {
   id?: string;
@@ -30,37 +35,44 @@ export const media = $state({
   emotion: 'neutral' as 'neutral' | 'smile'
 });
 
+// Maximum number of crowd members kept in memory.
 export const CROWD_CAP = 30;
 
+// Maximum number of active interaction points kept in memory.
 export const ACTIVE_CAP = 8;
 
 let _starting = false;
 let _started = false;
 
+// Replace the current crowd snapshot with a trimmed, timestamped list.
 export function setCrowd(m: CrowdMember[]) {
   const ts = Date.now();
   const trimmed = m.slice(0, CROWD_CAP).map((it) => ({ ...it, ts: it.ts || ts }));
   media.crowd = trimmed;
 }
 
+// Prepend a single crowd member while enforcing the crowd cap.
 export function pushCrowdMember(it: CrowdMember) {
   const ts = Date.now();
   const next = [{ ...it, ts }, ...media.crowd].slice(0, CROWD_CAP);
   media.crowd = next;
 }
 
+// Replace the active interaction list with a trimmed, timestamped list.
 export function setActiveInteractions(a: InteractionPoint[]) {
   const ts = Date.now();
   const trimmed = a.slice(0, ACTIVE_CAP).map((it) => ({ ...it, ts: it.ts || ts }));
   media.activeInteractions = trimmed;
 }
 
+// Clear media sensors and reset the derived emotion state.
 export function clearAllSensors() {
   media.crowd = [];
   media.activeInteractions = [];
   media.emotion = 'neutral';
 }
 
+// Initialize the camera stream and start Mediapipe processing.
 export async function initCamera(): Promise<void> {
   if (!appEnv.browser) return;
   if (_starting || _started) return;
@@ -116,6 +128,7 @@ export async function initCamera(): Promise<void> {
   }
 }
 
+// Stop camera processing, release the stream, and reset state.
 export function stopCamera(): void {
   if (!appEnv.browser) return;
 
@@ -146,6 +159,7 @@ export function stopCamera(): void {
   _started = false;
 }
 
+// Ensure the hidden video element exists and is attached to the document.
 function ensureVideoElement(): HTMLVideoElement | null {
   if (media.videoEl && media.videoEl.isConnected) return media.videoEl;
 

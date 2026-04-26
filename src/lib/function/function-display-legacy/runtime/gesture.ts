@@ -1,4 +1,4 @@
-import { SMILE_EMOJIS } from '$lib/features/display/constants';
+import { SMILE_EMOJIS } from '$lib/features/display/vision';
 
 export function updateEmotionBadge(state: any): void {
 	const element = document.getElementById('emotion-badge');

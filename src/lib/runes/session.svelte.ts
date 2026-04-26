@@ -1,3 +1,7 @@
+/*
+ * src/lib/runes/session.svelte.ts
+ * Purpose: Manage session metadata and localStorage-backed session history.
+ */
 // @ts-nocheck
 export const session = $state({
   sessionName: null as string | null,
@@ -5,14 +9,17 @@ export const session = $state({
   panelOpen: false
 });
 
+// Set the current session name shown in the UI.
 export function setSessionName(name: string | null) {
   session.sessionName = name;
 }
 
+// Toggle the session panel visibility.
 export function setPanelOpen(open: boolean) {
   session.panelOpen = open;
 }
 
+// Load session history from local storage, if available.
 export async function loadHistory(): Promise<void> {
   if (typeof window === 'undefined') return;
   try {
@@ -28,6 +35,7 @@ export async function loadHistory(): Promise<void> {
   }
 }
 
+// Create a new session record and persist it locally.
 export async function createSession(name?: string): Promise<void> {
   if (typeof window === 'undefined') return;
   const id = name && name.length ? name : `s_${Date.now()}_${Math.floor(Math.random() * 9000) + 1000}`;
@@ -42,12 +50,14 @@ export async function createSession(name?: string): Promise<void> {
   setSessionName(entry.name);
 }
 
+// Return a join URL for a named session.
 export function getJoinUrl(name?: string) {
   if (!name) return '';
   if (typeof window === 'undefined') return `/join/${name}`;
   return `${location.origin}/join/${name}`;
 }
 
+// Delete a session from history and update the selected session if needed.
 export function deleteSession(id: string) {
   if (typeof window === 'undefined') return;
   const removed = session.history.find((item: any) => item.id === id) ?? null;
@@ -63,11 +73,13 @@ export function deleteSession(id: string) {
   }
 }
 
+// Focus a session entry by id and reflect it in the current session name.
 export function viewSession(id: string) {
   const entry = session.history.find((item: any) => item.id === id);
   setSessionName(entry?.name ?? id);
 }
 
+// Clear the stored history and reset the active session.
 export function clearHistory() {
   if (typeof window === 'undefined') return;
   session.history = [];

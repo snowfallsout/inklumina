@@ -2,20 +2,21 @@
   ui-network.ts
   說明：UI 與 socket 事件的輕量封裝（legend、toasts、session name、socket handlers）。
 */
-import { MBTI_ORDER, MBTI_COLORS } from '../config/constants';
+import { MBTI_ORDER, MBTI_COLORS } from '../constants/mbti';
 
 export function buildLegend(rootEl: HTMLElement | null): void {
+  // Legend DOM is managed by the UI component (`Legend.svelte`).
+  // Here we only ensure existing rows are reset to an empty state
+  // so overlay code can update values without recreating nodes.
   if (!rootEl) return;
-  rootEl.innerHTML = '';
   for (const m of MBTI_ORDER) {
-    const c = MBTI_COLORS[m];
-    rootEl.insertAdjacentHTML('beforeend', `
-      <div class="row" id="r-${m}">
-        <div class="dot" style="background:${c};--c:${c}"></div>
-        <span class="lbl">${m}</span>
-        <div class="track"><div class="fill" id="f-${m}" style="background:${c}"></div></div>
-        <span class="cnt" id="c-${m}">0</span>
-      </div>`);
+    const row = document.getElementById(`r-${m}`);
+    if (!row) continue;
+    row.classList.remove('on');
+    const f = document.getElementById(`f-${m}`) as HTMLElement | null;
+    const c = document.getElementById(`c-${m}`) as HTMLElement | null;
+    if (f) f.style.width = '0%';
+    if (c) c.textContent = '0';
   }
 }
 

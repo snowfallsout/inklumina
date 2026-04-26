@@ -1,4 +1,4 @@
-import { HAND_CONNECTIONS } from '$lib/features/display/constants';
+import { HAND_CONNECTIONS } from '$lib/features/display/vision';
 import { spawnMBTI as particleSpawnMBTI, seedAmbient as particleSeedAmbient } from './particle';
 import { mapToCanvas as drawMapToCanvas } from './draw';
 import {
