@@ -2,12 +2,11 @@
  * src/lib/runes/session.svelte.ts
  * Purpose: Manage session metadata and localStorage-backed session history.
  */
-// @ts-nocheck
 export const session = $state({
   sessionName: null as string | null,
   history: [] as any[],
   panelOpen: false
-});
+} as { sessionName: string | null; history: any[]; panelOpen: boolean });
 
 // Set the current session name shown in the UI.
 export function setSessionName(name: string | null) {

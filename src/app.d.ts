@@ -42,38 +42,38 @@ declare module '$lib/utils/faceHash' {
 }
 
 declare module '$lib/runes/particles.svelte' {
-	export function pushSpawn(e: any): void;
-	export function popSpawn(): any;
+	export type RuneSpawnEvent = import('$lib/runes/particles.svelte').SpawnEvent;
+	export function pushSpawn(e: RuneSpawnEvent): void;
+	export function popSpawn(): RuneSpawnEvent | undefined;
 	export function seedAmbient(n?: number): void;
 }
 
 declare module '$lib/runes/ui.svelte' {
-	export const ui: any;
+	export type UIState = typeof import('$lib/runes/ui.svelte').ui;
 	export function showToast(msg: string, color?: string): void;
 	export function setHandBadge(text: string): void;
 	export function setWaitingVisible(visible: boolean): void;
 }
 
 declare module '$lib/runes/media.svelte' {
-	export const media: any;
-	export const CROWD_CAP: number;
-	export const ACTIVE_CAP: number;
+	export type RuneCrowdMember = import('$lib/runes/media.svelte').CrowdMember;
+	export type RuneInteractionPoint = import('$lib/runes/media.svelte').InteractionPoint;
 	export function initCamera(): Promise<void>;
 	export function stopCamera(): void;
-	export function setCrowd(m: any): void;
-	export function setActiveInteractions(a: any): void;
+	export function setCrowd(m: RuneCrowdMember[]): void;
+	export function setActiveInteractions(a: RuneInteractionPoint[]): void;
 	export function clearAllSensors(): void;
 }
 
 declare module '$lib/runes/mbti.svelte' {
-	export const mbti: any;
+	export type MBTIState = typeof import('$lib/runes/mbti.svelte').mbti;
 	export function getTotal(): number;
-	export function updateCounts(counts: any): void;
-	export function spawn(mbti: string, color?: string, nickname?: string, counts?: any, totalNum?: number): void;
+	export function updateCounts(counts: Record<string, number>): void;
+	export function spawn(mbti: string, color?: string, nickname?: string, counts?: Record<string, number>, totalNum?: number): void;
 }
 
 declare module '$lib/runes/session.svelte' {
-	export const session: any;
+	export type SessionState = typeof import('$lib/runes/session.svelte').session;
 	export function loadHistory(): Promise<void>;
 	export function createSession(name?: string): Promise<void>;
 	export function getJoinUrl(name?: string): string;
@@ -85,7 +85,7 @@ declare module '$lib/runes/session.svelte' {
 }
 
 declare module '$lib/runes/smile.svelte' {
-	export const smile: any;
+	export type SmileState = typeof import('$lib/runes/smile.svelte').smile;
 	export function start(): void;
 	export function stop(): void;
 	export function registerElement(el: HTMLDivElement): void;

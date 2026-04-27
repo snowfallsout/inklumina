@@ -2,11 +2,15 @@
  * src/lib/runes/ui.svelte.ts
  * Purpose: Shared UI overlay state (toasts, hand badge, waiting indicator).
  */
-// @ts-nocheck
+// typed UI rune: shared UI overlay state
 export const ui = $state({
   toast: null as { msg: string; color?: string } | null,
   handBadgeText: '✋ NO HAND',
   waitingVisible: true
+} as {
+  toast: { msg: string; color?: string } | null;
+  handBadgeText: string;
+  waitingVisible: boolean;
 });
 
 // Show a toast message and dismiss it automatically.

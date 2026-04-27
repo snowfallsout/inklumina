@@ -4,7 +4,7 @@
  * the display features (video element, camera init/stop, sensor state).
  */
 // file-level: Svelte rune for media state and helpers (typed)
-import appEnv from '$app/environment';
+import { browser } from '$app/environment';
 import settings from '$lib/config/settings';
 import { setHandBadge } from '$lib/runes/ui.svelte';
 import { init as mediapipeInit, start as mediapipeStart, stop as mediapipeStop } from '$lib/services/mediapipe';
@@ -74,7 +74,7 @@ export function clearAllSensors() {
 
 // Initialize the camera stream and start Mediapipe processing.
 export async function initCamera(): Promise<void> {
-  if (!appEnv.browser) return;
+  if (!browser) return;
   if (_starting || _started) return;
 
   _starting = true;
@@ -86,9 +86,8 @@ export async function initCamera(): Promise<void> {
 
     await mediapipeInit({
       maxCrowd: CROWD_CAP,
-      topNHands: Math.min(2, ACTIVE_CAP),
-      minProcessingHz: 20,
-      handsModelComplexity: 1,
+        topNHands: Math.min(2, ACTIVE_CAP),
+        handsModelComplexity: 1,
       handConfidenceThreshold: settings.mediapipe.handConfidenceThreshold,
       faceConfidenceThreshold: settings.mediapipe.faceConfidenceThreshold
     });
@@ -130,7 +129,7 @@ export async function initCamera(): Promise<void> {
 
 // Stop camera processing, release the stream, and reset state.
 export function stopCamera(): void {
-  if (!appEnv.browser) return;
+  if (!browser) return;
 
   mediapipeStop();
   const el = media.videoEl;

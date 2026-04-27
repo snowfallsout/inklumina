@@ -37,7 +37,7 @@ function requestSelect(index: number, value: string) { dispatch('select', { inde
     <div class="card-letters">
       <div class="preview">
         {#each [0,1,2,3] as i}
-          <div class="preview-letter {sel[i] ? '' : 'placeholder'}" on:click={() => requestSelect(i, sel[i] || '')} id={`pl-${i}`}>
+          <div class="preview-letter {sel[i] ? '' : 'placeholder'}" onclick={() => requestSelect(i, sel[i] || '')} id={`pl-${i}`}>
             {sel[i] || ['M','B','T','I'][i]}
           </div>
         {/each}

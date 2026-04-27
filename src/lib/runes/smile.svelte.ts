@@ -2,7 +2,6 @@
  * src/lib/runes/smile.svelte.ts
  * Purpose: Manage a persistent emoji overlay that follows smiling faces.
  */
-// @ts-nocheck
 import { media } from '$lib/runes/media.svelte';
 import { pickRandomEmoji } from '$lib/utils/faceHash';
 

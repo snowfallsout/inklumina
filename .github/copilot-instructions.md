@@ -57,6 +57,10 @@
     }
     
     ```
+7. **修改筆記**：
+   - 每次修改後，在 `devnotes/` 目錄下創建一個新的 Markdown 文件，命名格式為 `DEVNOTES_{ISO_TIMESTAMP}.md`，例如 `DEVNOTES_2026-04-24T120000Z.md`。
+   - 在 `DEVNOTES_{time}.md` 描述中詳細說明修改的背景、目的、實現細節，以及對其他部分可能產生的影響。
+   - 參考 `devnotes/DEVNOTES.md` 中的政策和格式要求，確保每次修改都被適當記錄和追蹤。
 
 ## 互動規則：
 

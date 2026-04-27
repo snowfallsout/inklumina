@@ -83,7 +83,7 @@ function submitMBTI() {
     <div class="title">Colorfield</div>
     <div class="subtitle">MBTI · Particle Art · Live</div>
     <div class="desc">你的 MBTI 将化作一簇专属色彩的粒子<br>汇入现场大屏的流体画布</div>
-    <button class="btn accent" on:click={() => screen = 'mbti'}>开始加入 →</button>
+    <button class="btn accent" onclick={() => screen = 'mbti'}>开始加入 →</button>
   </div>
 {:else if screen === 'mbti'}
   <div class="screen">

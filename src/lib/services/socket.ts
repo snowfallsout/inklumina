@@ -1,6 +1,6 @@
 import { browser } from '$app/environment';
 import { updateCounts } from '$lib/runes/mbti.svelte';
-import { MBTI_PALETTES } from '$lib/config/mbti';
+import { MBTI_PALETTES } from '$lib/constants/mbti';
 import { setSessionName } from '$lib/runes/session.svelte';
 import { pushSpawn } from '$lib/runes/particles.svelte';
 import { setWaitingVisible, showToast } from '$lib/runes/ui.svelte';
