@@ -17,7 +17,7 @@ import {
 	syncLegacyBridge
 } from '$lib/services/display/legacy';
 import type { DisplayLegacyWindow } from '$lib/services/display/legacy';
-import { spawnMBTI, state } from '$lib/function/runtime/core';
+import { spawnMBTI, state } from '$lib/services/display/core';
 
 // Bind the shared display socket once and fan payloads into state/runtime owners.
 export function bindRealtimeSocket(): void {

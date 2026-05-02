@@ -1,7 +1,7 @@
 /*
-  particleEngine.ts
-  說明：提供舊版 `$lib/core/particleEngine` 相容 API，實際委派給目前
-  `src/lib/function` 底下的粒子模組，避免 display 元件繼續引用已刪除的 core 檔案。
+	particleEngine.ts
+	說明：提供 display canvas 使用的粒子引擎相容 API，實際委派給目前
+	的粒子 utility 與 display 相鄰模組，避免元件直接耦合到底層實作。
 */
 
 import {
@@ -109,4 +109,3 @@ export default class ParticleEngine {
 		}
 	}
 }
-

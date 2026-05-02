@@ -12,7 +12,7 @@
 
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
-  import ParticleEngine from '$lib/services/core/particleEngine';
+  import ParticleEngine from '$lib/services/display/particleEngine';
   import { popSpawn } from '$lib/state/particles.svelte';
   import { media } from '$lib/state/media.svelte';
   import { connect as socketConnect } from '$lib/services/socket';

@@ -2,7 +2,7 @@
  * src/lib/services/display/runtime.ts
  * Purpose: Canonical display-service owner for bootstrapping the display runtime.
  */
-import { drawFrame, seedAmbient, state } from '$lib/function/runtime/core';
+import { drawFrame, seedAmbient, state } from '$lib/services/display/core';
 import { processFrame, setupCamera } from '$lib/services/display/camera';
 import { bindRealtimeSocket, syncLegacyBridge } from '$lib/services/display/realtime';
 import {

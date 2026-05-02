@@ -6,7 +6,7 @@ under `devnotes/DEVNOTES_{timestamp}.md` and reference it here.
 
 # DEVNOTES — Current
 
-Last snapshot: [DEVNOTES_2026-05-02T211000Z.md](DEVNOTES_2026-05-02T211000Z.md)
+Last snapshot: [DEVNOTES_2026-05-02T214000Z.md](DEVNOTES_2026-05-02T214000Z.md)
 
 Policy (short):
 
@@ -39,6 +39,9 @@ Recent activity (delta):
 - 2026-05-02: Added [DEVNOTES_2026-05-02T205000Z.md](DEVNOTES_2026-05-02T205000Z.md) recording the migration of camera-adjacent helpers from `function/runtime/*` into `services/display/*`.
 - 2026-05-02: Added [DEVNOTES_2026-05-02T210000Z.md](DEVNOTES_2026-05-02T210000Z.md) recording the deletion of the unreferenced `camAndMedia.js` file and the refresh of `_CORE_FILES_.md`.
 - 2026-05-02: Added [DEVNOTES_2026-05-02T211000Z.md](DEVNOTES_2026-05-02T211000Z.md) recording the deletion of the unreferenced `particleFull.js` monolith after static files became the sole protected reference baseline.
+- 2026-05-02: Added [DEVNOTES_2026-05-02T212000Z.md](DEVNOTES_2026-05-02T212000Z.md) recording the rename/move of the remaining runtime kernel from `function/runtime` into `services/display/kernel`, along with the final retirement of `function/` as an active code path.
+- 2026-05-02: Added [DEVNOTES_2026-05-02T213000Z.md](DEVNOTES_2026-05-02T213000Z.md) recording the flattening of `services/display/kernel/*` back into `services/display/*` to avoid an unnecessary extra subdirectory layer.
+- 2026-05-02: Added [DEVNOTES_2026-05-02T214000Z.md](DEVNOTES_2026-05-02T214000Z.md) recording the flattening of single-consumer display helpers, the removal of `services/core/*`, and the deletion of the unused `services/api.ts` shell.
 
 Next planned actions:
 
@@ -60,6 +63,9 @@ Next planned actions:
 - Continue shrinking `function/*` by separating true runtime kernels from legacy reference JS and protected historical files.
 - Continue clarifying the remaining historical surface in `function/`, especially whether `particleFull.js` should stay as archived reference or be removed.
 - Continue clarifying whether `function/runtime/` should keep its current name or be renamed to a more explicit kernel-oriented path.
+- Continue clarifying whether `services/display/kernel/*` should stay as a flat kernel layer or be split into smaller render/particle/gesture subdomains.
+- Continue simplifying `services/display/*` so helper files only remain separate when they serve more than one concrete owner.
+- Continue clarifying the role split between top-level client services (`services/socket.ts`, `services/mediapipe.ts`) and route-specific display services under `services/display/*`.
 
 <!-- End of current DEVNOTES index -->
 

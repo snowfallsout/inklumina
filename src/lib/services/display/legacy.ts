@@ -3,7 +3,7 @@
  * Purpose: Canonical display-service owner for legacy window bridge helpers used by the runtime.
  */
 import { displayState } from '$lib/state/display.svelte';
-import { seedAmbient } from '$lib/function/runtime/core';
+import { seedAmbient } from '$lib/services/display/core';
 import type { RuntimeConstructor, RuntimeDetector } from '$lib/services/display/types';
 
 export type DisplayLegacyWindow = Window & typeof globalThis & {

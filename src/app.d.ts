@@ -24,11 +24,6 @@ declare module '$lib/config/settings' {
 	export default settings;
 }
 
-declare module '$lib/services/mediapipe' {
-	const mediapipe: any;
-	export default mediapipe;
-}
-
 declare module '$lib/utils/faceHash' {
 	export function faceHash(x: number, y: number): string;
 	export const SMILE_EMOJIS: string[];
