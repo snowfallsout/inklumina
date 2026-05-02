@@ -3,7 +3,7 @@
 	import Canvas from '../../lib/components/display/Canvas.svelte';
 	import Legend from '../../lib/components/display/Legend.svelte';
 	import SessionPanel from '../../lib/components/display/SessionPanel.svelte';
-	import { session } from '../../lib/runes/session.svelte';
+	import { session } from '../../lib/state/session.svelte';
 	import Toast from '../../lib/components/display/Toast.svelte';
 	import EmotionBadge from '../../lib/components/display/EmotionBadge.svelte';
 	import SmileEmoji from '../../lib/components/display/SmileEmoji.svelte';

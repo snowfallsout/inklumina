@@ -5,7 +5,7 @@
 // - Emit normalized crowd/interactions arrays to callers.
 
 import { browser } from '$app/environment';
-import type { CrowdMember, InteractionPoint } from '$lib/runes/media.svelte';
+import type { CrowdMember, InteractionPoint } from '$lib/state/media.svelte';
 
 type FaceMeshLike = {
   setOptions: (opts: Record<string, unknown>) => void;

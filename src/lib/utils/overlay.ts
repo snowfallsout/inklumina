@@ -2,7 +2,7 @@
   ui-network.ts
   說明：UI 與 socket 事件的輕量封裝（legend、toasts、session name、socket handlers）。
 */
-import { MBTI_ORDER, MBTI_COLORS } from '../constants/mbti';
+import { MBTI_ORDER, MBTI_COLORS } from '$lib/shared/constants/mbti';
 
 export function buildLegend(rootEl: HTMLElement | null): void {
   // Legend DOM is managed by the UI component (`Legend.svelte`).

@@ -2,7 +2,7 @@
   emotion.ts
   說明：情緒與 emoji 顯示輔助函式。
 */
-import { SMILE_EMOJIS } from '$lib/constants/vision';
+import { SMILE_EMOJIS } from '$lib/shared/constants/vision';
 
 const _prevSmile = new Map<any, any>();
 let _emojiEl: HTMLElement | null = null; let _wasAnySmiling = false;

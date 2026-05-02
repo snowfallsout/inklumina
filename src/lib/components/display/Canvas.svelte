@@ -12,11 +12,11 @@
 
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
-  import ParticleEngine from '$lib/core/particleEngine';
-  import { popSpawn } from '$lib/runes/particles.svelte';
-  import { media } from '$lib/runes/media.svelte';
+  import ParticleEngine from '$lib/services/core/particleEngine';
+  import { popSpawn } from '$lib/state/particles.svelte';
+  import { media } from '$lib/state/media.svelte';
   import { connect as socketConnect } from '$lib/services/socket';
-  import { mountCoordinator } from '$lib/function/coordinator';
+  import { mountCoordinator } from '$lib/utils/coordinator';
 
   let canvas = $state<HTMLCanvasElement | null>(null);
   let ctx = $state<CanvasRenderingContext2D | null>(null);

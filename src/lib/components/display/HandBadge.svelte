@@ -7,7 +7,7 @@
 -->
 
 <script lang="ts">
-  import { ui } from '$lib/runes/ui.svelte';
+  import { ui } from '$lib/state/ui.svelte';
 </script>
 
 <div class="hand-badge">{ui.handBadgeText}</div>

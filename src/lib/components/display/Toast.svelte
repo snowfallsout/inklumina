@@ -8,7 +8,7 @@
 
 <script lang="ts">
   import { fade } from 'svelte/transition';
-  import { ui } from '$lib/runes/ui.svelte';
+  import { ui } from '$lib/state/ui.svelte';
 
   /*
     Behavior:

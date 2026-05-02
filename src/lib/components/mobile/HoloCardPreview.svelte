@@ -5,13 +5,25 @@
  * File-level:
  * Lightweight wrapper that calls into `generateHoloCardImage` to
  * produce a shareable image. Exposes a `generate(opts)` method and
- * emits `generated` with the resulting data URL.
+ * optionally calls `ongenerated` with the resulting data URL.
  */
-import { createEventDispatcher } from 'svelte';
 import { generateHoloCardImage } from '$lib/utils/holoCanvas';
-const { mbti = '' as string, color = '#888888' as string, nickname = undefined as string | undefined, phrase = undefined as string | undefined } = $props();
-let imageUrl: string | null = null;
-const dispatch = createEventDispatcher();
+interface Props {
+  mbti?: string;
+  color?: string;
+  nickname?: string | undefined;
+  phrase?: string | undefined;
+  ongenerated?: (payload: { url: string | null }) => void;
+}
+
+const {
+  mbti = '' as string,
+  color = '#888888' as string,
+  nickname = undefined as string | undefined,
+  phrase = undefined as string | undefined,
+  ongenerated
+}: Props = $props();
+let imageUrl = $state<string | null>(null);
 
 /**
  * generate(opts)
@@ -28,7 +40,7 @@ export async function generate(opts?: { mbti?: string; color?: string; nickname?
   const usePhrase = opts?.phrase ?? phrase;
   const url = generateHoloCardImage({ mbti: useMbti, color: useColor, nickname: useNickname, phrase: usePhrase });
   imageUrl = url;
-  dispatch('generated', { url: imageUrl });
+  ongenerated?.({ url: imageUrl });
   return imageUrl;
 }
 </script>

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { ui } from '$lib/runes/ui.svelte';
+  import { ui } from '$lib/state/ui.svelte';
 </script>
 
 {#if ui.waterOverlay}

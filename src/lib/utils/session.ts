@@ -1,7 +1,19 @@
-// Unified barrel: TypeScript resolves '$lib/features/display/session' to this file
-// (file takes precedence over directory in moduleResolution: bundler).
-// Re-export utilities and all session management functions.
-export * from '../function/session/utils';
-export * from '../function/session/client';
-export * from '../function/session/panel';
-export * from '../function/session/qr';
+/*
+ * src/lib/utils/session.ts
+ * Purpose: Pure client-safe session helper utilities shared by display session services.
+ */
+
+export const STORAGE_KEY = 'colorfield_pc_ip';
+
+export function sanitizeHost(raw: string): string {
+	return raw.trim().replace(/^https?:\/\//, '').replace(/\/.*$/, '');
+}
+
+export function buildJoinUrl(raw: string): string {
+	const host = sanitizeHost(raw);
+	const withPort =
+		host.includes(':') || typeof window === 'undefined' || !window.location.port
+			? host
+			: `${host}:${window.location.port}`;
+	return `http://${withPort}/mobile`;
+}

@@ -1,6 +1,7 @@
-import { SMILE_EMOJIS } from '$lib/features/display/vision';
+import { SMILE_EMOJIS } from '$lib/shared/constants/vision';
+import type { RuntimeParticle, RuntimeRuntimeState } from '$lib/services/display/types';
 
-export function updateEmotionBadge(state: any): void {
+export function updateEmotionBadge(state: RuntimeRuntimeState): void {
 	const element = document.getElementById('emotion-badge');
 	if (!element) return;
 	if (!state.faces || state.faces.length === 0) {
@@ -22,7 +23,7 @@ function getRandomSmileEmoji(): string {
 	return SMILE_EMOJIS[Math.floor(Math.random() * SMILE_EMOJIS.length)] ?? '😊';
 }
 
-function getOrCreateSmileEmoji(state: any): HTMLDivElement {
+function getOrCreateSmileEmoji(state: RuntimeRuntimeState): HTMLDivElement {
 	if (state.emojiEl) return state.emojiEl;
 	const element = document.createElement('div');
 	element.className = 'smile-emoji-persistent';
@@ -31,11 +32,11 @@ function getOrCreateSmileEmoji(state: any): HTMLDivElement {
 	return element;
 }
 
-export function tickSmileEmoji(state: any): void {
-	const anySmiling = (state.faces || []).some((face: any) => face.smile);
+export function tickSmileEmoji(state: RuntimeRuntimeState): void {
+	const anySmiling = state.faces.some((face) => face.smile);
 	const element = getOrCreateSmileEmoji(state);
 	if (anySmiling) {
-		const smilingFace = (state.faces || []).find((face: any) => face.smile);
+		const smilingFace = state.faces.find((face) => face.smile);
 		if (smilingFace && !state.wasAnySmiling) {
 			element.textContent = getRandomSmileEmoji();
 		}
@@ -52,14 +53,14 @@ export function tickSmileEmoji(state: any): void {
 	state.wasAnySmiling = anySmiling;
 }
 
-export function tickDrawMode(state: any): void {
+export function tickDrawMode(state: RuntimeRuntimeState): void {
 	const drawMode = state.drawMode;
-	const nonFieldParticles = (state.particles || []).filter((particle: any) => particle.sizeClass !== 'field');
+	const nonFieldParticles = state.particles.filter((particle: RuntimeParticle) => particle.sizeClass !== 'field');
 	const total = nonFieldParticles.length || 1;
 
 	if (state.activePinchPoints && state.activePinchPoints.length > 0) {
 		const pinchPoint = state.activePinchPoints[0];
-		const gathered = nonFieldParticles.filter((particle: any) => {
+		const gathered = nonFieldParticles.filter((particle) => {
 			const dx = particle.x - pinchPoint.x;
 			const dy = particle.y - pinchPoint.y;
 			return dx * dx + dy * dy < 120 * 120;
@@ -141,7 +142,7 @@ export function tickDrawMode(state: any): void {
 	}
 }
 
-export function drawStrokeOverlay(state: any): void {
+export function drawStrokeOverlay(state: RuntimeRuntimeState): void {
 	const drawMode = state.drawMode;
 	if (drawMode.phase !== 'drawing' || drawMode.strokePath.length < 2 || !state.ctx) return;
 	const ctx = state.ctx;

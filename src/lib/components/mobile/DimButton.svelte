@@ -3,21 +3,31 @@
  * DimButton.svelte — Single MBTI dimension button
  *
  * File-level:
- * Small presentational button used by `DimRow`. Emits `toggle` when
- * activated. Keep logic minimal to stay declarative.
+ * Small presentational button used by `DimRow`. Calls `ontoggle`
+ * when activated. Keep logic minimal to stay declarative.
  */
-import { createEventDispatcher } from 'svelte';
-const { value = '' as string, selected = false as boolean, hint = '' as string } = $props();
-const dispatch = createEventDispatcher();
+interface Props {
+  value?: string;
+  selected?: boolean;
+  hint?: string;
+  ontoggle?: (payload: { value: string }) => void;
+}
+
+const {
+  value = '' as string,
+  selected = false as boolean,
+  hint = '' as string,
+  ontoggle
+}: Props = $props();
 
 /**
  * handleClick()
- * Emit a `toggle` event with the current `value`.
+ * Forward the selected value to the parent callback.
  */
-function handleClick() { dispatch('toggle', { value }); }
+function handleClick() { ontoggle?.({ value }); }
 </script>
 
-  <button class="dim-btn" class:sel={selected} onclick={handleClick} aria-pressed={selected}>
+<button class="dim-btn" class:sel={selected} onclick={handleClick} aria-pressed={selected}>
   <span class="big">{value}</span>
   <span class="hint">{hint}</span>
 </button>

@@ -4,8 +4,8 @@
 -->
 
 <script lang="ts">
-  import { media, initCamera, stopCamera } from '$lib/runes/media.svelte';
-  import { ui, toggleWaterOverlay } from '$lib/runes/ui.svelte';
+  import { media, initCamera, stopCamera } from '$lib/state/media.svelte';
+  import { ui, toggleWaterOverlay } from '$lib/state/ui.svelte';
   import WaterOverlay from './WaterOverlay.svelte';
   import { onMount, onDestroy } from 'svelte';
   

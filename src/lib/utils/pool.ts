@@ -5,7 +5,7 @@
   使用：其他模組可從此匯入 `particles`, `mbtiParticles`, `spawnMBTI`, `seedAmbient` 等。
 */
 import { Particle } from './particle';
-import { AMBIENT_COLS } from '../constants/mbti';
+import { AMBIENT_COLS } from '$lib/shared/constants/mbti';
 import { getDotSprite } from './sprites';
 
 export type MBTICounts = Record<string, number>;

@@ -7,8 +7,8 @@
 -->
 
 <script lang="ts">
-  import { mbti, getTotal } from '$lib/runes/mbti.svelte';
-  import { MBTI_ORDER, MBTI_PALETTES } from '$lib/constants/mbti';
+  import { mbti, getTotal } from '$lib/state/mbti.svelte';
+  import { MBTI_ORDER, MBTI_PALETTES } from '$lib/shared/constants/mbti';
 
   type MbtiKey = keyof typeof MBTI_PALETTES;
   type Entry = { k: MbtiKey; v: number; pct: number };

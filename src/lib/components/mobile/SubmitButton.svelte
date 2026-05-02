@@ -4,17 +4,25 @@
  *
  * File-level:
  * Small reusable submit button with `loading` and `disabled` states.
- * Emits `submit` when activated by the user.
+ * Calls `onsubmit` when activated by the user.
  */
-import { createEventDispatcher } from 'svelte';
-const { disabled = true as boolean, loading = false as boolean } = $props();
-const dispatch = createEventDispatcher();
+interface Props {
+  disabled?: boolean;
+  loading?: boolean;
+  onsubmit?: () => void;
+}
+
+const {
+  disabled = true as boolean,
+  loading = false as boolean,
+  onsubmit
+}: Props = $props();
 
 /**
  * handleClick()
- * Trigger the `submit` event if the control is not disabled or loading.
+ * Trigger the submit callback if the control is not disabled or loading.
  */
-function handleClick() { if (!disabled && !loading) dispatch('submit'); }
+function handleClick() { if (!disabled && !loading) onsubmit?.(); }
 </script>
 
 <button class="btn accent" id="submit-btn" onclick={handleClick} disabled={disabled}>

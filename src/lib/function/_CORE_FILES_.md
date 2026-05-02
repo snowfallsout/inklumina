@@ -1,64 +1,104 @@
 <!--
-  CORE_FILES.md
-  說明：列出 `src/lib/core` 底下主要檔案與其職責摘要，方便遷移與審核。
+  _CORE_FILES_.md
+  說明：記錄 `src/lib/function` 在目前 service-centric 架構下的剩餘角色，避免把 historical reference 與 active kernel 混為一談。
   注意：此文件為開發說明，不會被程式引用。
 -->
 
-# Core modules overview
+# Function Folder Overview
 
-下列均位於 `src/lib/function`（或其子資料夾），按檔名簡述其主要責任：
+## 現況摘要
 
-- `particleFull.js` — Legacy 單檔實作（不 SSR-safe）
-  - 完整 runtime：sprite builders、`Particle` 類、render loop、MediaPipe 相機處理、Socket.IO glue、DOM 操作（badge、legend、toast）
-  - 狀態：待拆解與逐步棄用；現存為行為參考。
+`src/lib/function` 不再承擔 display runtime 的 bootstrap / realtime / camera / session owner。
 
-- `sprites.ts` — Sprite (dot/blob/field) 建立與快取
-  - 提供 `_makeDot/_makeBlob/_makeField`、`getSpriteSet(mbti)`、`getDotSprite(color)`、`prewarmAll()`
-  - 特性：以 Canvas 建立 sprite，故呼叫應在 client (onMount) 進行。
+這些 owner 已移到：
 
-- `particle.ts` — TypeScript 版本的 `Particle` 類與輔助函式
-  - 包含物理參數、`update()`、`draw()`、`pickSizeClass()`、`drawDiamondSparkle()`、`dist2sq()`、`nearestFace()`。
+- `src/lib/services/display/runtime.ts`
+- `src/lib/services/display/realtime.ts`
+- `src/lib/services/display/camera.ts`
+- `src/lib/services/display/legacy.ts`
+- `src/lib/services/display/session.ts`
+- `src/lib/services/display/types.ts`
 
-- `pool.ts` — 粒子池管理（spawn、seedAmbient、quota 與 prune）
-  - 匯出 `particles`, `mbtiParticles`, `spawnMBTI`, `seedAmbient`, `pruneAllTypes` 等。
-  - 注意：檔案中曾出現重複段落，需清理以避免多重匯出/覆寫。
+目前 `src/lib/function` 的剩餘內容應理解為兩類：
 
-- `ml-camera.ts` — 攝影機 / MediaPipe 桥接（已加 SSR guard）
-  - 提供 `setVideo()/getVideo()/setupCamera()`、`mapToCanvas()`、frame 處理節流。
-  - 設計：避免 top-level DOM，需在 client 元件中注入 `video` element。
+1. active runtime kernel
+2. historical reference
 
-- `drawmode.ts` — 手勢繪製模式（state machine + overlay 繪製）
-  - 將 Draw Mode 邏輯從 monolith 分離，提供 `_tickDrawMode()`、`_drawStrokeOverlay()`。
+## Active Runtime Kernel
 
-- `emotion.ts` — Emoji 與情緒徽章輔助
-  - 管理 smile emoji element、`_tickSmileEmoji()`、`updateEmotionBadge()`。
+目前位於 `src/lib/function/runtime/` 的檔案應視為 display runtime kernel：
 
-- `ui-network.ts` — Socket / 網路互動（事件處理、state 更新）
-  - 負責接收 `spawn_particles`、`session_reset`、`state` 等事件並觸發 pool/legend/toast。
+- `core.ts`
+  - runtime state owner 與 kernel 組裝點
+  - 對外提供粒子生成、draw loop 所需的共享狀態與 helper
 
-- `particleFull/` 目錄（規劃中）
-  - `particle.ts` — 新增骨架：Particle 類骨架（已建立基本型）
-  - `index.ts` — 組合匯出與建議初始化順序說明
+- `draw.ts`
+  - 畫布座標映射與低階繪製輔助
 
-- 其他備註檔與子模組
-  - `display/`：包含 `runtime/` 與 session 顯示相關的子模組（camera.ts, draw.ts, sprite.ts 等），部分 UI 負責與 particle 系統互動。
-  - `session/`：session client 與面板相關模組（client.ts, panel.ts, qr.ts 等）。
-  - `DEVNOTES.md`：開發紀錄（已存在於同目錄）。
+- `gesture.ts`
+  - 手勢/情緒相關的 kernel 邏輯
 
----
+- `particle.ts`
+  - 粒子資料結構、更新與繪製行為
 
-短評與決策補充
+- `sprite.ts`
+  - runtime sprite 使用邏輯
 
-- 注意：`sprites.ts` 為 sprite 生產的 single source-of-truth；先前的 `spriteCache.ts` 骨架已移除，避免雙軌維護。
-- 注意：`pool.ts` 檔案內以前有重複段落，請在下一步清理重複並確認匯出一致性（`particles`, `mbtiParticles`, `spawnMBTI`, `seedAmbient`）。
-- 建議把所有直接操作 DOM 或建立 canvas 的程式碼限定在 client-only 初始化（例如由 `Canvas.svelte` 在 `onMount` 呼叫 `prewarmAll()` / `setup`）。
+這一層應盡量避免再承擔：
 
----
+- DOM bootstrap
+- socket binding
+- session flow
+- camera service owner
+- legacy window bridge
 
-短評與決策建議
+## Historical Reference
 
-- 優先使用已存在的 TypeScript 實作（`sprites.ts`、`particle.ts`、`pool.ts`）作為 source-of-truth；把 `particleFull.js` 視為行為參考逐步拆解。
-- 所有 canvas / document 建立必須放在 client-only 初始化路徑（例如 `Canvas.svelte` 的 `onMount`），或在呼叫 `prewarmAll()` 等明確 function 時建立。
-- 清理 `pool.ts` 中重複內容，並確保匯出不重複。
+`src/lib/function` 目前已不再保留 active code 以外的 legacy JS monolith。
 
-如果需，我可以把此文件轉成 repository README 的一部分或新增 TODO PR 模板。
+若需要追查原始行為基線，請以受保護的 `static/*` 檔案為準：
+
+- `static/display.html`
+- `static/mobile.html`
+- `static/server.js`
+
+## 已移除或已收編
+
+- `function/session/*`
+  - 已刪除，owner 已收斂到 `services/display/session.ts`
+
+- `function/runtime/index.ts`
+  - 已刪除，runtime public entry 已收斂到 `services/display/runtime.ts`
+
+- `function/runtime/types.ts`
+  - 已刪除，type owner 已收斂到 `services/display/types.ts`
+
+- `function/runtime/legacy.ts`
+  - 已刪除，legacy bridge owner 已收斂到 `services/display/legacy.ts`
+
+- `function/runtime/realtime.ts`
+  - 已刪除，realtime owner 已收斂到 `services/display/realtime.ts`
+
+- `function/runtime/dom.ts`
+  - 已刪除，bootstrap owner 已收斂到 `services/display/runtime.ts`
+
+- `function/runtime/camera.ts`
+  - 已刪除，camera owner 已收斂到 `services/display/camera.ts`
+
+- `function/runtime/mediapipe.ts`
+  - 已刪除，camera helper 已收編到 `services/display/mediapipe.ts`
+
+- `function/runtime/cam.toggle.ts`
+  - 已刪除，camera UI helper 已收編到 `services/display/cam.toggle.ts`
+
+- `camAndMedia.js`
+  - 已刪除，且無任何活躍引用
+
+- `particleFull.js`
+  - 已刪除，且無任何活躍引用
+  - 原先的 reference 角色已由受保護的 `static/*` 檔案取代
+
+## 後續建議
+
+- 若 `function/runtime/` 確認長期只保留 kernel，可考慮未來改名為更語義化的目錄，但那應作為單獨的一輪結構調整。
+- 若 `_CORE_FILES_.md` 持續存在，應讓它只記錄 active boundary，而不再重複歷史遷移細節。

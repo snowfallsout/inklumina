@@ -1,5 +1,5 @@
-// @ts-nocheck
-import { getSpriteSetEntries, getDotEntry } from '$lib/core/spriteCache';
+import { getSpriteSetEntries, getDotEntry } from '$lib/services/core/spriteCache';
+import type { RuntimeRuntimeState, RuntimeSpriteSet } from '$lib/services/display/types';
 
 // Keep a lightweight sparkle helper local to the display runtime — this
 // implementation intentionally mirrors the original visual detail but the
@@ -30,15 +30,13 @@ export function drawDiamondSparkle(ctx: CanvasRenderingContext2D, x: number, y: 
 
 // Delegate sprite generation to the central `spriteCache` module to ensure
 // a single source of truth for MBTI palettes and pre-warmed canvases.
-export function getSpriteSet(state: any, mbti: string) {
+export function getSpriteSet(_state: RuntimeRuntimeState, mbti: string): RuntimeSpriteSet {
   const entries = getSpriteSetEntries(mbti || '');
   // Convert entries into the runtime shape { canvas, half, refR }
   return { dot: entries.dot, blob: entries.blob, field: entries.field };
 }
 
-export function getDotSprite(state: any, color: string) {
+export function getDotSprite(_state: RuntimeRuntimeState, color: string): RuntimeSpriteSet {
   const e = getDotEntry(color);
   return { dot: e, blob: e, field: e };
 }
-
-export { drawDiamondSparkle };

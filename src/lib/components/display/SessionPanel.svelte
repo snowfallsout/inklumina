@@ -9,9 +9,9 @@
 
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { session, loadHistory, getJoinUrl, setPanelOpen } from '$lib/runes/session.svelte';
-  import { createSession, deleteSession, viewSession } from '$lib/runes/session.svelte';
-  import { showToast } from '$lib/runes/ui.svelte';
+  import { session, loadHistory, getJoinUrl, setPanelOpen } from '$lib/state/session.svelte';
+  import { createSession, deleteSession, viewSession } from '$lib/state/session.svelte';
+  import { showToast } from '$lib/state/ui.svelte';
 
   onMount(() => {
     // attempt to populate history if an implementation exists

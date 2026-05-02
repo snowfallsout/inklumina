@@ -5,23 +5,10 @@
  * File-level:
  * Renders a four-letter MBTI preview with a color gradient derived
  * from the current selection. This component is presentational only
- * and emits a `select` event when the user taps a letter.
+ * and does not own selection changes.
  */
-import { createEventDispatcher } from 'svelte';
 import { deriveCardColors, MBTI_NAMES } from '$lib/utils/mbti';
 const { sel = [null, null, null, null] as Array<string | null> } = $props();
-const dispatch = createEventDispatcher();
-
-// derive CSS vars for the card (computed inline in template)
-
-/**
- * requestSelect(index, value)
- * Request the parent to select the given letter index/value.
- *
- * @param index - dimension index 0..3
- * @param value - chosen letter
- */
-function requestSelect(index: number, value: string) { dispatch('select', { index, value }); }
 </script>
 
 <div class="mbti-card" style="--cc0:{deriveCardColors(sel).c0};--cc1:{deriveCardColors(sel).c1};--cc2:{deriveCardColors(sel).c2};--cc3:{deriveCardColors(sel).c3};">
@@ -36,8 +23,8 @@ function requestSelect(index: number, value: string) { dispatch('select', { inde
 
     <div class="card-letters">
       <div class="preview">
-        {#each [0,1,2,3] as i}
-          <div class="preview-letter {sel[i] ? '' : 'placeholder'}" onclick={() => requestSelect(i, sel[i] || '')} id={`pl-${i}`}>
+        {#each [0,1,2,3] as i (i)}
+          <div class="preview-letter {sel[i] ? '' : 'placeholder'}" id={`pl-${i}`}>
             {sel[i] || ['M','B','T','I'][i]}
           </div>
         {/each}

@@ -1,4 +1,4 @@
-import { HAND_CONNECTIONS } from '$lib/features/display/vision';
+import { HAND_CONNECTIONS } from '$lib/shared/constants/vision';
 import { spawnMBTI as particleSpawnMBTI, seedAmbient as particleSeedAmbient } from './particle';
 import { mapToCanvas as drawMapToCanvas } from './draw';
 import {
@@ -7,41 +7,9 @@ import {
 	tickSmileEmoji as gestureTickSmileEmoji,
 	updateEmotionBadge as gestureUpdateEmotionBadge
 } from './gesture';
+import type { RuntimeHandLandmark, RuntimePoint, RuntimeRuntimeState } from '$lib/services/display/types';
 
-type Point = { x: number; y: number };
-type FacePoint = Point & { smile: boolean };
-
-type RuntimeState = {
-	canvas: HTMLCanvasElement | null;
-	ctx: CanvasRenderingContext2D | null;
-	video: HTMLVideoElement | null;
-	W: number;
-	H: number;
-	faces: FacePoint[];
-	emotion: 'neutral' | 'smile';
-	handsResults: { multiHandLandmarks?: Array<Array<{ x: number; y: number }>> } | null;
-	activePinchPoints: Point[];
-	processing: boolean;
-	frameCounter: number;
-	camOn: boolean;
-	emojiEl: HTMLDivElement | null;
-	wasAnySmiling: boolean;
-	spriteSetCache: Map<string, unknown>;
-	particles: any[];
-	mbtiParticles: Record<string, any[]>;
-	faceMesh: any | null;
-	hands: any | null;
-	socket: unknown | null;
-	drawMode: {
-		phase: 'idle' | 'gathering' | 'drawing' | 'dissolving';
-		strokePath: Array<{ x: number; y: number; t: number }>;
-		gatherTimer: number;
-		dissolveTimer: number;
-	};
-	socketBound: boolean;
-};
-
-export const state: RuntimeState = {
+export const state: RuntimeRuntimeState = {
 	canvas: null,
 	ctx: null,
 	video: null,
@@ -66,32 +34,32 @@ export const state: RuntimeState = {
 	socketBound: false
 };
 
-export function mapToCanvas(normX: number, normY: number): Point {
-	return drawMapToCanvas(state as any, normX, normY);
+export function mapToCanvas(normX: number, normY: number): RuntimePoint {
+	return drawMapToCanvas(state, normX, normY);
 }
 
 export function updateEmotionBadge(): void {
-	gestureUpdateEmotionBadge(state as any);
+	gestureUpdateEmotionBadge(state);
 }
 
 export function tickSmileEmoji(): void {
-	gestureTickSmileEmoji(state as any);
+	gestureTickSmileEmoji(state);
 }
 
 export function tickDrawMode(): void {
-	gestureTickDrawMode(state as any);
+	gestureTickDrawMode(state);
 }
 
 function drawStrokeOverlay(): void {
-	gestureDrawStrokeOverlay(state as any);
+	gestureDrawStrokeOverlay(state);
 }
 
 export function spawnMBTI(mbti: string, color: string): void {
-	particleSpawnMBTI(state as any, mbti, color);
+	particleSpawnMBTI(state, mbti, color);
 }
 
 export function seedAmbient(count: number): void {
-	particleSeedAmbient(state as any, count);
+	particleSeedAmbient(state, count);
 }
 
 export function drawFrame(): void {
@@ -110,7 +78,7 @@ export function drawFrame(): void {
 
 	if (state.handsResults && state.handsResults.multiHandLandmarks) {
 		for (const landmarks of state.handsResults.multiHandLandmarks) {
-			const points = landmarks.map((point: any) => mapToCanvas(point.x, point.y));
+			const points = landmarks.map((point: RuntimeHandLandmark) => mapToCanvas(point.x, point.y));
 			ctx.beginPath();
 			ctx.strokeStyle = 'rgba(255, 255, 255, 0.6)';
 			ctx.lineWidth = 1.5;

@@ -5,7 +5,7 @@
   - 提供 `getDotSprite(color)` 為 ambient/drift 顆粒建立 fallback dot。
   - `prewarmAll()` 可在啟動時預先建立所有 sprite。
 */
-import { MBTI_COLORS, MBTI_PALETTES, MBTI_ORDER, AMBIENT_COLS, TWO_PI } from '$lib/constants/mbti';
+import { MBTI_COLORS, MBTI_PALETTES, MBTI_ORDER, AMBIENT_COLS, TWO_PI } from '$lib/shared/constants/mbti';
 
 // Sprite 尺寸常數
 const DOT_HALF   = 80;    // 160×160

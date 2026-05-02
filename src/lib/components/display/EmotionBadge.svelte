@@ -6,7 +6,7 @@
 -->
 
 <script lang="ts">
-  import { media } from '$lib/runes/media.svelte';
+  import { media } from '$lib/state/media.svelte';
 </script>
 
 <!-- Minimal behavior: only react to `emotion === 'smile'` as in display.html; no extra features added -->

@@ -6,10 +6,10 @@
 -->
 
 <script lang="ts">
-	import QrCode from './QrCode.svelte';
-  import { getTotal } from '$lib/runes/mbti.svelte';
-  import { session, setPanelOpen } from '$lib/runes/session.svelte';
-  import { ui } from '$lib/runes/ui.svelte';
+	import JoinQr from './JoinQr.svelte';
+  import { getTotal } from '$lib/state/mbti.svelte';
+  import { session, setPanelOpen } from '$lib/state/session.svelte';
+  import { ui } from '$lib/state/ui.svelte';
 
 	let total = $derived.by(() => getTotal());
 </script>
@@ -37,7 +37,7 @@
     <div class="join-block">
       <b>SCAN TO JOIN</b>
       <div class="corner-qr-box">
-        <QrCode />
+        <JoinQr />
       </div>
     </div>
   </div>

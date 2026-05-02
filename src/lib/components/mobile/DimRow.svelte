@@ -4,25 +4,35 @@
  *
  * File-level:
  * Renders a horizontal pair of `DimButton` controls representing a
- * single MBTI dimension. Emits `select` with `{ dimension, value }`.
+ * single MBTI dimension. Calls `onselect` with `{ dimension, value }`.
  */
 import DimButton from './DimButton.svelte';
-import { createEventDispatcher } from 'svelte';
-const { dimension = 0 as number, values = [] as { value: string; hint?: string }[], selected = null as string | null } = $props();
-const dispatch = createEventDispatcher();
+interface Props {
+  dimension?: number;
+  values?: { value: string; hint?: string }[];
+  selected?: string | null;
+  onselect?: (payload: { dimension: number; value: string }) => void;
+}
+
+const {
+  dimension = 0 as number,
+  values = [] as { value: string; hint?: string }[],
+  selected = null as string | null,
+  onselect
+}: Props = $props();
 
 /**
- * handleToggle(ev)
- * Relay a child's toggle event up as a `select` event.
+ * handleToggle(payload)
+ * Relay a child's toggle callback up as a row-level selection.
  *
- * @param ev - CustomEvent from DimButton with `detail.value`
+ * @param payload - Value callback from `DimButton`
  */
-function handleToggle(ev: CustomEvent) { dispatch('select', { dimension, value: ev.detail.value }); }
+function handleToggle(payload: { value: string }) { onselect?.({ dimension, value: payload.value }); }
 </script>
 
 <div class="dim-row">
-  {#each values as v}
-    <DimButton value={v.value} hint={v.hint} selected={selected === v.value} on:toggle={handleToggle} />
+  {#each values as v (v.value)}
+    <DimButton value={v.value} hint={v.hint} selected={selected === v.value} ontoggle={handleToggle} />
   {/each}
 </div>
 

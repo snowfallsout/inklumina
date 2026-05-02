@@ -1,5 +1,11 @@
-import { AMBIENT_COLS_DISPLAY as AMBIENT_COLS } from '$lib/features/display/vision';
+import { AMBIENT_COLS_DISPLAY as AMBIENT_COLS } from '$lib/shared/constants/vision';
 import { getSpriteSet, getDotSprite, drawDiamondSparkle } from './sprite';
+import type {
+	RuntimeFacePoint,
+	RuntimeParticle,
+	RuntimeParticleDraft,
+	RuntimeRuntimeState
+} from '$lib/services/display/types';
 
 const TWO_PI = Math.PI * 2;
 
@@ -22,9 +28,9 @@ function dist2sq(ax: number, ay: number, bx: number, by: number): number {
 	return dx * dx + dy * dy;
 }
 
-function nearestFace(state: any, px: number, py: number) {
+function nearestFace(state: RuntimeRuntimeState, px: number, py: number): RuntimeFacePoint | null {
 	if (!state.faces || state.faces.length === 0) return null;
-	let best: any = null;
+	let best: RuntimeFacePoint | null = null;
 	let bestDistance = Infinity;
 	for (const face of state.faces) {
 		const distance = dist2sq(px, py, face.x, face.y);
@@ -38,10 +44,10 @@ function nearestFace(state: any, px: number, py: number) {
 
 // sparkle helper moved to display.sprite.ts
 
-export function createParticle(state: any, x: number, y: number, color: string, mbti: string | null) {
+export function createParticle(state: RuntimeRuntimeState, x: number, y: number, color: string, mbti: string | null): RuntimeParticle {
 	const sizeClass = pickSizeClass();
 	const params = SIZE_CLASS_PARAMS[sizeClass];
-	const particle: any = {
+	const particleDraft: RuntimeParticleDraft = {
 		x,
 		y,
 		color,
@@ -64,8 +70,9 @@ export function createParticle(state: any, x: number, y: number, color: string, 
 		_sprites: mbti ? getSpriteSet(state, mbti) : getDotSprite(state, color),
 		_drawTarget: null
 	};
+	const particle = particleDraft as RuntimeParticle;
 
-	particle.update = function (faces: any[], emotion: any) {
+	particle.update = function (_faces: RuntimeFacePoint[], _emotion: RuntimeRuntimeState['emotion']) {
 		this.age++;
 		this.alpha = Math.min(this.alphaT, this.alpha + 0.04);
 		const currentParams = SIZE_CLASS_PARAMS[this.sizeClass as keyof typeof SIZE_CLASS_PARAMS];
@@ -211,10 +218,10 @@ export function createParticle(state: any, x: number, y: number, color: string, 
 	return particle;
 }
 
-function pruneType(state: any, mbti: string) {
+function pruneType(state: RuntimeRuntimeState, mbti: string): void {
 	const particles = state.mbtiParticles[mbti];
 	if (!particles) return;
-	const total = Object.values(state.mbtiParticles).reduce((sum: number, entry: any) => sum + (entry?.length ?? 0), 0) || 1;
+	const total = Object.values(state.mbtiParticles).reduce((sum: number, entry) => sum + (entry?.length ?? 0), 0) || 1;
 	const count = particles.length || 1;
 	const quota = Math.max(20, Math.min(120, Math.floor((count / total) * 800)));
 	while (particles.length > quota) {
@@ -225,13 +232,13 @@ function pruneType(state: any, mbti: string) {
 	}
 }
 
-function pruneAllTypes(state: any) {
+function pruneAllTypes(state: RuntimeRuntimeState): void {
 	for (const key of Object.keys(state.mbtiParticles)) {
 		pruneType(state, key);
 	}
 }
 
-export function spawnMBTI(state: any, mbti: string, color: string) {
+export function spawnMBTI(state: RuntimeRuntimeState, mbti: string, color: string): void {
 	if (!state.mbtiParticles[mbti]) {
 		state.mbtiParticles[mbti] = [];
 	}
@@ -247,7 +254,7 @@ export function spawnMBTI(state: any, mbti: string, color: string) {
 	pruneAllTypes(state);
 }
 
-export function seedAmbient(state: any, count: number) {
+export function seedAmbient(state: RuntimeRuntimeState, count: number): void {
 	for (let index = 0; index < count; index++) {
 		const color = AMBIENT_COLS[index % AMBIENT_COLS.length];
 		const particle = createParticle(state, Math.random() * state.W, Math.random() * state.H, color, null);
