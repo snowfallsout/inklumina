@@ -21,6 +21,8 @@ Snapshot created to preserve current state before proceeding with repo-wide chan
 
 Recent activity (delta):
 
+- 2026-09-29: Added [DEVNOTES_2026-09-29T205310Z.md](../.devnotes/DEVNOTES_2026-09-29T205310Z.md) recording the GitHub activity report for HR review, including native-source attribution, monthly statistics, activity URLs, and limitations.
+
 - 2026-05-13: Added [DEVNOTES_2026-05-13T222929Z.md](../.devnotes/DEVNOTES_2026-05-13T222929Z.md) recording the control UI consolidation: `ControlPanel.svelte` restored as the main UI component, `ControlPanelLayout.svelte` retired, and a tiny `ControlSection.svelte` wrapper added to collapse repeated card chrome.
 
 - 2026-05-13: Added [DEVNOTES_2026-05-13T204628Z.md](../.devnotes/DEVNOTES_2026-05-13T204628Z.md) recording the control-panel split: async load/save orchestration moved into `src/lib/states/control.svelte.ts`, the shell component was reduced to wiring only, and the full control-panel layout/CSS moved into `src/lib/components/control/ControlPanelLayout.svelte`.
@@ -126,4 +128,3 @@ Next planned actions:
 <!-- End of current DEVNOTES index -->
 <!-- EOF -->
 <!-- Final line -->
-
